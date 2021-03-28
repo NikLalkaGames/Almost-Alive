@@ -1,40 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ConsumableBehaviour : MonoBehaviour
 {
     private EmotionController emotion;
     public Sprite deadSprite;
-    // Start is called before the first frame update
     public EmotionColor emotionColor;
-
+    private Spawner spawner;
+    
+    [System.Serializable]
+    public class ActionKill : UnityEvent<EmotionColor> {}
+    public ActionKill onKilled;
+    
     private void Start()
     {
         emotion = GameObject.Find("PlayerGhost").GetComponent<EmotionController>();
+        if ( GameObject.Find("Spawner").GetComponent<Spawner>() != null)
+        {
+            spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
+            onKilled.AddListener(spawner.GenerateMatchingHuman);
+        }
+        else
+        {
+            throw new System.Exception();
+        }
     }
 
     public void Kill()
     {
-        Debug.Log("KILL!");
-        
+        if (onKilled != null)
+            onKilled.Invoke(emotionColor);
+            
         emotion.SpawnEmotion(transform.position + Vector3.up * 0.2f, emotionColor);
-        if ( GameObject.Find("Spawner").GetComponent<Spawner>() != null)
-        {
-            var spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
-            spawner.getKilled = true;
-            spawner.killedColor = emotionColor;
-        }
-        else
-        {
-            Debug.Log("Null reference exception");
-        }
-
-
         GetComponent<SpriteRenderer>().sprite = deadSprite;
-        // GetComponent<Rigidbody2D>().isKinematic = true;
+        GetComponent<Rigidbody2D>().isKinematic = true;
         GetComponent<BoxCollider2D>().enabled = false;
         GetComponent<HumanController>().enabled = false;
-        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAA!!!");
+        this.enabled = false;
+    }
+
+    private void OnDisable()
+    {
+        onKilled.RemoveListener(spawner.GenerateMatchingHuman);
     }
 }

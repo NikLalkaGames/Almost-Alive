@@ -12,7 +12,6 @@ public class Spawner : MonoBehaviour
     private Vector3 ranpos;
     private int letters;
     public bool getKilled = false;
-    public EmotionColor killedColor;
     // Start is called before the first frame update
 
 
@@ -64,24 +63,18 @@ public class Spawner : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GenerateMatchingHuman(EmotionColor killedColor)
     {
-        if (getKilled == true)
+        switch (killedColor)
         {
-            switch (killedColor)
-            {
-                case EmotionColor.pink    :    Generator("PinkHuman", 1); break;
-                case EmotionColor.blue    :    Generator("BlueHuman", 1); break;
-                case EmotionColor.yellow  :    Generator("YellowHuman", 1); break;
-                case EmotionColor.purple  :    Generator("PurpleHuman", 1); break;
-                case EmotionColor.green   :    Generator("GreenHuman", 1); break;
-            }
-            getKilled = false;
+            case EmotionColor.pink    :    Generator("PinkHuman", 1); break;
+            case EmotionColor.blue    :    Generator("BlueHuman", 1); break;
+            case EmotionColor.yellow  :    Generator("YellowHuman", 1); break;
+            case EmotionColor.purple  :    Generator("PurpleHuman", 1); break;
+            case EmotionColor.green   :    Generator("GreenHuman", 1); break;
         }
+        Debug.Log("Instantiation pass successful");
     }
-
-
 
     private void Generator(string obj, int myCount)
     {
@@ -102,8 +95,6 @@ public class Spawner : MonoBehaviour
             Instantiate(Resources.Load(obj), ranpos, Quaternion.identity);  
         }
     }
-
-
 
     Vector3 GetFreespawnPosition()
     {
