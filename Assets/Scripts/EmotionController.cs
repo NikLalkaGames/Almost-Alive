@@ -97,11 +97,13 @@ public class EmotionController : MonoBehaviour
         }
     }
 
+
+    // EXTENDABILITY PROBLEMS
     private IEnumerator fiveSpheres()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
         Debug.Log("Heal");
-        for (int i = 1; i < 6; i++)
+        for (int i = 2; i < 7; i++)
         {
             var emotionToUndraw = RemoveEmotion();
             Destroy(transform.GetChild(i).gameObject);
