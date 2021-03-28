@@ -29,9 +29,7 @@ public class Emotion
 
 public class EmotionController : MonoBehaviour
 {
-    private PlayerController player;
     private List<Emotion> emotions = new List<Emotion>();
-
     float stepAngle = 45;
     float globalAngle = -45;
 
@@ -46,7 +44,7 @@ public class EmotionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = PlayerController.staticController;
+
     }
     
     public GameObject GetEmotionObjectByColor(EmotionColor emotionColor)
@@ -79,7 +77,7 @@ public class EmotionController : MonoBehaviour
         else
         {
             Debug.Log("Drop emotion(none): ");
-            if (emotions.Count > 0) //prevent IndexOutOfRangeException for empty list
+            if (emotions.Count > 0) // prevent IndexOutOfRangeException for empty list
             {
                 var emotionToUndraw = RemoveEmotion();
                 UndrawEmotion();
@@ -99,11 +97,13 @@ public class EmotionController : MonoBehaviour
         }
     }
 
+
+    // EXTENDABILITY PROBLEMS
     private IEnumerator fiveSpheres()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
         Debug.Log("Heal");
-        for (int i = 1; i < 6; i++)
+        for (int i = 2; i < 7; i++)
         {
             var emotionToUndraw = RemoveEmotion();
             Destroy(transform.GetChild(i).gameObject);
@@ -166,7 +166,7 @@ public class EmotionController : MonoBehaviour
         GameObject emotionObject = Instantiate(GetEmotionObjectByColor(emotionColor), transform.position, Quaternion.identity)
         as GameObject;
         emotionObject.transform.SetParent(this.gameObject.transform, false);
-        //emotionObject.transform.position = transform.position + direction * radius;
+        // emotionObject.transform.position = transform.position + direction * radius;
         emotionObject.transform.position = transform.position;
     }
 

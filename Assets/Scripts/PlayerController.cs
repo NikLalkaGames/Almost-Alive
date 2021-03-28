@@ -50,7 +50,6 @@ public class PlayerController : MonoBehaviour
         GetMovementInput();
         GetMouseInput();
         SetLookDirection(); // based on mouse input
-        ListenInteractByMouseClick();
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -102,22 +101,7 @@ public class PlayerController : MonoBehaviour
         } */
     }
 
-    private void ListenInteractByMouseClick()
-    {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 1f, LayerMask.GetMask("Consumable"));
-            if (hit.collider != null)
-            {
-                Debug.Log("Raycast has hit the object " + hit.collider.gameObject);
-                ConsumableBehaviour littleMan = hit.collider.GetComponent<ConsumableBehaviour>();
-                if (littleMan != null)
-                {
-                    littleMan.Kill();
-                }
-            }
-        }
-    }
+
 
     //
 }

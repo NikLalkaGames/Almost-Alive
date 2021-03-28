@@ -27,18 +27,21 @@ public class CollectibleEmotion : MonoBehaviour
     private Vector3 emotionPos;
     public float radius;
 
+    // find nearest transform value in scene
+    // try to magnet to this transform
+    // if true, then fix state
+
     private void Start() 
     {
-        if (GetComponentInParent<EmotionController>() != null)
+        if (GetComponentInParent<EmotionController>() != null)  // if parent has emotion controller
         {
-            emotionState = false;
-            magnetState = false;
+            emotionState = false;   // attached as emotion to (as while player) gameObject
+            magnetState = false;    // do not use manget functionality
 
-            playerT = GetComponentInParent<PlayerController>().transform;
+            playerT = GetComponentInParent<PlayerController>().transform;   // 
             direction = GetComponentInParent<EmotionController>().direction;
             
             onPositionState = true;
-
         }
         emotionController = PlayerController.staticController.transform.GetComponent<EmotionController>();
         tempPos = transform.position;
