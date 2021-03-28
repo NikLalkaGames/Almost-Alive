@@ -29,9 +29,7 @@ public class Emotion
 
 public class EmotionController : MonoBehaviour
 {
-    private PlayerController player;
     private List<Emotion> emotions = new List<Emotion>();
-
     float stepAngle = 45;
     float globalAngle = -45;
 
@@ -46,7 +44,7 @@ public class EmotionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = PlayerController.staticController;
+
     }
     
     public GameObject GetEmotionObjectByColor(EmotionColor emotionColor)
@@ -79,7 +77,7 @@ public class EmotionController : MonoBehaviour
         else
         {
             Debug.Log("Drop emotion(none): ");
-            if (emotions.Count > 0) //prevent IndexOutOfRangeException for empty list
+            if (emotions.Count > 0) // prevent IndexOutOfRangeException for empty list
             {
                 var emotionToUndraw = RemoveEmotion();
                 UndrawEmotion();
@@ -166,7 +164,7 @@ public class EmotionController : MonoBehaviour
         GameObject emotionObject = Instantiate(GetEmotionObjectByColor(emotionColor), transform.position, Quaternion.identity)
         as GameObject;
         emotionObject.transform.SetParent(this.gameObject.transform, false);
-        //emotionObject.transform.position = transform.position + direction * radius;
+        // emotionObject.transform.position = transform.position + direction * radius;
         emotionObject.transform.position = transform.position;
     }
 
