@@ -25,6 +25,7 @@ public class CollectibleEmotion : MonoBehaviour
     private Transform playerT;
     private Vector3 emotionPos;
     public float radius;
+    private bool emotionExist = false;
 
     // find nearest transform value in scene
     // try to magnet to this transform
@@ -71,8 +72,17 @@ public class CollectibleEmotion : MonoBehaviour
     {
         if (magnetState == true)
         {
+            
+            foreach (var x in emotionController.emotions)   //check if this emotion already exists in player's pool
+            {
+                if (x.EmotionColor == this.emotionColor)
+                {
+                    emotionExist = true;
+                }
+            }
+
             distanceToPlayer = Vector3.Distance(transform.position, PlayerController.staticController.transform.position);  //calculate distance to player
-            if (distanceToPlayer < 1.5f)
+            if ((distanceToPlayer < 1.5f) && (emotionExist == false))
             {
                 emotionState = false;                       //turn-off UpDownTransform
                 pickUpSpeed = 1.5f - distanceToPlayer;      //become faster while distance decreases (like a magnet)
