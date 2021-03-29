@@ -9,7 +9,6 @@ public class CollectibleEmotion : MonoBehaviour
     public EmotionColor emotionColor;
     public float math;
 
-    private CollectibleEmotion emotion;
 
     private bool emotionState = true;
     public float amplitude;          //Set in Inspector 
@@ -38,10 +37,10 @@ public class CollectibleEmotion : MonoBehaviour
             emotionState = false;   // attached as emotion to (as while player) gameObject
             magnetState = false;    // do not use manget functionality
 
-            playerT = GetComponentInParent<PlayerController>().transform;   // 
-            direction = GetComponentInParent<EmotionController>().direction;
+            playerT = GetComponentInParent<PlayerController>().transform;       //player's transform 
+            direction = GetComponentInParent<EmotionController>().direction;    //emotion's angle above head
             
-            onPositionState = true;
+            onPositionState = true;    //activate smooth 'above-head transform' sequence 
         }
         emotionController = PlayerController.staticController.transform.GetComponent<EmotionController>();
         tempPos = transform.position;
@@ -52,44 +51,38 @@ public class CollectibleEmotion : MonoBehaviour
 
     private void Update()
     {
-        Animotion();
+        UpDownTransform();
         MagnetToPlayer();
-        Animotion2();
+        TransformAboveHead();
     }
 
 
-    private void Animotion()
+    private void UpDownTransform()    //emotion on-ground up-down state  (need to rework)
     {
-        if (emotionState == true)
+        if (emotionState == true)  //need to turn-off if another sequence used or emotion attached to another gameobject
         {
-            tempPos.y = tempVal + amplitude * Mathf.Sin(speed * Time.time);
-            transform.position = tempPos;
+            tempPos.y = tempVal + amplitude * Mathf.Sin(speed * Time.time);     //emotion y-coord change by amplitude (length of up-down), mathf.sin calculate up-down position from 0 to 1 
+            transform.position = tempPos;                                       
         }
     }
 
-    private void MagnetToPlayer()
+
+    private void MagnetToPlayer()   //emotion magnet to player
     {
         if (magnetState == true)
         {
-            distanceToPlayer = Vector3.Distance(transform.position, PlayerController.staticController.transform.position);
+            distanceToPlayer = Vector3.Distance(transform.position, PlayerController.staticController.transform.position);  //calculate distance to player
             if (distanceToPlayer < 1.5f)
             {
-
-                Debug.Log("Follow State: " + magnetState);
-                emotionState = false;
-                pickUpSpeed = 1.5f - distanceToPlayer;
-                transform.position = Vector2.MoveTowards(transform.position, PlayerController.staticController.transform.position, pickUpSpeed * Time.deltaTime);
-                tempVal = transform.position.y;
-                tempPos = transform.position;
-                math = Mathf.Sin(speed * Time.time);
+                emotionState = false;                       //turn-off UpDownTransform
+                pickUpSpeed = 1.5f - distanceToPlayer;      //become faster while distance decreases (like a magnet)
+                transform.position = Vector2.MoveTowards(transform.position, PlayerController.staticController.transform.position, pickUpSpeed * Time.deltaTime); //move towards player by pickUpSpeed speed
+                tempVal = transform.position.y;         //respond for UpDown transform if magnet sequence interrupted (without it emotion will transform to position where it spawned)
+                tempPos = transform.position;             
             }
             else
             {
-                if ( (Mathf.Sin(speed * Time.time) > 0.1) || (Mathf.Sin(speed * Time.time) < 0.1) )
-                {
-                    emotionState = true;
-                }
-                
+                emotionState = true;    //turn-on UpDown if magnet sequence interrupted (not works properly)   
             }
         }
         
@@ -97,24 +90,24 @@ public class CollectibleEmotion : MonoBehaviour
 
 
 
-    private void Animotion2()
+    private void TransformAboveHead()
     {
-        if ( onPositionState == true )
+        if ( onPositionState == true )  //activate if emotion is player's child
         {
-            emotionPos = playerT.position + direction * radius;
+            emotionPos = playerT.position + direction * radius;     //position where emotion supposed to be
             if ( transform.position != emotionPos )
             {
-                transform.position = Vector3.Slerp(transform.position, emotionPos, Time.deltaTime * 1.5f);
+                transform.position = Vector3.Slerp(transform.position, emotionPos, Time.deltaTime * 1.5f);      //transform from player position to emotionPos
             }
             else
             {
-                followState = true;
+                followState = true;     //work-in-progress
             }
         }
     }
 
 
-    private void Animotion3()
+    private void Animotion3()       //work-in-progress; smooth following for the player
     {
         if ( followState == true )
         {
@@ -126,7 +119,7 @@ public class CollectibleEmotion : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player")      //destroy current and spawn player's emotion
         {
             switch (emotionColor)
             {
