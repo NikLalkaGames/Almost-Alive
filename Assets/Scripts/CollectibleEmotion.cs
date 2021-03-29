@@ -55,6 +55,7 @@ public class CollectibleEmotion : MonoBehaviour
         UpDownTransform();
         MagnetToPlayer();
         TransformAboveHead();
+        emotionExist = false;
     }
 
 
@@ -72,23 +73,24 @@ public class CollectibleEmotion : MonoBehaviour
     {
         if (magnetState == true)
         {
-            
-            foreach (var x in emotionController.emotions)   //check if this emotion already exists in player's pool
-            {
-                if (x.EmotionColor == this.emotionColor)
-                {
-                    emotionExist = true;
-                }
-            }
-
             distanceToPlayer = Vector3.Distance(transform.position, PlayerController.staticController.transform.position);  //calculate distance to player
-            if ((distanceToPlayer < 1.5f) && (emotionExist == false))
+            if (distanceToPlayer < 1.5f)
             {
-                emotionState = false;                       //turn-off UpDownTransform
-                pickUpSpeed = 1.5f - distanceToPlayer;      //become faster while distance decreases (like a magnet)
-                transform.position = Vector2.MoveTowards(transform.position, PlayerController.staticController.transform.position, pickUpSpeed * Time.deltaTime); //move towards player by pickUpSpeed speed
-                tempVal = transform.position.y;         //respond for UpDown transform if magnet sequence interrupted (without it emotion will transform to position where it spawned)
-                tempPos = transform.position;             
+                foreach (var x in emotionController.emotions)   //check if this emotion already exists in player's pool
+                {
+                    if (x.EmotionColor == this.emotionColor)
+                    {
+                        emotionExist = true;
+                    }
+                }
+                if (emotionExist == false)
+                {
+                    emotionState = false;                       //turn-off UpDownTransform
+                    pickUpSpeed = 1.5f - distanceToPlayer;      //become faster while distance decreases (like a magnet)
+                    transform.position = Vector2.MoveTowards(transform.position, PlayerController.staticController.transform.position, pickUpSpeed * Time.deltaTime); //move towards player by pickUpSpeed speed
+                    tempVal = transform.position.y;         //respond for UpDown transform if magnet sequence interrupted (without it emotion will transform to position where it spawned)
+                    tempPos = transform.position;       
+                }      
             }
             else
             {
