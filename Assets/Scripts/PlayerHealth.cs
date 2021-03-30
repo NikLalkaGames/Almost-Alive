@@ -63,14 +63,15 @@ public class PlayerHealth : MonoBehaviour
     {
         if (invincibleTimer >= 0) invincibleTimer -= Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
-            UpdateHealth(-40);
+            UpdateHealth(-10);
+            invincibleTimer -= 0.1f;
         }
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            UpdateHealth(+40);
+            UpdateHealth(+30);
         }
     }
 
