@@ -147,6 +147,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deadSprite: {fileID: 21300000, guid: 5db8eb72505603c4f95181948dea3ec3, type: 3}
   emotionColor: 1
+  onKilled:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4995497585978421672
 MonoBehaviour:
   m_ObjectHideFlags: 0

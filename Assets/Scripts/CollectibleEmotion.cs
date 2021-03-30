@@ -27,16 +27,12 @@ public class CollectibleEmotion : MonoBehaviour
     public float radius;
     private bool emotionExist = false;
 
-    // find nearest transform value in scene
-    // try to magnet to this transform
-    // if true, then fix state
-
     private void Start() 
     {
         if (GetComponentInParent<EmotionController>() != null)  // if parent has emotion controller
         {
             emotionState = false;   // attached as emotion to (as while player) gameObject
-            magnetState = false;    // do not use manget functionality
+            magnetState = false;    // do not use magnet functionality
 
             playerT = GetComponentInParent<PlayerController>().transform;       //player's transform 
             direction = GetComponentInParent<EmotionController>().direction;    //emotion's angle above head
@@ -61,6 +57,7 @@ public class CollectibleEmotion : MonoBehaviour
 
     private void UpDownTransform()    //emotion on-ground up-down state  (need to rework)
     {
+        Debug.Log("UpDawnTransform");
         if (emotionState == true)  //need to turn-off if another sequence used or emotion attached to another gameobject
         {
             tempPos.y = tempVal + amplitude * Mathf.Sin(speed * Time.time);     //emotion y-coord change by amplitude (length of up-down), mathf.sin calculate up-down position from 0 to 1 
@@ -71,14 +68,19 @@ public class CollectibleEmotion : MonoBehaviour
 
     private void MagnetToPlayer()   //emotion magnet to player
     {
+        // check if lies within trigger zone
+        // if it is find closest transfrom and magnet
+        // do not implement this block of code more times in update with bool checking
+
+
         if (magnetState == true)
         {
             distanceToPlayer = Vector3.Distance(transform.position, PlayerController.staticController.transform.position);  //calculate distance to player
             if (distanceToPlayer < 1.5f)
             {
-                foreach (var x in emotionController.emotions)   //check if this emotion already exists in player's pool
+                foreach (var emotion in emotionController.emotions)   //check if this emotion already exists in player's pool
                 {
-                    if (x.EmotionColor == this.emotionColor)
+                    if (emotion.EmotionColor == this.emotionColor)
                     {
                         emotionExist = true;
                     }

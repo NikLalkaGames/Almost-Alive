@@ -179,7 +179,6 @@ MonoBehaviour:
   speed: 1
   defaultSpeed: 1.5
   speedModifier: 1
-  interactiveRayLength: {x: 1.5, y: 1.5}
   defaultDamage: 1
   damageModifier: 1
   damage: 1

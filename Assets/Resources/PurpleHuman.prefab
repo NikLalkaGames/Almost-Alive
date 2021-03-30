@@ -147,6 +147,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deadSprite: {fileID: 21300000, guid: 735f50408d84a4448aaf1cb9f672a513, type: 3}
   emotionColor: 3
+  onKilled:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5255231091763180680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,3 +162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2bf0e8aac34a6e46b9491189ba825b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 0.5
+  retreatDistance: 4
+  retreatRunDistance: 2
