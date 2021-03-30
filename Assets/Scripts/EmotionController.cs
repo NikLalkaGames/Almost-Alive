@@ -29,7 +29,7 @@ public class Emotion
 
 public class EmotionController : MonoBehaviour
 {
-    private List<Emotion> emotions = new List<Emotion>();
+    public List<Emotion> emotions = new List<Emotion>();
     float stepAngle = 45;
     float globalAngle = -45;
 
