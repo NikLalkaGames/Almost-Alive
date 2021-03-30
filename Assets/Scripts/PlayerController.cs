@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookDirection;
     private Vector2 movement;
     private Vector2 mouseTarget;
-    public Vector2 interactiveRayLength = new Vector2(1.5f, 1.5f);
     public Vector2 LookDirection
     {
         get { return lookDirection; }
@@ -56,8 +55,8 @@ public class PlayerController : MonoBehaviour
             emotionController.Handle(EmotionColor.none);
         }
 
-        //Debug.DrawLine(transform.position, mouseTarget, Color.red);
-        Debug.DrawRay(transform.position, lookDirection, Color.blue);
+        // Debug.DrawLine(transform.position, mouseTarget, Color.red);
+        Debug.DrawRay(transform.position, lookDirection, Color.red);
 
         // animation logic
         animator.SetFloat("MoveX", movement.x);

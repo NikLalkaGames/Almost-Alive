@@ -9,22 +9,10 @@ public class Pick : MonoBehaviour
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    private void OnMouseDown() 
     {
-        
- 
- 
- 
- 
-    }
-
-
-
-
-        private void OnMouseDown() {
-            Debug.Log("515");
+        Debug.Log("515");
         GameManager.instance.LoadNextPlayableScene();
     }
 }
