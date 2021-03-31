@@ -29,13 +29,12 @@ public class GameManager : MonoBehaviour
 
     public void ActionHandler()
     {
-        
         // if in gameover scene player can reload level or return to entry menu
         if (gameOver)
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                RefreshGamingStateOnRestart();
+                RefreshGamingStats();
                 RelaodLastPlayableScene();
                 gameOver = false; // do not enter in gameover if block in next update
             }
@@ -87,8 +86,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Scene Loaded: " + scene.name);
         SetActivePlayableScene();
- 
-        RefreshPlayerData();
+        RefreshGamingStats();
 
         Debug.Log("OnSceneLoad actions has called successfully");
     }
@@ -98,17 +96,6 @@ public class GameManager : MonoBehaviour
         SceneManager.SetActiveScene(SceneManager.GetSceneByName($"MainScene"));
         Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);
     }
-    
-
-
-    private void RefreshPlayerData()
-    {
-        playerController = PlayerController.staticController;
-        playerUI = playerController.transform.Find($"OverlayUI").gameObject;
-    }
-
-
-
 
     public void Defeat()
     {
@@ -117,10 +104,13 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("GameOver");
     }
 
+    public void RefreshGamingStats()
+    {
+        // may be more code
+    }
 
-    public void RefreshGamingStateOnRestart()
+    private void RefreshPlayerData()
     {
 
-        // may be more code
     }
 }
