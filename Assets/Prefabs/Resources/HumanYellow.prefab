@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 575708353967057613}
   - component: {fileID: 575708353967057614}
   - component: {fileID: 6308973363954094531}
-  - component: {fileID: -7940746715038195142}
+  - component: {fileID: -6314090540884492574}
   m_Layer: 9
-  m_Name: BlueHuman
+  m_Name: HumanYellow
   m_TagString: Consumable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: -1259062041
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cbee13325f4f66e4cac4e085b6ea6b93, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 745dbf123523f584eafe27be4f24ba09, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -120,7 +120,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.009936571, y: -0.003684163}
+  m_Offset: {x: -0.0017106533, y: 0.0010468364}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -131,7 +131,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.3455901, y: 0.5987761}
+  m_Size: {x: 0.32685947, y: 0.5733551}
   m_EdgeRadius: 0
 --- !u!114 &6308973363954094531
 MonoBehaviour:
@@ -145,12 +145,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d26f6661023e6048b75a64fd8b81a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deadSprite: {fileID: 21300000, guid: 88defe7d061e3ed4e8cf8e7a83674ea3, type: 3}
-  emotionColor: 0
+  deadSprite: {fileID: 21300000, guid: b5f5b4749998082419b9724c16d6327a, type: 3}
+  emotionColor: 4
   onKilled:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &-7940746715038195142
+--- !u!114 &-6314090540884492574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,6 +162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2bf0e8aac34a6e46b9491189ba825b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
-  retreatDistance: 4
-  retreatRunDistance: 2
+  speed: 0.8
+  retreatDistance: 1
+  retreatRunDistance: 4

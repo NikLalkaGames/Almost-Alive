@@ -11,11 +11,11 @@ public class CombatSystem : MonoBehaviour
             ListenInteractByKeyPress(other);
         } */
 
-    DetectNearColliders TriggerZone;
+    DetectNearestColliders TriggerZone;
 
     private void Start() 
     {
-        TriggerZone = GetComponent<DetectNearColliders>();
+        TriggerZone = GetComponent<DetectNearestColliders>();
     }
 
     private void Update()
@@ -30,42 +30,25 @@ public class CombatSystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            var nearestCollider = GetClosestEnemy(TriggerZone.GetListOfTriggerTransforms());
-            if (nearestCollider.CompareTag("Consumable"))
+            var nearestTransform = Helper.GetClosestTransform(TriggerZone.GetListOfTriggerTransforms(), transform);
+            if (nearestTransform.CompareTag("Consumable"))
             {
-                Debug.Log("Collider of : " + nearestCollider.name);
-                ConsumableBehaviour littleMan = nearestCollider.GetComponent<ConsumableBehaviour>();
+                Debug.Log("Hitted : " + nearestTransform.name);
+                ConsumableBehaviour littleMan = nearestTransform.GetComponent<ConsumableBehaviour>();
                 if (littleMan != null)
                 {
                     littleMan.Kill();
                 }
             }
-            else if(nearestCollider.CompareTag("Enemy"))
+            else if(nearestTransform.CompareTag("Enemy"))
             {
                 Debug.Log("This is enemy");
             }
         }
     }
-
-    BoxCollider2D GetClosestEnemy(List<Transform> enemies)
-    {
-        Transform tMin = null;
-        float minDist = Mathf.Infinity;
-        Vector3 currentPos = transform.position;
-        foreach (Transform t in enemies)
-        {
-            float dist = Vector3.Distance(t.position, currentPos);
-            if (dist < minDist)
-            {
-                tMin = t;
-                minDist = dist;
-            }
-        }
-        return tMin.GetComponent<BoxCollider2D>();
-    }
     
     // kill last collider that entered in trigger zone
-    /*     if (TriggerZone.GetListOfNearestColliders().Count != 0)
+/*  if (TriggerZone.GetListOfNearestColliders().Count != 0)
     {
         var nearestColliders = TriggerZone.GetListOfNearestColliders();
         ListenInteractByKeyPress(nearestColliders[nearestColliders.Count - 1]);

@@ -27,11 +27,11 @@ public class Spawner : MonoBehaviour
         Generator("Trash/grass_2", 5, 5);
         Generator("Trash/grass_3", 5, 5);
         Generator("Trash/grass_4", 5, 5);
-        Generator("BlueHuman", 5, 5);
-        Generator("YellowHuman", 5, 5);
-        Generator("PurpleHuman", 5, 5);
-        Generator("PinkHuman", 5, 5);
-        Generator("GreenHuman", 5, 5); */
+        Generator("HumanBlue", 5, 5);
+        Generator("HumanYellow", 5, 5);
+        Generator("HumanPurple", 5, 5);
+        Generator("HumanPink", 5, 5);
+        Generator("HumanGreen", 5, 5); */
 
 
 
@@ -55,11 +55,11 @@ public class Spawner : MonoBehaviour
         Generator("Trash/bush2", 6);
         Generator("Trash/bush3", 6);
 
-        Generator("BlueHuman", 6);
-        Generator("YellowHuman", 6);
-        Generator("PurpleHuman", 6);
-        Generator("PinkHuman", 6);
-        Generator("GreenHuman", 6);
+        Generator("HumanBlue", 6);
+        Generator("HumanYellow", 6);
+        Generator("HumanPurple", 6);
+        Generator("HumanPink", 6);
+        Generator("HumanGreen", 6);
 
     }
 
@@ -67,13 +67,13 @@ public class Spawner : MonoBehaviour
     {
         switch (killedColor)
         {
-            case EmotionColor.pink    :    Generator("PinkHuman", 1); break;
-            case EmotionColor.blue    :    Generator("BlueHuman", 1); break;
-            case EmotionColor.yellow  :    Generator("YellowHuman", 1); break;
-            case EmotionColor.purple  :    Generator("PurpleHuman", 1); break;
-            case EmotionColor.green   :    Generator("GreenHuman", 1); break;
+            case EmotionColor.pink    :    Generator("HumanPink", 1); break;
+            case EmotionColor.blue    :    Generator("HumanBlue", 1); break;
+            case EmotionColor.yellow  :    Generator("HumanYellow", 1); break;
+            case EmotionColor.purple  :    Generator("HumanPurple", 1); break;
+            case EmotionColor.green   :    Generator("HumanGreen", 1); break;
         }
-        Debug.Log("Instantiation pass successful");
+        Debug.Log("Revival of human is successful (ReInstantiation)");
     }
 
     private void Generator(string obj, int myCount)
@@ -116,7 +116,7 @@ public class Spawner : MonoBehaviour
         letters = Random.Range(min, max);
         while (letters > 0)
         {
-            var human = Instantiate(Resources.Load(Object), GetFreespawnPosition(), Quaternion.identity);
+            var human  = Instantiate(Resources.Load(Object), GetFreespawnPosition(), Quaternion.identity);
             letters--;
         }
     }
