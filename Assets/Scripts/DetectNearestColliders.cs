@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DetectNearColliders : MonoBehaviour
+public class DetectNearestColliders : MonoBehaviour
 {
     private List<Collider2D> nearestColliders = new List<Collider2D>();
+    private bool forCollectibe;
+
+    private void Start() 
+    {
+
+    }
 
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if (other.CompareTag("Consumable") || other.CompareTag("Enemy"))
+        if (!nearestColliders.Contains(other))
         {
-            if (!nearestColliders.Contains(other))
+            if (other.CompareTag("Consumable") || other.CompareTag("Enemy") || other.CompareTag("Player"))
             {
-                Debug.Log("Add collider of gameobject: " + other.name);
+                Debug.Log($"Add collider {other.name} to trigger zone of gameObj {this.transform.parent.name}");
                 nearestColliders.Add(other);
             }
         }
@@ -24,7 +30,7 @@ public class DetectNearColliders : MonoBehaviour
         {
             if (nearestColliders.Contains(other))
             {
-                Debug.Log("Remove collider of gameobject: " + other.name);
+                Debug.Log($"Remove collider {other.name} from trigger zone of gameObj {this.transform.parent.name}");
                 nearestColliders.Remove(other);
             }
         }
@@ -38,11 +44,13 @@ public class DetectNearColliders : MonoBehaviour
     public List<Transform> GetListOfTriggerTransforms()
     {
         List<Transform> transforms = new List<Transform>();
+        Debug.Log("Trigger zone colliders of gameobj: " + this.transform.parent.name + ":");
         foreach (var collider in nearestColliders)
         {
             transforms.Add(collider.transform);
+            Debug.Log("Collider: " + collider.name);
         }
-
+        Debug.Log("----------------------------------");
         return transforms;
     }
 }

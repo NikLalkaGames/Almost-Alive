@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        emotionController = GetComponent<EmotionController>();
+        emotionController = GetComponentInChildren<EmotionController>();
     }
 
     // Update is called once per frame

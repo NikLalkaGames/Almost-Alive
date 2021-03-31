@@ -5,9 +5,9 @@ using UnityEngine;
 public class HumanController : MonoBehaviour
 {
 
-    private float speed = 0.8f;
-    private float retreatDistance = 1;
-    private float retreatRunDistance = 4;
+    public float speed = 0.8f;
+    public float retreatDistance = 1;
+    public float retreatRunDistance = 4;
 
 
     float x, y, t, step;
