@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        // if not in menu then player can stop the game by pressing escape
+        // if not in menu player can stop the game by pressing escape
         if (currectSceneIndex != 0)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
     public void LoadNextPlayableScene()
     {
         SceneManager.LoadScene($"MainScene");
+        SceneManager.sceneLoaded += OnSceneLoad;
     }
 
     private IEnumerator LoadNextPlayableSceneWithDelay(float delay)

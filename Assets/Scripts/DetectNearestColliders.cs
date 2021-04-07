@@ -26,7 +26,7 @@ public class DetectNearestColliders : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other) 
     {
-        if (other.CompareTag("Consumable") || other.CompareTag("Enemy"))
+        if (other.CompareTag("Consumable") || other.CompareTag("Enemy") || other.CompareTag("Player"))
         {
             if (nearestColliders.Contains(other))
             {
@@ -44,7 +44,7 @@ public class DetectNearestColliders : MonoBehaviour
     public List<Transform> GetListOfTriggerTransforms()
     {
         List<Transform> transforms = new List<Transform>();
-        Debug.Log("Trigger zone colliders of gameobj: " + this.transform.parent.name + ":");
+        Debug.Log("Colliders in trigger zone of gameobj " + this.transform.parent.name + ":");
         foreach (var collider in nearestColliders)
         {
             transforms.Add(collider.transform);

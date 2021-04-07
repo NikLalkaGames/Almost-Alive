@@ -33,6 +33,8 @@ public class CollectibleEmotion : MonoBehaviour
     private bool emotionExist = false;
     private bool foundClosestTransform = false;
     
+    // create state based update with finite state machine usage
+
     private void Start() 
     {
         if (GetComponentInParent<EmotionController>() != null)  // if parent has emotion controller (has holderTransform)
@@ -151,7 +153,7 @@ public class CollectibleEmotion : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if ( !holderEmotionState )
+        if ( !holderEmotionState && closestEmotionController != null)
         {
             Debug.Log("Closest emotion controller parent: " + closestEmotionController.transform.parent.tag);
             if (other.CompareTag(closestEmotionController.transform.parent.tag) )      //destroy current and spawn player's emotion
