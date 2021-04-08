@@ -38,6 +38,23 @@ public static class Helper
         }
         return tMin.GetComponent<BoxCollider2D>();
     }
+
+    public static Collider2D GetClosestColliderSystemly(List<Collider2D> targets, Collider2D fromThis)
+    {
+        Collider2D bestTarget = null;
+        ColliderDistance2D minDist = new ColliderDistance2D();
+        minDist.distance = Mathf.Infinity;
+        foreach (Collider2D potentialTarget in targets)
+        {
+            var dist = fromThis.Distance(potentialTarget);
+            if (dist.distance < minDist.distance)
+            {
+                minDist = dist;
+                bestTarget = potentialTarget;
+            }
+        }
+        return bestTarget;
+    }
     
     public static Vector3 GetRandomDir()
     {
