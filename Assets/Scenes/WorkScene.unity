@@ -135,7 +135,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131271753}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
@@ -607,7 +607,7 @@ PrefabInstance:
     - target: {fileID: -4251293722923108183, guid: f61a6dbe39f64f74b872c73cda368445, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: d257f8554cd90bc468ef08f090864219, type: 2}
+      objectReference: {fileID: 9100000, guid: 2f47b4862b3aa824fad9eedf8c5a4c50, type: 2}
     - target: {fileID: -4251293722923108183, guid: f61a6dbe39f64f74b872c73cda368445, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
