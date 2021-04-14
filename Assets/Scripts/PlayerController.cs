@@ -99,8 +99,4 @@ public class PlayerController : MonoBehaviour
             lookDirection.Normalize();
         } */
     }
-
-
-
-    //
 }

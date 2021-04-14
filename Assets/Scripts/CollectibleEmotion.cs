@@ -48,7 +48,8 @@ public class CollectibleEmotion : MonoBehaviour
             
             holderEmotionState = true;    //activate smooth 'above-head transform' sequence
 
-            GetComponentInChildren<DetectNearestColliders>().enabled = false;
+            GetComponent<BoxCollider2D>().enabled = false;
+            transform.Find("DetectColliders").gameObject.SetActive(false);
         }
         else
         {
@@ -80,48 +81,56 @@ public class CollectibleEmotion : MonoBehaviour
     {
         if (magnetState == true)
         {
-            // if (!foundClosestTransform)    // if closest transform isn't found
-            // {
-                // state of finding closes transform to magnet
-                if ( colliderDetector.GetListOfTriggerColliders().Count != 0)    // if collider list in trigger zone isn't empty
-                {                                                                // if trigger zone contain colliders
-                    nearestTransform = Helper.GetClosestTransform(colliderDetector.GetListOfTriggerTransforms(), transform);
+            if ( colliderDetector.GetListOfTriggerColliders().Count != 0)    // if collider list in trigger zone isn't empty
+            {                                                                // or if trigger zone contain colliders
+                nearestTransform = Helper.GetClosestTransform(colliderDetector.GetListOfTriggerTransforms(), transform);
 
-                    Debug.Log("Closest gameObject: " + nearestTransform.name);
-                    
-                    closestEmotionController = nearestTransform.GetComponentInChildren<EmotionController>();
-                    // foundClosestTransform = true;
-                }
-            // }
-            // else
-            // {
-                // if closest transform founded try to magnet to it
-                if (nearestTransform != null)
+                Debug.Log("Closest gameObject: " + nearestTransform.name);
+                
+                closestEmotionController = nearestTransform.GetComponentInChildren<EmotionController>();
+                // foundClosestTransform = true;
+            }
+
+            if (closestEmotionController != null)
+            {
+                distanceToPlayer = Vector3.Distance(transform.position, nearestTransform.position);   // calculate distance to player
+                if (distanceToPlayer < 1.5f)
                 {
-                    distanceToPlayer = Vector3.Distance(transform.position, nearestTransform.position);   // calculate distance to player
-                    if (distanceToPlayer < 1.5f)
+                    if (closestEmotionController.emotions.Exists(x => x.EmotionColor == this.emotionColor))
                     {
-                        if (closestEmotionController.emotions.Exists(x => x.EmotionColor == this.emotionColor))
-                        {
-                            emotionExist = true;
-                        }
-
-                        if (emotionExist == false)
-                        {
-                            worldIdleState = false;                       //turn-off UpDownTransform
-                            pickUpSpeed = 1.5f - distanceToPlayer;      //become faster while distance decreases (like a magnet)
-                            transform.position = Vector2.MoveTowards(transform.position, nearestTransform.position, pickUpSpeed * Time.deltaTime); //move towards player by pickUpSpeed speed
-                            tempVal = transform.position.y;         //respond for UpDown transform if magnet sequence interrupted (without it emotion will transform to position where it spawned)
-                            tempPos = transform.position;
-                        }
+                        emotionExist = true;
                     }
-                    else
+
+                    if (emotionExist == false)      // use only emotionExist variavle for conditioning, because in each update we reset this value (prevent null reference exception with closest emotion controller)
                     {
-                        worldIdleState = true;    //turn-on UpDown if magnet sequence interrupted (not works properly)   
+                        worldIdleState = false;                       //turn-off UpDownTransform
+                        pickUpSpeed = 1.5f - distanceToPlayer;      //become faster while distance decreases (like a magnet)
+                        transform.position = Vector2.MoveTowards(transform.position, nearestTransform.position, pickUpSpeed * Time.deltaTime); //move towards player by pickUpSpeed speed
+                        tempVal = transform.position.y;         //respond for UpDown transform if magnet sequence interrupted (without it emotion will transform to position where it spawned)
+                        tempPos = transform.position;
+
+                        // check in update if touching nearest Collider 
+                        if ( this.GetComponent<BoxCollider2D>().IsTouching( nearestTransform.GetComponent<BoxCollider2D>()) )
+                        {
+                            Debug.Log("Closest emotion controller parent: " + closestEmotionController.transform.parent.tag);
+                            Debug.Log("After comparing colliders: " + this.name + " with " + nearestTransform.name);
+                            switch (emotionColor)
+                            {
+                                case EmotionColor.blue: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.blue); break;
+                                case EmotionColor.green: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.green); break;
+                                case EmotionColor.pink: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.pink); break;
+                                case EmotionColor.purple: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.purple); break;
+                                case EmotionColor.yellow: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.yellow); break;
+                                default: break;
+                            }
+                        }
                     }
                 }
-
-            // }
+                else
+                {
+                    worldIdleState = true;    //turn-on UpDown if magnet sequence interrupted (not works properly)   
+                }
+            }
         }
         
     }
@@ -150,34 +159,4 @@ public class CollectibleEmotion : MonoBehaviour
             
         }
     }
-
-    private void OnTriggerEnter2D(Collider2D other) 
-    {
-        if ( !holderEmotionState && closestEmotionController != null)
-        {
-            Debug.Log("Closest emotion controller parent: " + closestEmotionController.transform.parent.tag);
-            if (other.CompareTag(closestEmotionController.transform.parent.tag) )      //destroy current and spawn player's emotion
-            {
-                Debug.Log("After comparing colliders: " + this.name + " with " + other.name);
-                switch (emotionColor)
-                {
-                    case EmotionColor.blue: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.blue); break;
-                    case EmotionColor.green: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.green); break;
-                    case EmotionColor.pink: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.pink); break;
-                    case EmotionColor.purple: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.purple); break;
-                    case EmotionColor.yellow: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.yellow); break;
-                    default: break;
-                }
-            }
-       } 
-    }
-
-
-
-
-
-
-
-
-
 }

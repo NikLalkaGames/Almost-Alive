@@ -144,6 +144,7 @@ public class EmotionController : MonoBehaviour
         else
         {
             emotions.Add(emotionToAdd);
+            // add request to change state to "TransformAboveHead" for emotion gameOjbect in scene
             Destroy(emotionWorld);
             emotionWorld = null;
             return emotionToAdd;

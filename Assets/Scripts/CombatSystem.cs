@@ -28,7 +28,7 @@ public class CombatSystem : MonoBehaviour
 
     private void ListenInteractByKeyPress()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             var nearestTransform = Helper.GetClosestTransform(TriggerZone.GetListOfTriggerTransforms(), transform);
             if (nearestTransform.CompareTag("Consumable"))
