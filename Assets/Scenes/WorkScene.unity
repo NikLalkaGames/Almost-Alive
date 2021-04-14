@@ -128,6 +128,33 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4054309704232783989, guid: f61a6dbe39f64f74b872c73cda368445, type: 3}
   m_PrefabInstance: {fileID: 1159975025}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &131271754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131271753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CategoryHash: 1.6059022e+36
+  m_labelHash: -1.7273498e+20
+--- !u!114 &131271755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131271753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SpriteLibraryAsset: {fileID: 11400000, guid: 939500279a78aa040a05bee380d5b348, type: 2}
 --- !u!4 &131271761 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4054309704232783987, guid: f61a6dbe39f64f74b872c73cda368445, type: 3}
@@ -151,8 +178,8 @@ MonoBehaviour:
   - {fileID: 1583054518}
   - {fileID: 1817655250}
   m_Bounds:
-    m_Center: {x: 0.0096616745, y: 0.0022883415, z: 0}
-    m_Extent: {x: 0.3324917, y: 0.54735166, z: 0}
+    m_Center: {x: 0.0096615255, y: 0.0022884011, z: 0}
+    m_Extent: {x: 0.33249164, y: 0.5473517, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
 --- !u!1001 &209630891
@@ -581,6 +608,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: d257f8554cd90bc468ef08f090864219, type: 2}
+    - target: {fileID: -4251293722923108183, guid: f61a6dbe39f64f74b872c73cda368445, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4054309704232783986, guid: f61a6dbe39f64f74b872c73cda368445, type: 3}
       propertyPath: m_Sprite
       value: 
