@@ -35,7 +35,7 @@ public class PlayerHealth : MonoBehaviour
             }
             else
             {
-                GameManager.instance.Defeat();
+                GameManager.instance.GetComponent<SceneLoader>().Defeat();
             }
 
         }
@@ -89,7 +89,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            GameManager.instance.Defeat();
+            GameManager.instance.GetComponent<SceneLoader>().Defeat();
         }
     }
 }
