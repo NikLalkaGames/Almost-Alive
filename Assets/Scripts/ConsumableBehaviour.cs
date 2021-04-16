@@ -25,12 +25,12 @@ public class ConsumableBehaviour : MonoBehaviour
         switch (color)
         {
             default:
-            case EmotionColor.blue: return Resources.Load("blue") as Sprite;
-            case EmotionColor.green: return Resources.Load("green") as Sprite;
-            case EmotionColor.pink: return Resources.Load("pink") as Sprite;
-            case EmotionColor.purple: return Resources.Load("purple") as Sprite;
-            case EmotionColor.yellow: return Resources.Load("yellow") as Sprite;
-            case EmotionColor.white: return Resources.Load("white") as Sprite;
+            case EmotionColor.blue: return Resources.Load<Sprite>("blue");
+            case EmotionColor.green: return Resources.Load<Sprite>("green");
+            case EmotionColor.pink: return Resources.Load<Sprite>("pink");
+            case EmotionColor.purple: return Resources.Load<Sprite>("purple");
+            case EmotionColor.yellow: return Resources.Load<Sprite>("yellow");
+            case EmotionColor.white: return Resources.Load<Sprite>("white");
         }
     }
 
@@ -39,12 +39,12 @@ public class ConsumableBehaviour : MonoBehaviour
         switch (color)
         {
             default:
-            case EmotionColor.blue: return Resources.Load("blue_dead") as Sprite;
-            case EmotionColor.green: return Resources.Load("green_dead") as Sprite;
-            case EmotionColor.pink: return Resources.Load("pink_dead") as Sprite;
-            case EmotionColor.purple: return Resources.Load("purple_dead") as Sprite;
-            case EmotionColor.yellow: return Resources.Load("yellow_dead") as Sprite;
-            case EmotionColor.white: return Resources.Load("white_dead") as Sprite;
+            case EmotionColor.blue: return Resources.Load<Sprite>("blue_dead");
+            case EmotionColor.green: return Resources.Load<Sprite>("green_dead");
+            case EmotionColor.pink: return Resources.Load<Sprite>("pink_dead");
+            case EmotionColor.purple: return Resources.Load<Sprite>("purple_dead");
+            case EmotionColor.yellow: return Resources.Load<Sprite>("yellow_dead");
+            case EmotionColor.white: return Resources.Load<Sprite>("white_dead");
         }
     }
 
@@ -56,15 +56,20 @@ public class ConsumableBehaviour : MonoBehaviour
 
     public void DefineColorByEmotion()
     {
-        if (emotionController.Emotions.Count == 1)
+        Debug.Log("shdkjfhsdkjf");
+        if (emotionController.Emotions.Count <= 1)
         {
+            Debug.Log("Number of emotions in emotionContorller: " + emotionController.Emotions.Count);
             humanColor = emotionController.Emotions[0].EmotionColor;    // save internal value
+            Debug.Log("2: " + humanColor);
             humanSpriteRenderer.sprite = GetHumanSprite(humanColor);
+            Debug.Log( "3: " + GetHumanSprite(humanColor) );
             deadSprite = GetDeadSprite(humanColor);
             // change animation controller of human
         }
-        else if (emotionController.Emotions.Count > 1)
+        else
         {
+            Debug.Log("Number of emotions in emotionContorller: " + emotionController.Emotions.Count); 
             humanColor = EmotionColor.white;            // save internal value
             humanSpriteRenderer.sprite = GetHumanSprite(humanColor);
             deadSprite = GetDeadSprite(humanColor);
@@ -78,6 +83,7 @@ public class ConsumableBehaviour : MonoBehaviour
         emotionController = GetComponentInChildren<MobEmotionController>();
 
         InitEmotion();
+        // DefineColorByEmotion();
 
         if ( ( spawner = GameObject.Find("Spawner").GetComponent<Spawner>() ) != null)
         {

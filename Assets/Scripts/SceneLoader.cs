@@ -21,13 +21,20 @@ public class SceneLoader : MonoBehaviour
     {
         if (loadingRoutine == null)
             loadingRoutine = StartCoroutine(LoadScene(sceneName, delayDuration));
+
+        loadingRoutine = null;
     }
 
     public IEnumerator LoadScene(string sceneName, float delayDuration)
     {
         yield return new WaitForSeconds(delayDuration);
         SceneManager.LoadScene(sceneName);
-        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());   // unload scene async
+        SceneManager.sceneLoaded += OnSceneLoad;    // subscribe to event on scene load
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
         SceneManager.sceneLoaded += OnSceneLoad;    // subscribe to event on scene load
     }
 
@@ -45,12 +52,5 @@ public class SceneLoader : MonoBehaviour
     {
         SceneManager.SetActiveScene(current);
         Debug.Log("Active scene: " + SceneManager.GetActiveScene().name);
-    }
-
-    public void Defeat()
-    {
-        if (loadingRoutine == null)
-            loadingRoutine = StartCoroutine(LoadScene("EntryMenu", 0.01f)); // in future return to restart screen
-        Debug.Log("GoToMenu");
     }
 }

@@ -35,7 +35,7 @@ public class PlayerHealth : MonoBehaviour
             }
             else
             {
-                GameManager.instance.GetComponent<SceneLoader>().Defeat();
+                SceneLoader.instance.LoadScene("EntryMenu");
             }
 
         }
@@ -89,7 +89,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            GameManager.instance.GetComponent<SceneLoader>().Defeat();
+            SceneLoader.instance.LoadScene("EntryMenu");
         }
     }
 }

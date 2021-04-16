@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-
     private IEnumerator spawn;
 
     private int myCount;
+    
     private int myCheck;
+    
     private Vector3 ranpos;
+    
     private int letters;
+    
     public bool getKilled = false;
     // Start is called before the first frame update
 
-
-    private
-    void Start()
+    private void Start()
     {
-
-/*         Generator("Trash/building_1", 2, 2);
+/*      Generator("Trash/building_1", 2, 2);
         Generator("Trash/building_2", 2, 2);
         Generator("Trash/building_3", 2, 2);
         Generator("Trash/building_4", 2, 2);
@@ -32,8 +32,6 @@ public class Spawner : MonoBehaviour
         Generator("HumanPurple", 5, 5);
         Generator("HumanPink", 5, 5);
         Generator("HumanGreen", 5, 5); */
-
-
 
         Generator("Trash/bus_stop_1", 3);
         Generator("Trash/bus_stop_2", 3);
@@ -55,29 +53,32 @@ public class Spawner : MonoBehaviour
         Generator("Trash/bush2", 6);
         Generator("Trash/bush3", 6);
 
-        Generator("HumanBlue", 6);
-        Generator("HumanYellow", 6);
-        Generator("HumanPurple", 6);
-        Generator("HumanPink", 6);
-        Generator("HumanGreen", 6);
-
+        for (int i = 0; i < 6; i++)
+        {
+            GenerateMatchingHuman(EmotionColor.blue);
+            GenerateMatchingHuman(EmotionColor.green);
+            GenerateMatchingHuman(EmotionColor.purple);
+            GenerateMatchingHuman(EmotionColor.pink);
+            GenerateMatchingHuman(EmotionColor.yellow);
+        }
     }
 
     public void GenerateMatchingHuman(EmotionColor killedColor)
     {
         switch (killedColor)
         {
-            case EmotionColor.pink    :    Generator("HumanPink", 1); break;
-            case EmotionColor.blue    :    Generator("HumanBlue", 1); break;
-            case EmotionColor.yellow  :    Generator("HumanYellow", 1); break;
-            case EmotionColor.purple  :    Generator("HumanPurple", 1); break;
-            case EmotionColor.green   :    Generator("HumanGreen", 1); break;
+            case EmotionColor.pink    :    var humanPink = Generator("Human");   humanPink.GetComponent<ConsumableBehaviour>().humanColor = EmotionColor.pink;      break;
+            case EmotionColor.blue    :    var humanBlue = Generator("Human");   humanBlue.GetComponent<ConsumableBehaviour>().humanColor = EmotionColor.blue;      break;
+            case EmotionColor.yellow  :    var humanYellow = Generator("Human"); humanYellow.GetComponent<ConsumableBehaviour>().humanColor = EmotionColor.yellow;  break;
+            case EmotionColor.purple  :    var humanPurple = Generator("Human"); humanPurple.GetComponent<ConsumableBehaviour>().humanColor = EmotionColor.purple;  break;
+            case EmotionColor.green   :    var humanGreen = Generator("Human");  humanGreen.GetComponent<ConsumableBehaviour>().humanColor = EmotionColor.green;    break;
         }
         Debug.Log("Revival of human is successful (ReInstantiation)");
     }
 
-    private void Generator(string obj, int myCount)
+    private GameObject Generator(string obj, int myCount = 1)
     {
+        GameObject lastModifiedGameObj = null;
         for(int i = 0; i < myCount; i++) 
         {
             do 
@@ -92,8 +93,9 @@ public class Spawner : MonoBehaviour
             }
             while (myCheck > 0);
 
-            Instantiate(Resources.Load(obj), ranpos, Quaternion.identity);  
+            lastModifiedGameObj = Instantiate(Resources.Load(obj), ranpos, Quaternion.identity) as GameObject;
         }
+        return lastModifiedGameObj;
     }
 
     Vector3 GetFreespawnPosition()

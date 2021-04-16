@@ -60,7 +60,7 @@ public class CollectibleEmotion : MonoBehaviour
         
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         UpDownTransform();
         MagnetToPlayer();

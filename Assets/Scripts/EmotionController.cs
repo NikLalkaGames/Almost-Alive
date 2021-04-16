@@ -76,11 +76,6 @@ public class EmotionController : MonoBehaviour
             case EmotionColor.yellow: return Resources.Load("ball_yellow") as GameObject;
         }
     }
-    private void Start()
-    {
-        if ( GetComponentInParent<ConsumableBehaviour>() != null)
-            onHandle.AddListener(GetComponentInParent<ConsumableBehaviour>().DefineColorByEmotion);
-    }
 
     public void Handle(EmotionColor ec)
     {
