@@ -3,26 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : SceneLoader
+public class MainMenu : MonoBehaviour
 {
     public void GoToGame()
     {
-        if (loadingRoutine == null)
-            loadingRoutine = StartCoroutine(LoadScene("MainScene", 0.3f));
+        SceneLoader.instance.CoroutineLoading("MainScene");
         Debug.Log("GoToGame");
     }
 
     public void GoToMovements()
     {
-        if (loadingRoutine == null)
-            loadingRoutine = StartCoroutine(LoadScene("MovementScene", 0.3f));
+        SceneLoader.instance.CoroutineLoading("MovementScene");
         Debug.Log("GoToMovements");
     }
 
     public void GoToCreators()
     {
-        if (loadingRoutine == null)
-            loadingRoutine = StartCoroutine(LoadScene("CreatorsScene", 0.3f));
+        SceneLoader.instance.CoroutineLoading("CreatorsScene");
         Debug.Log("GoToCreators");
     }
 

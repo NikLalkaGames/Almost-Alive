@@ -31,7 +31,6 @@ public class CollectibleEmotion : MonoBehaviour
     private bool holderEmotionState = false;
 
     private bool emotionExist = false;
-    private bool foundClosestTransform = false;
     
     // create state based update with finite state machine usage
 
@@ -149,7 +148,6 @@ public class CollectibleEmotion : MonoBehaviour
             {
                 followState = true;        //work-in-progress
             }
-            foundClosestTransform = false; // reset closest transform
         }
     }
 

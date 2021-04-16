@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
     
-    [SerializeField] private SceneLoader SceneLoader = new SceneLoader();
+    [SerializeField] private SceneLoader SceneLoader;
 
     private PlayerController playerController;
 
@@ -19,13 +19,13 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager Awake");
         if (instance == null) instance = this;
+        Application.targetFrameRate = 60;
         DontDestroyOnLoad(this.gameObject);
     }
 
     private void Start() 
     {
-        Application.targetFrameRate = 60;
-        StartCoroutine(SceneLoader.LoadScene("EntryMenu", 0.5f));
+        StartCoroutine(SceneLoader.instance.LoadScene("EntryMenu", 0.5f));
     }
 
     public void RefreshGamingStats()

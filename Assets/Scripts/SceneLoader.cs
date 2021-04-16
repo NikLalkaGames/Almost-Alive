@@ -5,9 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    protected Coroutine loadingRoutine;
+    public static SceneLoader instance = null;
 
-    public virtual IEnumerator LoadScene(string sceneName, float delayDuration)
+    [SerializeField] private float delayDuration;
+
+    private Coroutine loadingRoutine;
+
+    private void Awake()
+    {
+        Debug.Log("SceneLoader Awake");
+        if (instance == null) instance = this;
+    }
+
+    public void CoroutineLoading(string sceneName)
+    {
+        if (loadingRoutine == null)
+            loadingRoutine = StartCoroutine(LoadScene(sceneName, delayDuration));
+    }
+
+    public IEnumerator LoadScene(string sceneName, float delayDuration)
     {
         yield return new WaitForSeconds(delayDuration);
         SceneManager.LoadScene(sceneName);
