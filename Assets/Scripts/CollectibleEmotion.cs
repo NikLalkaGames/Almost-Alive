@@ -37,6 +37,7 @@ public class CollectibleEmotion : MonoBehaviour
 
     private void Start() 
     {
+        
         if (GetComponentInParent<EmotionController>() != null)  // if parent has emotion controller (has holderTransform)
         {
             var emotionController = GetComponentInParent<EmotionController>();      // emotion controller
@@ -44,7 +45,7 @@ public class CollectibleEmotion : MonoBehaviour
             magnetState = false;                // do not use magnet functionality
 
             holderTransform = emotionController.transform;       // player's transform 
-            direction = emotionController.direction;     // emotion's angle above head
+            direction = emotionController.directionOfAttaching;     // emotion's angle above head
             
             holderEmotionState = true;    //activate smooth 'above-head transform' sequence
 
@@ -87,7 +88,7 @@ public class CollectibleEmotion : MonoBehaviour
 
                 Debug.Log("Closest gameObject: " + nearestTransform.name);
                 
-                closestEmotionController = nearestTransform.GetComponentInChildren<EmotionController>();
+                closestEmotionController = nearestTransform.GetComponentInChildren<EmotionController>();    // !
                 // foundClosestTransform = true;
             }
 
@@ -96,7 +97,7 @@ public class CollectibleEmotion : MonoBehaviour
                 distanceToPlayer = Vector3.Distance(transform.position, nearestTransform.position);   // calculate distance to player
                 if (distanceToPlayer < 1.5f)
                 {
-                    if (closestEmotionController.emotions.Exists(x => x.EmotionColor == this.emotionColor))
+                    if (closestEmotionController.EmotionExists(emotionColor))
                     {
                         emotionExist = true;
                     }
@@ -116,11 +117,11 @@ public class CollectibleEmotion : MonoBehaviour
                             Debug.Log("After comparing colliders: " + this.name + " with " + nearestTransform.name);
                             switch (emotionColor)
                             {
-                                case EmotionColor.blue: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.blue); break;
-                                case EmotionColor.green: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.green); break;
-                                case EmotionColor.pink: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.pink); break;
-                                case EmotionColor.purple: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.purple); break;
-                                case EmotionColor.yellow: closestEmotionController.SetEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.yellow); break;
+                                case EmotionColor.blue: closestEmotionController.SaveEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.blue); break;
+                                case EmotionColor.green: closestEmotionController.SaveEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.green); break;
+                                case EmotionColor.pink: closestEmotionController.SaveEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.pink); break;
+                                case EmotionColor.purple: closestEmotionController.SaveEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.purple); break;
+                                case EmotionColor.yellow: closestEmotionController.SaveEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.yellow); break;
                                 default: break;
                             }
                         }

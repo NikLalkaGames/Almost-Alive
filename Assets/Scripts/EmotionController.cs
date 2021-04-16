@@ -10,13 +10,14 @@ public enum EmotionColor
     pink,
     purple,
     yellow,
+    white,
     none
 }
 
 public class Emotion
 {
-    public EmotionColor emotionColor;
-    bool isActive = false;
+    private EmotionColor emotionColor;
+    private bool isActive = false;
 
     public Emotion(EmotionColor ec, bool isA)
     {
@@ -25,30 +26,40 @@ public class Emotion
     }
 
     public EmotionColor EmotionColor { get => emotionColor; set => emotionColor = value; }
-
-    public Sprite GetSprite()
-    {
-        switch (emotionColor)
-        {
-            default:
-            case EmotionColor.blue:     return      Resources.Load("ball_blue")   as Sprite;
-            case EmotionColor.green:    return      Resources.Load("ball_green")  as Sprite;
-            case EmotionColor.pink:     return      Resources.Load("ball_pink")   as Sprite;
-            case EmotionColor.purple:   return      Resources.Load("ball_purple") as Sprite;
-            case EmotionColor.yellow:   return      Resources.Load("ball_yellow") as Sprite;
-        }
-    }
 }
 
 public class EmotionController : MonoBehaviour
 {
-    public List<Emotion> emotions = new List<Emotion>();
-    float stepAngle = 45;
-    float globalAngle = -45;
-    public GameObject emotionWorld;
-    public Vector3 direction;
+    protected List<Emotion> emotions = new List<Emotion>();
     
-    public void SetEmotionWorld(GameObject ew)
+    float stepAngle = 45;
+
+    protected float globalAngle = -180;
+
+    public UnityEvent onHandle;
+    
+    public GameObject emotionWorld;
+    
+    public Vector3 directionOfAttaching;
+
+    public Vector3 DirectionOfDrop
+    {
+        get
+        {
+            if (GetComponentInParent<PlayerController>() != null)
+            {
+                return GetComponentInParent<PlayerController>().LookDirection;
+            }
+            else
+            {
+                return Helper.GetRandomDir();
+            }
+        }
+    }
+
+    public List<Emotion> Emotions { get => emotions; }
+
+    public void SaveEmotionWorld(GameObject ew)
     {
         emotionWorld = ew;
     }
@@ -65,12 +76,17 @@ public class EmotionController : MonoBehaviour
             case EmotionColor.yellow: return Resources.Load("ball_yellow") as GameObject;
         }
     }
+    private void Start()
+    {
+        if ( GetComponentInParent<ConsumableBehaviour>() != null)
+            onHandle.AddListener(GetComponentInParent<ConsumableBehaviour>().DefineColorByEmotion);
+    }
 
     public void Handle(EmotionColor ec)
     {
         if (ec != EmotionColor.none)
         {
-            if (emotions.Count < 5)
+            if (!EmotionExists(ec) && Emotions.Count < 5)
             {
                 var emotionToDraw = AddEmotion(ec);
                 if (emotionToDraw != null)  // prevent null reference exception for existing emotion
@@ -78,28 +94,29 @@ public class EmotionController : MonoBehaviour
                     DrawNewEmotion(emotionToDraw.EmotionColor);
                 }
             }
-            
         }
         else
         {
             Debug.Log("Drop last emotion: ");
-            if (emotions.Count > 0) // prevent IndexOutOfRangeException for empty list
+            if (Emotions.Count > 0) // prevent IndexOutOfRangeException for empty list
             {
                 var emotionToUndraw = RemoveEmotion();
                 UndrawEmotion();
-                DropEmotion(this.gameObject.transform.position, emotionToUndraw.EmotionColor);
+                DropEmotion(this.gameObject.transform.position, this.DirectionOfDrop, emotionToUndraw.EmotionColor);
             }
 
         }
+        if (onHandle != null)
+            onHandle.Invoke();      // event calling
 
         // show all emotions in console !!! 
-        Debug.Log("Emotions count: " + emotions.Count);
-        foreach (var emotion in emotions)
+        Debug.Log("Emotions count: " + Emotions.Count);
+        foreach (var emotion in Emotions)
         {
             Debug.Log(emotion.EmotionColor.ToString());
         }
 
-        if (emotions.Count == 5)
+        if (Emotions.Count == 5)
         {
             if (this.transform.parent.CompareTag("Player"))
                 StartCoroutine("fiveSpheres");
@@ -116,7 +133,7 @@ public class EmotionController : MonoBehaviour
 
     // fix coroutine bag
     // ONLY FOR PLAYER
-    private IEnumerator fiveSpheres()
+    protected IEnumerator fiveSpheres()
     {
         yield return new WaitForSeconds(1.5f);
         Debug.Log("Heal");
@@ -125,50 +142,54 @@ public class EmotionController : MonoBehaviour
             var emotionToUndraw = RemoveEmotion();
             // UndrawEmotion();
             Destroy(transform.GetChild(i).gameObject);
-            Debug.Log(emotions.Count);
+            Debug.Log(Emotions.Count);
         }
         GetComponentInParent<PlayerHealth>().UpdateHealth(+50);
         GetComponentInParent<PlayerHealth>().healthReduceValue += 0.001f;
-        globalAngle = -45;
+        globalAngle = -180;
     }
 
-    private Emotion AddEmotion(EmotionColor ec)
+    public bool EmotionExists(EmotionColor ec)
     {
-        var emotionToAdd = new Emotion(ec, true);
-        
-        if ( emotions.Exists(x => x.EmotionColor == ec) )
+        if (Emotions.Exists(x => x.EmotionColor == ec))
         {
             Debug.Log("This emotion is already exists!");
-            return null;
+            return true;
         }
         else
         {
-            emotions.Add(emotionToAdd);
-            // add request to change state to "TransformAboveHead" for emotion gameOjbect in scene
-            Destroy(emotionWorld);
-            emotionWorld = null;
-            return emotionToAdd;
+            return false;
         }
     }
 
-    private Emotion RemoveEmotion()
+    protected Emotion AddEmotion(EmotionColor ec)
     {
-        var emotionToDrop = emotions[emotions.Count - 1];
-        emotions.RemoveAt(emotions.Count - 1);
+        var emotionToAdd = new Emotion(ec, true);
+        Emotions.Add(emotionToAdd);
+        // add request to change state to "TransformAboveHead" for emotion gameOjbect in scene
+        Destroy(emotionWorld);
+        emotionWorld = null;
+        return emotionToAdd;
+    }
+
+    protected Emotion RemoveEmotion()
+    {
+        var emotionToDrop = Emotions[Emotions.Count - 1];
+        Emotions.Remove(emotionToDrop);
         return emotionToDrop;
     }
 
 
     public void DrawNewEmotion(EmotionColor ec)
     {
-        globalAngle -= stepAngle;
         SpawnEmotionAsChild(globalAngle, ec);
+        globalAngle -= stepAngle;
     }
 
     public void UndrawEmotion()
     {
-        Destroy( transform.GetChild(transform.childCount - 1).gameObject ); 
         globalAngle += stepAngle;
+        Destroy( transform.GetChild(transform.childCount - 1).gameObject ); 
     }
 
     public GameObject SpawnEmotion(Vector3 position, EmotionColor emotionColor)
@@ -180,7 +201,7 @@ public class EmotionController : MonoBehaviour
 
     public void SpawnEmotionAsChild(float angle, EmotionColor emotionColor)
     {
-        direction = (Quaternion.Euler(0, 0, angle) * Vector3.down).normalized;
+        directionOfAttaching = (Quaternion.Euler(0, 0, angle) * Vector3.right).normalized;
         GameObject emotionObject = Instantiate(GetObjectBy(emotionColor), transform.position, Quaternion.identity)
         as GameObject;
         emotionObject.transform.SetParent(this.gameObject.transform, true);
@@ -188,10 +209,9 @@ public class EmotionController : MonoBehaviour
         emotionObject.transform.position = transform.position;
     }
 
-    public void DropEmotion(Vector3 dropPosition, EmotionColor emotionColor)
+    public void DropEmotion(Vector3 dropPosition, Vector3 direction, EmotionColor emotionColor)
     {
-        Vector3 randomDir = Helper.GetRandomDir();
-        GameObject emotionWorld = SpawnEmotion(dropPosition + randomDir, emotionColor);
+        GameObject emotionWorld = SpawnEmotion(dropPosition + direction, emotionColor);
         // emotionWorld.GetComponent<Rigidbody2D>().AddForce(randomDir * 40f, ForceMode2D.Impulse);
     }
 }
