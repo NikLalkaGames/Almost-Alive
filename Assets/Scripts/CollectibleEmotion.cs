@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectibleEmotion : MonoBehaviour
-{   
+{
     // emotion logic variables
     EmotionController closestEmotionController;
     public EmotionColor emotionColor;
@@ -25,22 +25,12 @@ public class CollectibleEmotion : MonoBehaviour
     private Vector3 emotionPos;
     public float radius;
 
-    private bool worldIdleState = true;
-    private bool magnetState = true;
-    private bool followState = false;
-    private bool holderEmotionState = false;
-
-    private bool emotionExist = false;
-    
-
+    // Finite state machine variable
     FiniteStateMachine fsm;
     
-    // create state based update with finite state machine usage
-
     private void Start() 
     {
         fsm = new FiniteStateMachine();
-
 
         if (GetComponentInParent<EmotionController>() != null)  // if parent has emotion controller (has holderTransform)
         {
@@ -62,10 +52,8 @@ public class CollectibleEmotion : MonoBehaviour
         tempVal = transform.position.y;
     }
 
-
-        public void Idle()
+    public void Idle()
     {
-        Debug.Log("IDLE");
         tempPos.y = tempVal + amplitude * Mathf.Sin(speed * Time.time);     //emotion y-coord change by amplitude (length of up-down), mathf.sin calculate up-down position from 0 to 1 
         transform.position = tempPos;  
 
@@ -83,8 +71,6 @@ public class CollectibleEmotion : MonoBehaviour
         } 
     }
 
-
-    
     public void Magnet()
     {
         distanceToPlayer = Vector3.Distance(transform.position, nearestTransform.position);   // calculate distance to player
@@ -94,7 +80,6 @@ public class CollectibleEmotion : MonoBehaviour
         }
         else
         {
-            Debug.Log("Magnet");
             pickUpSpeed = 1.5f - distanceToPlayer;      //become faster while distance decreases (like a magnet)
             transform.position = Vector2.MoveTowards(transform.position, nearestTransform.position, pickUpSpeed * Time.deltaTime); //move towards player by pickUpSpeed speed
             tempVal = transform.position.y;         //respond for UpDown transform if magnet sequence interrupted (without it emotion will transform to position where it spawned)
@@ -118,10 +103,8 @@ public class CollectibleEmotion : MonoBehaviour
         }
     }
 
-
     public void TransformAboveHead()
     {
-        Debug.Log("TransformAbove");
         emotionPos = holderTransform.position + direction * radius;   // position where emotion supposed to be
         if ( transform.position != emotionPos )
         {
@@ -129,11 +112,8 @@ public class CollectibleEmotion : MonoBehaviour
         }
     }
 
-
     public void FixedUpdate()
     {
         fsm.UpdateState();
     }
-
-
 }
