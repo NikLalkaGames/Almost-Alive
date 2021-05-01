@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookDirection;
     private Vector2 movement;
     private Vector2 mouseTarget;
-    public Vector2 interactiveRayLength = new Vector2(1.5f, 1.5f);
     public Vector2 LookDirection
     {
         get { return lookDirection; }
@@ -41,7 +40,7 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        emotionController = GetComponent<EmotionController>();
+        emotionController = GetComponentInChildren<EmotionController>();
     }
 
     // Update is called once per frame
@@ -50,15 +49,14 @@ public class PlayerController : MonoBehaviour
         GetMovementInput();
         GetMouseInput();
         SetLookDirection(); // based on mouse input
-        ListenInteractByMouseClick();
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
             emotionController.Handle(EmotionColor.none);
         }
 
-        //Debug.DrawLine(transform.position, mouseTarget, Color.red);
-        Debug.DrawRay(transform.position, lookDirection, Color.blue);
+        // Debug.DrawLine(transform.position, mouseTarget, Color.red);
+        Debug.DrawRay(transform.position, lookDirection, Color.red);
 
         // animation logic
         animator.SetFloat("MoveX", movement.x);
@@ -101,23 +99,4 @@ public class PlayerController : MonoBehaviour
             lookDirection.Normalize();
         } */
     }
-
-    private void ListenInteractByMouseClick()
-    {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 1f, LayerMask.GetMask("Consumable"));
-            if (hit.collider != null)
-            {
-                Debug.Log("Raycast has hit the object " + hit.collider.gameObject);
-                ConsumableBehaviour littleMan = hit.collider.GetComponent<ConsumableBehaviour>();
-                if (littleMan != null)
-                {
-                    littleMan.Kill();
-                }
-            }
-        }
-    }
-
-    //
 }

@@ -1,148 +1,119 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectibleEmotion : MonoBehaviour
 {
-    EmotionController emotionController;
-
+    // emotion logic variables
+    EmotionController closestEmotionController;
     public EmotionColor emotionColor;
+    DetectNearestColliders colliderDetector;
+
+    // movement logic variables
     public float math;
-
-    private CollectibleEmotion emotion;
-
-    private bool emotionState = true;
     public float amplitude;          //Set in Inspector 
     public float speed;                  //Set in Inspector 
     private float tempVal;
     private Vector3 tempPos;
     private float pickUpSpeed;
 
+    // transform logic variables
     private float distanceToPlayer;
-    private bool magnetState = true;
     private Vector3 direction;
-    private bool followState = false;
-    private bool onPositionState = false;
-    private Transform playerT;
+    private Transform holderTransform;
+    private Transform nearestTransform; 
     private Vector3 emotionPos;
     public float radius;
 
+    // Finite state machine variable
+    FiniteStateMachine fsm;
+    
     private void Start() 
     {
-        if (GetComponentInParent<EmotionController>() != null)
+        fsm = new FiniteStateMachine();
+
+        if (GetComponentInParent<EmotionController>() != null)  // if parent has emotion controller (has holderTransform)
         {
-            emotionState = false;
-            magnetState = false;
-
-            playerT = GetComponentInParent<PlayerController>().transform;
-            direction = GetComponentInParent<EmotionController>().direction;
+            var emotionController = GetComponentInParent<EmotionController>();      // emotion controller
+            holderTransform = emotionController.transform;       // player's transform 
+            direction = emotionController.directionOfAttaching;     // emotion's angle above head
             
-            onPositionState = true;
 
+            GetComponent<BoxCollider2D>().enabled = false;
+            transform.Find("DetectColliders").gameObject.SetActive(false);
+            fsm.SetUpState(TransformAboveHead);
         }
-        emotionController = PlayerController.staticController.transform.GetComponent<EmotionController>();
+        else
+        {
+            colliderDetector = transform.GetComponentInChildren<DetectNearestColliders>();
+            fsm.SetUpState(Idle);
+        }
         tempPos = transform.position;
-        tempVal = transform.position.y; 
+        tempVal = transform.position.y;
     }
 
-
-
-    private void Update()
+    public void Idle()
     {
-        Animotion();
-        MagnetToPlayer();
-        Animotion2();
-    }
+        tempPos.y = tempVal + amplitude * Mathf.Sin(speed * Time.time);     //emotion y-coord change by amplitude (length of up-down), mathf.sin calculate up-down position from 0 to 1 
+        transform.position = tempPos;  
 
-
-    private void Animotion()
-    {
-        if (emotionState == true)
-        {
-            tempPos.y = tempVal + amplitude * Mathf.Sin(speed * Time.time);
-            transform.position = tempPos;
-        }
-    }
-
-    private void MagnetToPlayer()
-    {
-        if (magnetState == true)
-        {
-            distanceToPlayer = Vector3.Distance(transform.position, PlayerController.staticController.transform.position);
-            if (distanceToPlayer < 1.5f)
-            {
-
-                Debug.Log("Follow State: " + magnetState);
-                emotionState = false;
-                pickUpSpeed = 1.5f - distanceToPlayer;
-                transform.position = Vector2.MoveTowards(transform.position, PlayerController.staticController.transform.position, pickUpSpeed * Time.deltaTime);
-                tempVal = transform.position.y;
-                tempPos = transform.position;
-                math = Mathf.Sin(speed * Time.time);
-            }
-            else
-            {
-                if ( (Mathf.Sin(speed * Time.time) > 0.1) || (Mathf.Sin(speed * Time.time) < 0.1) )
-                {
-                    emotionState = true;
-                }
-                
-            }
-        }
-        
-    }
-
-
-
-    private void Animotion2()
-    {
-        if ( onPositionState == true )
-        {
-            emotionPos = playerT.position + direction * radius;
-            if ( transform.position != emotionPos )
-            {
-                transform.position = Vector3.Slerp(transform.position, emotionPos, Time.deltaTime * 1.5f);
-            }
-            else
-            {
-                followState = true;
-            }
-        }
-    }
-
-
-    private void Animotion3()
-    {
-        if ( followState == true )
-        {
+        if ( colliderDetector.GetListOfTriggerColliders().Count != 0)    // if collider list in trigger zone isn't empty
+        {                                                                // or if trigger zone contain colliders
+            nearestTransform = Helper.GetClosestTransform(colliderDetector.GetListOfTriggerTransforms(), transform);
             
-        }
+            closestEmotionController = nearestTransform.GetComponentInChildren<EmotionController>();    // !
+            // foundClosestTransform = true;
+
+            if ( (closestEmotionController != null) && (!closestEmotionController.EmotionExists(emotionColor)) )
+            {
+                fsm.TransitTo(Magnet);
+            } 
+        } 
     }
 
-
-
-    private void OnTriggerEnter2D(Collider2D other) 
+    public void Magnet()
     {
-        if (other.tag == "Player")
+        distanceToPlayer = Vector3.Distance(transform.position, nearestTransform.position);   // calculate distance to player
+        if ( (closestEmotionController.EmotionExists(emotionColor)) || (distanceToPlayer > 1.5f) )
         {
-            switch (emotionColor)
+            fsm.TransitTo(Idle);
+        }
+        else
+        {
+            pickUpSpeed = 1.5f - distanceToPlayer;      //become faster while distance decreases (like a magnet)
+            transform.position = Vector2.MoveTowards(transform.position, nearestTransform.position, pickUpSpeed * Time.deltaTime); //move towards player by pickUpSpeed speed
+            tempVal = transform.position.y;         //respond for UpDown transform if magnet sequence interrupted (without it emotion will transform to position where it spawned)
+            tempPos = transform.position;
+
+            // check in update if touching nearest Collider 
+            if ( this.GetComponent<BoxCollider2D>().IsTouching( nearestTransform.GetComponent<BoxCollider2D>()) )
             {
-                case EmotionColor.blue: emotionController.SetEmotionWorld(this.gameObject); emotionController.Handle(EmotionColor.blue);      break;
-                case EmotionColor.green: emotionController.SetEmotionWorld(this.gameObject); emotionController.Handle(EmotionColor.green);    break;
-                case EmotionColor.pink: emotionController.SetEmotionWorld(this.gameObject); emotionController.Handle(EmotionColor.pink);      break;
-                case EmotionColor.purple: emotionController.SetEmotionWorld(this.gameObject); emotionController.Handle(EmotionColor.purple);  break;
-                case EmotionColor.yellow: emotionController.SetEmotionWorld(this.gameObject); emotionController.Handle(EmotionColor.yellow);  break;
-                default: break;
+                Debug.Log("Closest emotion controller parent: " + closestEmotionController.transform.parent.tag);
+                Debug.Log("After comparing colliders: " + this.name + " with " + nearestTransform.name);
+                switch (emotionColor)
+                {
+                    case EmotionColor.blue: closestEmotionController.SaveEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.blue); break;
+                    case EmotionColor.green: closestEmotionController.SaveEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.green); break;
+                    case EmotionColor.pink: closestEmotionController.SaveEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.pink); break;
+                    case EmotionColor.purple: closestEmotionController.SaveEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.purple); break;
+                    case EmotionColor.yellow: closestEmotionController.SaveEmotionWorld(this.gameObject); closestEmotionController.Handle(EmotionColor.yellow); break;
+                    default: break;
+                }
             }
         }
     }
 
+    public void TransformAboveHead()
+    {
+        emotionPos = holderTransform.position + direction * radius;   // position where emotion supposed to be
+        if ( transform.position != emotionPos )
+        {
+            transform.position = Vector3.Slerp(transform.position, emotionPos, Time.deltaTime * 1.5f);   //transform from player position to emotionPos
+        }
+    }
 
-
-
-
-
-
-
-
+    public void FixedUpdate()
+    {
+        fsm.UpdateState();
+    }
 }

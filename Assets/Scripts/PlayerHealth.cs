@@ -35,7 +35,7 @@ public class PlayerHealth : MonoBehaviour
             }
             else
             {
-                GameManager.instance.Defeat();
+                SceneLoader.instance.LoadScene("EntryMenu");
             }
 
         }
@@ -62,6 +62,17 @@ public class PlayerHealth : MonoBehaviour
     private void Update()
     {
         if (invincibleTimer >= 0) invincibleTimer -= Time.deltaTime;
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            UpdateHealth(-10);
+            invincibleTimer -= 0.1f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            UpdateHealth(+30);
+        }
     }
 
     private void FixedUpdate() 
@@ -78,7 +89,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            GameManager.instance.Defeat();
+            SceneLoader.instance.LoadScene("EntryMenu");
         }
     }
 }
