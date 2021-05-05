@@ -50,20 +50,16 @@ public class ConsumableBehaviour : MonoBehaviour
 
     private void InitEmotion()
     {
-        Debug.Log("Init");
+        Debug.Log("Init human emotion");
         emotionController.Handle(humanColor);     // create initial emotion
     }
 
     public void DefineColorByEmotion()
     {
-        Debug.Log("shdkjfhsdkjf");
         if (emotionController.Emotions.Count <= 1)
         {
-            Debug.Log("Number of emotions in emotionContorller: " + emotionController.Emotions.Count);
             humanColor = emotionController.Emotions[0].EmotionColor;    // save internal value
-            Debug.Log("2: " + humanColor);
             humanSpriteRenderer.sprite = GetHumanSprite(humanColor);
-            Debug.Log( "3: " + GetHumanSprite(humanColor) );
             deadSprite = GetDeadSprite(humanColor);
             // change animation controller of human
         }
