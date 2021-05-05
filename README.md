@@ -1,3 +1,3 @@
-# Unity-Absorber-2d
+# Unity-Almost-Alive-2d
 
-Game Jam game
+Jam game
