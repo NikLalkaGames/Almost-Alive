@@ -139,8 +139,8 @@ public class EmotionController : MonoBehaviour
             Destroy(transform.GetChild(i).gameObject);
             Debug.Log(Emotions.Count);
         }
-        GetComponentInParent<PlayerHealth>().UpdateHealth(+50);
-        GetComponentInParent<PlayerHealth>().healthReduceValue += 0.001f;
+        GetComponentInParent<GhostHealth>().UpdateHealth(+50);
+        GetComponentInParent<GhostHealth>().IncreaseHealthReduction();
         globalAngle = -180;
     }
 
