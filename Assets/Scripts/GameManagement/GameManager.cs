@@ -9,11 +9,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
     
-    [SerializeField] private SceneLoader SceneLoader;
+    [SerializeField] private SceneLoader _sceneLoader;
 
-    private PlayerController playerController;
+    private PlayerController _playerController;
 
-    private GameObject playerUI;
+    private GameObject _playerUI;
 
     private void Awake() 
     {

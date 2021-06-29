@@ -7,9 +7,9 @@ public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader instance = null;
 
-    [SerializeField] private float delayDuration;
+    [SerializeField] private float _delayDuration;
 
-    private Coroutine loadingRoutine;
+    private Coroutine _loadingRoutine;
 
     private void Awake()
     {
@@ -19,10 +19,10 @@ public class SceneLoader : MonoBehaviour
 
     public void CoroutineLoading(string sceneName)
     {
-        if (loadingRoutine == null)
-            loadingRoutine = StartCoroutine(LoadScene(sceneName, delayDuration));
+        if (_loadingRoutine == null)
+            _loadingRoutine = StartCoroutine(LoadScene(sceneName, _delayDuration));
 
-        loadingRoutine = null;
+        _loadingRoutine = null;
     }
 
     public IEnumerator LoadScene(string sceneName, float delayDuration)
