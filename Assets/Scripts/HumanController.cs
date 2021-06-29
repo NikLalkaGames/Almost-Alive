@@ -24,7 +24,7 @@ public class HumanController : MonoBehaviour
     void Update()
     {
 
-        float distance = Vector2.Distance(PlayerController.staticController.transform.position, transform.position);
+        float distance = Vector2.Distance(GhostMovement.instance.transform.position, transform.position);
 
         if (distance > retreatRunDistance + 7)
         {
@@ -51,11 +51,11 @@ public class HumanController : MonoBehaviour
         }
         else if (distance > retreatDistance)
         {
-            transform.position = Vector2.MoveTowards(transform.position, PlayerController.staticController.transform.position, -speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, GhostMovement.instance.transform.position, -speed * Time.deltaTime);
         }
         else
         {
-            transform.position = Vector2.MoveTowards(transform.position, PlayerController.staticController.transform.position, -0.7f * speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, GhostMovement.instance.transform.position, -0.7f * speed * Time.deltaTime);
         }
 
     }
