@@ -15,10 +15,7 @@ public class ConsumableBehaviour : MonoBehaviour
     
     private Spawner spawner;
     
-    [System.Serializable]
-    public class ActionKill : UnityEvent<EmotionColor> {}
-    
-    public ActionKill onKilled;
+    public static event System.Action<EmotionColor> onKilled;
 
     public Sprite GetHumanSprite(EmotionColor color)
     {
@@ -83,12 +80,12 @@ public class ConsumableBehaviour : MonoBehaviour
 
         if ( ( spawner = GameObject.Find("Spawner").GetComponent<Spawner>() ) != null)
         {
-            onKilled.AddListener(spawner.GenerateMatchingHuman);
-            onKilled.AddListener(emotionController.DropEmotionsAfterDeath);
+            onKilled += spawner.GenerateMatchingHuman;
+            onKilled += emotionController.DropEmotionsAfterDeath;
         }
         else
         {
-            throw new System.Exception();
+            throw new System.NullReferenceException("Spawner object not found");
         }
     }
 
@@ -102,11 +99,5 @@ public class ConsumableBehaviour : MonoBehaviour
         GetComponent<Rigidbody2D>().isKinematic = true;
         GetComponent<HumanController>().enabled = false;
         this.enabled = false;
-    }
-
-    private void OnDisable()
-    {
-        onKilled.RemoveListener(spawner.GenerateMatchingHuman);
-        onKilled.RemoveListener(emotionController.DropEmotionsAfterDeath);
     }
 }
