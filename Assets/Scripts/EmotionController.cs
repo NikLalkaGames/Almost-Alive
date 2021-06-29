@@ -46,9 +46,9 @@ public class EmotionController : MonoBehaviour
     {
         get
         {
-            if (GetComponentInParent<PlayerController>() != null)
+            if (GetComponentInParent<GhostMovement>() != null)
             {
-                return GetComponentInParent<PlayerController>().LookDirection;
+                return GetComponentInParent<GhostMovement>().LookDirection;
             }
             else
             {

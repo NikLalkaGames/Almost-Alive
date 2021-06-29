@@ -8,14 +8,14 @@ public class ProjectileController : MonoBehaviour
     private int projectileCount;
     public int maxProjectileCount;
     private GameObject projectile;
-    private PlayerController player;
+    private GhostMovement player;
     private float angle;
     private float projectileRegen = 0f;
 
 
     void Start()
     {
-        player = GetComponent<PlayerController>();
+        player = GetComponent<GhostMovement>();
         projectileCount = maxProjectileCount;
     }
 

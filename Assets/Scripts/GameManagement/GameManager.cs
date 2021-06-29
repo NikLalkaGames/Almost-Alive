@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private SceneLoader _sceneLoader;
 
-    private PlayerController _playerController;
+    private GhostMovement _ghostControl;
 
     private GameObject _playerUI;
 
