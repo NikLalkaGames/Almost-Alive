@@ -11,7 +11,7 @@ public class GhostHealth : MonoBehaviour
     [SerializeField] private float _maxHealth;
     private float _health;
     [SerializeField] private float _healthReductionValue;
-    private HealthBarController _healthBar;
+    private HealthBar _healthBar;
 
     // iframe vairalbes
     public float _timeInvincible = 1f;
@@ -24,7 +24,7 @@ public class GhostHealth : MonoBehaviour
     void Start()
     {
         _health = _maxHealth;
-        _healthBar = HealthBarController.healthBarStaticController;
+        _healthBar = HealthBar.instance;
     }
 
     public void Damage(int damageAmount)
