@@ -9,8 +9,9 @@ public class MobEmotionController : EmotionController
     // call before consumable behaviour Start Method
     private void Awake()
     {
-        if (GetComponentInParent<ConsumableBehaviour>() != null)
-            onHandle.AddListener(GetComponentInParent<ConsumableBehaviour>().DefineColorByEmotion);
+        var consumableBehaviour = GetComponentInParent<ConsumableBehaviour>();
+        if (consumableBehaviour != null)
+            onHandle += consumableBehaviour.DefineColorByEmotion;
     }
     
     public void DropEmotionsAfterDeath(EmotionColor emotionColor)
