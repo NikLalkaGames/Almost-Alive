@@ -18,7 +18,7 @@ public class DetectNearestColliders : MonoBehaviour
         {
             if (other.CompareTag("Consumable") || other.CompareTag("Enemy") || other.CompareTag("Player"))
             {
-                Debug.Log($"Add collider {other.name} to trigger zone of gameObj {this.transform.parent.name}");
+                //Debug.Log($"Add collider {other.name} to trigger zone of gameObj {this.transform.parent.name}");
                 nearestColliders.Add(other);
             }
         }
@@ -30,7 +30,7 @@ public class DetectNearestColliders : MonoBehaviour
         {
             if (nearestColliders.Contains(other))
             {
-                Debug.Log($"Remove collider {other.name} from trigger zone of gameObj {this.transform.parent.name}");
+                //Debug.Log($"Remove collider {other.name} from trigger zone of gameObj {this.transform.parent.name}");
                 nearestColliders.Remove(other);
             }
         }
