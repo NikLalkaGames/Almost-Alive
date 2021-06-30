@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1259062041
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ab8f50ec9c03e4c44955c9b28cc47f76, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -147,10 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadSprite: {fileID: 21300000, guid: 735f50408d84a4448aaf1cb9f672a513, type: 3}
-  emotionColor: 3
-  onKilled:
-    m_PersistentCalls:
-      m_Calls: []
+  humanColor: 3
 --- !u!114 &5255231091763180680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +163,19 @@ MonoBehaviour:
   speed: 0.8
   retreatDistance: 1
   retreatRunDistance: 4
+--- !u!114 &5690386802684365984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5791297959285815347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 492dd714935ad9443917bc938983279d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  directionOfAttaching: {x: 0, y: 0, z: 0}
 --- !u!1001 &1986553573490441487
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -221,8 +231,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5462713775067153722, guid: 824a8ad35b22dc84e9bcc3881e46b70a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 824a8ad35b22dc84e9bcc3881e46b70a, type: 3}
+--- !u!1 &5791297959285815347 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5462713775067153724, guid: 824a8ad35b22dc84e9bcc3881e46b70a, type: 3}
+  m_PrefabInstance: {fileID: 1986553573490441487}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5791297959285815346 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5462713775067153725, guid: 824a8ad35b22dc84e9bcc3881e46b70a, type: 3}

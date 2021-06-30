@@ -79,7 +79,6 @@ namespace MonsterLove.StateMachine
 		public StateEvent Reset;
 		public StateEvent Start;
 		public StateEvent Update;
-
 		public StateEvent FixedUpdate;
 
 		//Unity Networking Deprecated
@@ -92,6 +91,11 @@ namespace MonsterLove.StateMachine
 		//public StateEvent<NetworkPlayer> OnPlayerDisconnected;
 		//public StateEvent<BitStream, NetworkMessageInfo> OnSerializeNetworkView;
 		//public StateEvent OnSeverInitialized;
+
+        // specific behaviour
+
+        public StateEvent OnColliderDetectorEnter;
+        public StateEvent OnColliderDetectorExit;
 
 	}
 }

@@ -6,12 +6,13 @@ using MonsterLove.StateMachine;
 public class CollectibleEmotion : MonoBehaviour
 {
 
-    #region variables
+    # region Variables
     // emotion logic variables
     private EmotionController _closestEmotionController;
     public EmotionColor EmotionColor;
-    private DetectNearestColliders _colliderDetector;
 
+    // colliders
+    private DetectNearestColliders _colliderDetector;
     private BoxCollider2D _internalCollider;
 
     // transform logic variables
@@ -42,11 +43,12 @@ public class CollectibleEmotion : MonoBehaviour
     private void Awake()
     {
         fsm = new StateMachine<States, StateDriverUnity>(this);
+        DetectNearestColliders.OnColliderDetectorEnter += OnColliderDetectorEnter;
     }
 
     private void Start()
     {
-        _circleRadius = GetComponentInChildren<CircleCollider2D>().radius*2;
+        _circleRadius = GetComponentInChildren<CircleCollider2D>().radius * 2;
         _internalCollider = GetComponent<BoxCollider2D>();
 
         if (GetComponentInParent<EmotionController>() != null)  // if parent has emotion controller (has _holderTransform)
@@ -74,20 +76,19 @@ public class CollectibleEmotion : MonoBehaviour
         transform.position += new Vector3(0, _idleAnimationSpeed/1000, 0);
     }
      
-    void Idle_OnTriggerEnter2D(Collider2D other)
+    void Idle_OnColliderDetectorEnter()
     {
         Debug.Log("Chelik enter in da trigger");
-        if ( _colliderDetector.GetListOfTriggerColliders().Count != 0)    // if collider list in trigger zone isn't empty
+        if ( _colliderDetector.NearestColliders.Count != 0)    // if collider list in trigger zone isn't empty
         {   
-            Debug.Log("Collider > 0");                                                             // or if trigger zone contain colliders
+            // or if trigger zone contain colliders
             _nearestTransform = Helper.GetClosestTransform(_colliderDetector.GetListOfTriggerTransforms(), transform);
             
             _closestEmotionController = _nearestTransform.GetComponentInChildren<EmotionController>();    // !
             // foundClosestTransform = true;
 
-            if ( (_closestEmotionController != null) && (!_closestEmotionController.EmotionExists(EmotionColor)) )
+            if ( (_closestEmotionController != null) && (!_closestEmotionController.EmotionExists(EmotionColor) ) )
             {
-  
                 fsm.ChangeState(States.Magnet);
             } 
         } 
@@ -121,11 +122,6 @@ public class CollectibleEmotion : MonoBehaviour
         }
     }
 
-    void Magnet_OnTriggerEnter2D(Collider2D other)
-    {
-        
-    }
-
     void AboveHead_FixedUpdate()
     {
         
@@ -141,8 +137,18 @@ public class CollectibleEmotion : MonoBehaviour
         fsm.Driver.FixedUpdate.Invoke();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnColliderDetectorEnter()
     {
-        fsm.Driver.OnTriggerEnter2D.Invoke(other);
+        fsm.Driver.OnColliderDetectorEnter.Invoke();
     }
+
+    private void OnColliderDetectorExit()
+    {
+        fsm.Driver.OnColliderDetectorExit.Invoke();
+    }
+
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     fsm.Driver.OnTriggerEnter2D.Invoke(other);
+    // }
 }

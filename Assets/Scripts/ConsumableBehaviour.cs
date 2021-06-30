@@ -44,38 +44,14 @@ public class ConsumableBehaviour : MonoBehaviour
             case EmotionColor.white: return Resources.Load<Sprite>("white_dead");
         }
     }
-
-    private void InitEmotion()
-    {
-        Debug.Log("Init human emotion");
-        emotionController.Handle(humanColor);     // create initial emotion
-    }
-
-    public void DefineColorByEmotion()
-    {
-        if (emotionController.Emotions.Count <= 1)
-        {
-            humanColor = emotionController.Emotions[0].EmotionColor;    // save internal value
-            humanSpriteRenderer.sprite = GetHumanSprite(humanColor);
-            deadSprite = GetDeadSprite(humanColor);
-            // change animation controller of human
-        }
-        else
-        {
-            Debug.Log("Number of emotions in emotionContorller: " + emotionController.Emotions.Count); 
-            humanColor = EmotionColor.white;            // save internal value
-            humanSpriteRenderer.sprite = GetHumanSprite(humanColor);
-            deadSprite = GetDeadSprite(humanColor);
-            // change animation controller of human
-        }
-    }
     
     private void Start()
     {
         humanSpriteRenderer = GetComponent<SpriteRenderer>();
         emotionController = GetComponentInChildren<MobEmotionController>();
 
-        InitEmotion();
+        Debug.Log("Init human emotion");
+        emotionController.Handle(humanColor);     // create initial emotion
         // DefineColorByEmotion();
 
         if ( ( spawner = GameObject.Find("Spawner").GetComponent<Spawner>() ) != null)
@@ -99,5 +75,24 @@ public class ConsumableBehaviour : MonoBehaviour
         GetComponent<Rigidbody2D>().isKinematic = true;
         GetComponent<HumanController>().enabled = false;
         this.enabled = false;
+    }
+
+    public void DefineColorByEmotion()
+    {
+        if (emotionController.Emotions.Count <= 1)
+        {
+            humanColor = emotionController.Emotions[0].EmotionColor;    // save internal value
+            humanSpriteRenderer.sprite = GetHumanSprite(humanColor);
+            deadSprite = GetDeadSprite(humanColor);
+            // change animation controller of human
+        }
+        else
+        {
+            Debug.Log("Number of emotions in emotionContorller: " + emotionController.Emotions.Count);
+            humanColor = EmotionColor.white;            // save internal value
+            humanSpriteRenderer.sprite = GetHumanSprite(humanColor);
+            deadSprite = GetDeadSprite(humanColor);
+            // change animation controller of human
+        }
     }
 }
