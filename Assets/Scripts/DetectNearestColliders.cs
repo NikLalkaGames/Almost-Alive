@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DetectNearestColliders : MonoBehaviour
 {
     private List<Collider2D> _nearestColliders = new List<Collider2D>();
-    private bool _forCollectibe;
 
     public static event System.Action OnColliderDetectorEnter;
     public static event System.Action OnColliderDetectorExit;
@@ -40,16 +40,5 @@ public class DetectNearestColliders : MonoBehaviour
         }
     }
 
-    public List<Transform> GetListOfTriggerTransforms()
-    {
-        List<Transform> transforms = new List<Transform>();
-        Debug.Log("Colliders in trigger zone of gameobj " + this.transform.parent.name + ":");
-        foreach (var collider in _nearestColliders)
-        {
-            transforms.Add(collider.transform);
-            Debug.Log("Collider: " + collider.name);
-        }
-        Debug.Log("----------------------------------");
-        return transforms;
-    }
+    public List<Transform> GetListOfTriggerTransforms() => _nearestColliders.Select(x => x.transform).ToList();
 }

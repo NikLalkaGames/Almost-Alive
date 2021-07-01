@@ -6,7 +6,8 @@ using MonsterLove.StateMachine;
 public class CollectibleEmotion : MonoBehaviour
 {
 
-    # region Variables
+    # region Fields
+
     // emotion logic variables
     private EmotionController _closestEmotionController;
     public EmotionColor EmotionColor;
@@ -36,6 +37,7 @@ public class CollectibleEmotion : MonoBehaviour
         AboveHead
 
     }
+
     StateMachine<States, StateDriverUnity> fsm;
     
     #endregion
@@ -51,10 +53,9 @@ public class CollectibleEmotion : MonoBehaviour
         _circleRadius = GetComponentInChildren<CircleCollider2D>().radius * 2;
         _internalCollider = GetComponent<BoxCollider2D>();
 
-        if (GetComponentInParent<EmotionController>() != null)  // if parent has emotion controller (has _holderTransform)
+        var emotionController = GetComponentInParent<EmotionController>();
+        if (emotionController != null)  // if parent has emotion controller (has _holderTransform)
         {
-            var emotionController = GetComponentInParent<EmotionController>();      // emotion controller
-            
             _holderTransform = emotionController.transform;       // player's transform 
             _direction = emotionController.directionOfAttaching;     // emotion's angle above head
             
@@ -79,19 +80,17 @@ public class CollectibleEmotion : MonoBehaviour
     void Idle_OnColliderDetectorEnter()
     {
         Debug.Log("Chelik enter in da trigger");
-        if ( _colliderDetector.NearestColliders.Count != 0)    // if collider list in trigger zone isn't empty
-        {   
-            // or if trigger zone contain colliders
-            _nearestTransform = Helper.GetClosestTransform(_colliderDetector.GetListOfTriggerTransforms(), transform);
-            
-            _closestEmotionController = _nearestTransform.GetComponentInChildren<EmotionController>();    // !
-            // foundClosestTransform = true;
+        
+        _nearestTransform = Helper.GetClosestTransform(_colliderDetector.GetListOfTriggerTransforms(), transform);
+        
+        // show list
 
-            if ( (_closestEmotionController != null) && (!_closestEmotionController.EmotionExists(EmotionColor) ) )
-            {
-                fsm.ChangeState(States.Magnet);
-            } 
-        } 
+        _closestEmotionController = _nearestTransform.GetComponent<EmotionController>();
+
+        if ( (_closestEmotionController != null) && (!_closestEmotionController.EmotionExists(EmotionColor) ) )
+        {
+            fsm.ChangeState(States.Magnet);
+        }
     }
 
     void Magnet_FixedUpdate()
@@ -106,18 +105,21 @@ public class CollectibleEmotion : MonoBehaviour
         {
             _pickUpSpeed = _circleRadius - _distanceToPlayer;      //become faster while distance decreases
             transform.position = Vector2.MoveTowards(transform.position, _nearestTransform.position, _pickUpSpeed * Time.deltaTime); //move towards player by _pickUpSpeed speed
+        }
+    }
 
-            if (_internalCollider.IsTouching(_nearestTransform.GetComponent<BoxCollider2D>() ) )
-            {
+    void Magnet_OnColliderDetectorEnter()
+    {
+        if (_internalCollider.IsTouching(_nearestTransform.GetComponent<BoxCollider2D>()))
+        {
             switch (EmotionColor)
-                {
-                    case EmotionColor.blue: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.blue); break;
-                    case EmotionColor.green: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.green); break;
-                    case EmotionColor.pink: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.pink); break;
-                    case EmotionColor.purple: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.purple); break;
-                    case EmotionColor.yellow: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.yellow); break;
-                    default: break;
-                }
+            {
+                case EmotionColor.blue:   _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.blue);   break;
+                case EmotionColor.green:  _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.green);  break;
+                case EmotionColor.pink:   _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.pink);   break;
+                case EmotionColor.purple: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.purple); break;
+                case EmotionColor.yellow: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.yellow); break;
+                default: break;
             }
         }
     }
