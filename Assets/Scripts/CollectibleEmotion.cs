@@ -25,8 +25,7 @@ public class CollectibleEmotion : MonoBehaviour
 
     //Other variables
     [SerializeField] private float _radius;
-    private float _circleRadius;
-    private float _pickUpSpeed;
+    private float _magnetRadius;
     public float _idleAnimationSpeed;
 
     //Finite State Machine variables
@@ -38,19 +37,20 @@ public class CollectibleEmotion : MonoBehaviour
 
     }
 
-    StateMachine<States, StateDriverUnity> fsm;
+    StateMachine<States, StateDriverUnity> _fsm;
     
     #endregion
 
     private void Awake()
     {
-        fsm = new StateMachine<States, StateDriverUnity>(this);
+        _fsm = new StateMachine<States, StateDriverUnity>(this);
         DetectNearestColliders.OnColliderDetectorEnter += OnColliderDetectorEnter;
+        DetectNearestColliders.OnColliderDetectorExit += OnColliderDetectorExit;
     }
 
     private void Start()
     {
-        _circleRadius = GetComponentInChildren<CircleCollider2D>().radius * 2;
+        _magnetRadius = GetComponentInChildren<CircleCollider2D>().radius * 3f;
         _internalCollider = GetComponent<BoxCollider2D>();
 
         var emotionController = GetComponentInParent<EmotionController>();
@@ -62,13 +62,13 @@ public class CollectibleEmotion : MonoBehaviour
             GetComponent<BoxCollider2D>().enabled = false;
             transform.Find("DetectColliders").gameObject.SetActive(false);
 
-            fsm.ChangeState(States.AboveHead);
+            _fsm.ChangeState(States.AboveHead);
         }
         else
         {
             _colliderDetector = transform.GetComponentInChildren<DetectNearestColliders>();
 
-            fsm.ChangeState(States.Idle);
+            _fsm.ChangeState(States.Idle);
         }
     }
 
@@ -79,15 +79,16 @@ public class CollectibleEmotion : MonoBehaviour
      
     void Idle_OnColliderDetectorEnter()
     {
-        Debug.Log("Chelik enter in da trigger");
-        
-        _nearestTransform = Helper.GetClosestTransform(_colliderDetector.GetListOfTriggerTransforms(), transform);
-
-        _closestEmotionController = _nearestTransform.GetComponentInChildren<EmotionController>();
-
-        if ( (_closestEmotionController != null) && (!_closestEmotionController.EmotionExists(EmotionColor) ) )
+        if (_colliderDetector.NearestColliders.Count != 0)
         {
-            fsm.ChangeState(States.Magnet);
+            _nearestTransform = Helper.GetClosestTransform(_colliderDetector.GetListOfTriggerTransforms(), transform);
+
+            _closestEmotionController = _nearestTransform.GetComponentInChildren<EmotionController>();
+
+            if ((_closestEmotionController != null) && (!_closestEmotionController.EmotionExists(EmotionColor)))
+            {
+                _fsm.ChangeState(States.Magnet);
+            }
         }
     }
 
@@ -95,28 +96,34 @@ public class CollectibleEmotion : MonoBehaviour
     {
         _distanceToPlayer = Vector3.Distance(transform.position, _nearestTransform.position);   // calculate distance to player
 
-        if ( (_closestEmotionController.EmotionExists(EmotionColor)) || (_distanceToPlayer > _circleRadius) )
+        if ( (_closestEmotionController.EmotionExists(EmotionColor)) )
         {
-            fsm.ChangeState(States.Idle);
+            _fsm.ChangeState(States.Idle);
         }
         else
         {
-            _pickUpSpeed = _circleRadius - _distanceToPlayer;      //become faster while distance decreases
-            transform.position = Vector2.MoveTowards(transform.position, _nearestTransform.position, _pickUpSpeed * Time.deltaTime); //move towards player by _pickUpSpeed speed
+            var pickUpSpeed = _magnetRadius - _distanceToPlayer;      //become faster while distance decreases
+            transform.position = Vector2.MoveTowards(transform.position, _nearestTransform.position, pickUpSpeed * Time.deltaTime); //move towards player by _pickUpSpeed speed
+
+            // check in update if touching nearest Collider 
+            if (this.GetComponent<BoxCollider2D>().IsTouching(_nearestTransform.GetComponent<BoxCollider2D>()))
+            {
+                switch (EmotionColor)
+                {
+                    case EmotionColor.blue: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.blue); break;
+                    case EmotionColor.green: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.green); break;
+                    case EmotionColor.pink: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.pink); break;
+                    case EmotionColor.purple: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.purple); break;
+                    case EmotionColor.yellow: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.yellow); break;
+                    default: break;
+                }
+            }
         }
     }
 
-    void Magnet_OnInternalColliderEnter()
+    void Magnet_OnColliderDetectorExit()
     {
-        switch (EmotionColor)
-        {
-            case EmotionColor.blue:   _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.blue);   break;
-            case EmotionColor.green:  _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.green);  break;
-            case EmotionColor.pink:   _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.pink);   break;
-            case EmotionColor.purple: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.purple); break;
-            case EmotionColor.yellow: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.yellow); break;
-            default: break;
-        }
+        _fsm.ChangeState(States.Idle);
     }
 
     void AboveHead_FixedUpdate()
@@ -131,28 +138,28 @@ public class CollectibleEmotion : MonoBehaviour
 
     private void FixedUpdate()
     {
-        fsm.Driver.FixedUpdate.Invoke();
+        _fsm.Driver.FixedUpdate.Invoke();
     }
 
     private void OnColliderDetectorEnter()
     {
-        fsm.Driver.OnColliderDetectorEnter.Invoke();
+        _fsm.Driver.OnColliderDetectorEnter.Invoke();
     }
 
     private void OnColliderDetectorExit()
     {
-        fsm.Driver.OnColliderDetectorExit.Invoke();
+        _fsm.Driver.OnColliderDetectorExit.Invoke();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        fsm.Driver.OnInternalColliderEnter.Invoke();
-    }
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     fsm.Driver.OnInternalColliderEnter.Invoke();
+    // }
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        fsm.Driver.OnInternalColliderExit.Invoke();
-    }
+    // private void OnTriggerExit2D(Collider2D other)
+    // {
+    //     fsm.Driver.OnInternalColliderExit.Invoke();
+    // }
 
     // private void OnTriggerEnter2D(Collider2D other)
     // {
