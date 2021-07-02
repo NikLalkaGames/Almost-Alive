@@ -60,4 +60,7 @@ public static class Helper
     {
         return new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f)).normalized;
     }
+
+    public static bool Reached(Vector2 currentPosition, Vector2 targetPosition) =>
+        Vector2.Distance(currentPosition, targetPosition) < 1e-3;
 }

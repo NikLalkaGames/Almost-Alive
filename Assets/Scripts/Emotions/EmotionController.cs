@@ -13,7 +13,7 @@ public class EmotionController : MonoBehaviour
     // angles for emotions adding
     private float stepAngle = 45;
     protected float globalAngle = -180;
-    public Vector3 directionOfAttaching;
+    public Vector3 directionOfAttaching { get; private set; }
 
     // event
     public static event System.Action onHandle;

@@ -20,7 +20,7 @@ public class CombatSystem : MonoBehaviour
 
     private void Update()
     {
-        if (TriggerZone.GetListOfTriggerColliders().Count != 0)
+        if (TriggerZone.NearestColliders.Count != 0)
         {
             ListenInteractByKeyPress();
         }

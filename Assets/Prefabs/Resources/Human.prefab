@@ -12,10 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 492dd714935ad9443917bc938983279d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onHandle:
-    m_PersistentCalls:
-      m_Calls: []
-  emotionWorld: {fileID: 0}
   directionOfAttaching: {x: 0, y: 0, z: 0}
 --- !u!1 &3030819657142666385
 GameObject:
@@ -91,7 +87,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1259062041
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 774909b7353a0fc4c9a4367621a2f7aa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -164,10 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deadSprite: {fileID: 21300000, guid: 88defe7d061e3ed4e8cf8e7a83674ea3, type: 3}
-  humanColor: 1
-  onKilled:
-    m_PersistentCalls:
-      m_Calls: []
+  humanColor: 0
 --- !u!114 &4340974393789287524
 MonoBehaviour:
   m_ObjectHideFlags: 0
