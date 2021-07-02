@@ -82,10 +82,8 @@ public class CollectibleEmotion : MonoBehaviour
         Debug.Log("Chelik enter in da trigger");
         
         _nearestTransform = Helper.GetClosestTransform(_colliderDetector.GetListOfTriggerTransforms(), transform);
-        
-        // show list
 
-        _closestEmotionController = _nearestTransform.GetComponent<EmotionController>();
+        _closestEmotionController = _nearestTransform.GetComponentInChildren<EmotionController>();
 
         if ( (_closestEmotionController != null) && (!_closestEmotionController.EmotionExists(EmotionColor) ) )
         {
@@ -108,19 +106,16 @@ public class CollectibleEmotion : MonoBehaviour
         }
     }
 
-    void Magnet_OnColliderDetectorEnter()
+    void Magnet_OnInternalColliderEnter()
     {
-        if (_internalCollider.IsTouching(_nearestTransform.GetComponent<BoxCollider2D>()))
+        switch (EmotionColor)
         {
-            switch (EmotionColor)
-            {
-                case EmotionColor.blue:   _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.blue);   break;
-                case EmotionColor.green:  _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.green);  break;
-                case EmotionColor.pink:   _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.pink);   break;
-                case EmotionColor.purple: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.purple); break;
-                case EmotionColor.yellow: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.yellow); break;
-                default: break;
-            }
+            case EmotionColor.blue:   _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.blue);   break;
+            case EmotionColor.green:  _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.green);  break;
+            case EmotionColor.pink:   _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.pink);   break;
+            case EmotionColor.purple: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.purple); break;
+            case EmotionColor.yellow: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.yellow); break;
+            default: break;
         }
     }
 
@@ -147,6 +142,16 @@ public class CollectibleEmotion : MonoBehaviour
     private void OnColliderDetectorExit()
     {
         fsm.Driver.OnColliderDetectorExit.Invoke();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        fsm.Driver.OnInternalColliderEnter.Invoke();
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        fsm.Driver.OnInternalColliderExit.Invoke();
     }
 
     // private void OnTriggerEnter2D(Collider2D other)

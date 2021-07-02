@@ -97,5 +97,8 @@ namespace MonsterLove.StateMachine
         public StateEvent OnColliderDetectorEnter;
         public StateEvent OnColliderDetectorExit;
 
+        public StateEvent OnInternalColliderEnter;
+        public StateEvent OnInternalColliderExit;
+
 	}
 }
