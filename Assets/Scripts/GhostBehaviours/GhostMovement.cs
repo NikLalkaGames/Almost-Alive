@@ -48,13 +48,6 @@ public class GhostMovement : MonoBehaviour
         GetMouseInput();
         SetLookDirection(); // based on mouse input
 
-        // TODO: move later emotion drop to emotion controller 
-        // emotion drop
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            _emotionController.Handle(EmotionColor.none);
-        }
-
         // Debug.DrawLine(transform.position, mouseTarget, Color.red);
         Debug.DrawRay(transform.position, _lookDirection, Color.red);
 

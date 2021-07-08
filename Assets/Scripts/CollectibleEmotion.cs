@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class CollectibleEmotion : MonoBehaviour
     private Transform _nearestTransform; 
     private Vector3 _emotionPos;
 
-    //Other variables
+    // Other variables
     [SerializeField] private float _radius;
     private float _magnetRadius;
     public float _idleAnimationSpeed;
@@ -31,8 +32,8 @@ public class CollectibleEmotion : MonoBehaviour
     //Finite State Machine variables
     public enum States
     {
-        Idle, 
-        Magnet, 
+        Idle,
+        Magnet,
         AboveHead
 
     }
@@ -44,8 +45,13 @@ public class CollectibleEmotion : MonoBehaviour
     private void Awake()
     {
         _fsm = new StateMachine<States, StateDriverUnity>(this);
+        
+        // collision events subscription
         DetectNearestColliders.OnColliderDetectorEnter += OnColliderDetectorEnter;
         DetectNearestColliders.OnColliderDetectorExit += OnColliderDetectorExit;
+
+        // emotion events subscription
+        // EmotionController.OnEmotionAdded += ( () => Destroy(this.gameObject) ); //this.gameObject.SetActive(false) );
     }
 
     private void Start()
@@ -57,7 +63,7 @@ public class CollectibleEmotion : MonoBehaviour
         if (emotionController != null)  // if parent has emotion controller (has _holderTransform)
         {
             _holderTransform = emotionController.transform;       // player's transform 
-            _direction = emotionController.directionOfAttaching;     // emotion's angle above head
+            _direction = emotionController.DirectionOfAttaching;     // emotion's angle above head
             
             GetComponent<BoxCollider2D>().enabled = false;
             transform.Find("DetectColliders").gameObject.SetActive(false);
@@ -106,17 +112,10 @@ public class CollectibleEmotion : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, _nearestTransform.position, pickUpSpeed * Time.deltaTime); //move towards player by _pickUpSpeed speed
 
             // check in update if touching nearest Collider 
-            if (this.GetComponent<BoxCollider2D>().IsTouching(_nearestTransform.GetComponent<BoxCollider2D>()))
+            if (_internalCollider.IsTouching(_nearestTransform.GetComponent<BoxCollider2D>()))
             {
-                switch (EmotionColor)
-                {
-                    case EmotionColor.blue: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.blue); break;
-                    case EmotionColor.green: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.green); break;
-                    case EmotionColor.pink: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.pink); break;
-                    case EmotionColor.purple: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.purple); break;
-                    case EmotionColor.yellow: _closestEmotionController.SaveEmotionWorld(this.gameObject); _closestEmotionController.Handle(EmotionColor.yellow); break;
-                    default: break;
-                }
+                _closestEmotionController.Handle(EmotionColor);
+                this.gameObject.SetActive(false);
             }
         }
     }
@@ -128,13 +127,14 @@ public class CollectibleEmotion : MonoBehaviour
 
     void AboveHead_FixedUpdate()
     {
-        
         _emotionPos = _holderTransform.position + _direction * _radius;
         if ( !Helper.Reached(transform.position, _emotionPos) )
         {
             transform.position = Vector2.Lerp(transform.position, _emotionPos, Time.deltaTime * 1.5f);   //transform from player position to emotionPos
         }
-    }    
+    }
+
+    # region MonoBehaviour StateMachine
 
     private void FixedUpdate()
     {
@@ -150,6 +150,8 @@ public class CollectibleEmotion : MonoBehaviour
     {
         _fsm.Driver.OnColliderDetectorExit.Invoke();
     }
+
+    # endregion
 
     // private void OnTriggerEnter2D(Collider2D other)
     // {
