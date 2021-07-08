@@ -19,10 +19,7 @@ public class CollectibleEmotion : MonoBehaviour
 
     // transform logic variables
     private float _distanceToPlayer;
-    private Vector3 _direction;
-    private Transform _holderTransform;
-    private Transform _nearestTransform; 
-    private Vector3 _emotionPos;
+    private Transform _nearestTransform;
 
     // Other variables
     [SerializeField] private float _radius;
@@ -35,7 +32,6 @@ public class CollectibleEmotion : MonoBehaviour
         Idle,
         Magnet,
         AboveHead
-
     }
 
     StateMachine<States, StateDriverUnity> _fsm;
@@ -61,11 +57,8 @@ public class CollectibleEmotion : MonoBehaviour
 
         var emotionController = GetComponentInParent<EmotionController>();
         if (emotionController != null)  // if parent has emotion controller (has _holderTransform)
-        {
-            _holderTransform = emotionController.transform;       // player's transform 
-            _direction = emotionController.DirectionOfAttaching;     // emotion's angle above head
-            
-            GetComponent<BoxCollider2D>().enabled = false;
+        {            
+            _internalCollider.enabled = false;
             transform.Find("DetectColliders").gameObject.SetActive(false);
 
             _fsm.ChangeState(States.AboveHead);
@@ -78,7 +71,7 @@ public class CollectibleEmotion : MonoBehaviour
         }
     }
 
-     void Idle_FixedUpdate()
+    void Idle_FixedUpdate()
     {
         transform.position += new Vector3(0, _idleAnimationSpeed/1000, 0);
     }
@@ -123,15 +116,6 @@ public class CollectibleEmotion : MonoBehaviour
     void Magnet_OnColliderDetectorExit()
     {
         _fsm.ChangeState(States.Idle);
-    }
-
-    void AboveHead_FixedUpdate()
-    {
-        _emotionPos = _holderTransform.position + _direction * _radius;
-        if ( !Helper.Reached(transform.position, _emotionPos) )
-        {
-            transform.position = Vector2.Lerp(transform.position, _emotionPos, Time.deltaTime * 1.5f);   //transform from player position to emotionPos
-        }
     }
 
     # region MonoBehaviour StateMachine

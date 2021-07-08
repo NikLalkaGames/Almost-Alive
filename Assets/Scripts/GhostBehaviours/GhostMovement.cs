@@ -23,7 +23,7 @@ public class GhostMovement : MonoBehaviour
     private Vector2 _movement;
     private Vector2 _mouseTarget;
 
-    public Vector2 LookDirection =>_lookDirection;
+    public Vector2 LookDirection => _lookDirection;
     public Vector2 MouseTarget => _mouseTarget;
 
     # endregion

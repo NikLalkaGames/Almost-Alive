@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using static Helper;
 using UnityEngine;
 
 public class MobEmotionController : EmotionController
@@ -9,6 +10,13 @@ public class MobEmotionController : EmotionController
     private ConsumableBehaviour _consumableHuman;
 
     #endregion
+
+    #region Properties
+
+    protected new Vector3 DirectionOfDrop =>
+        GetRandomDir();
+        
+    # endregion 
 
     #region SpriteGetters
 
@@ -48,13 +56,14 @@ public class MobEmotionController : EmotionController
         
         if (_consumableHuman != null)
         {
-            onHandle += DefineSkinColor;
+            OnHandle += DefineSkinColor;
             ConsumableBehaviour.OnKilled += DropEmotionsAfterDeath;
         }
     }
 
-    private void Start()
+    protected new void Start()
     {
+        base.Start();
         Handle(_consumableHuman.HumanColor);
     }
     
@@ -66,14 +75,13 @@ public class MobEmotionController : EmotionController
             var emotionToDrop = RemoveEmotion();
             Destroy(transform.GetChild(i).gameObject);      // destroy internal emotion
             DropEmotion(emotionToDrop.EmotionColor);
-            Debug.Log(Emotions.Length);
+            Debug.Log(_emotions.Count);
         }
-        _globalAngle = -180;
     }
 
     public void DefineSkinColor()
     {
-        if (_emotions.Length <= 1)
+        if (_emotions.Count <= 1)
         {
             _consumableHuman.HumanSprite = GetHumanSprite(_consumableHuman.HumanColor);
             _consumableHuman.DeadSprite = GetDeadSprite(_consumableHuman.HumanColor);

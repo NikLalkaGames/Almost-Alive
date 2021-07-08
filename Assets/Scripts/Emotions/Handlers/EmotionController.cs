@@ -6,44 +6,31 @@ using UnityEngine;
 public class EmotionController : MonoBehaviour
 {
     # region Fields
-
-    // emotions
-    protected Emotion[] _emotions = new Emotion[5];
     
-    // angles for emotions adding
-    private float _stepAngle = 45;
-    protected float _globalAngle = -180;
-    public Vector3 DirectionOfAttaching { get; private set; }
+    protected List<Emotion> _emotions = new List<Emotion>(5);
+    
+    [SerializeField] protected float _dropRadius;
+
+    protected List<Transform> _emotionHolders = new List<Transform>(5);
+
+    protected int EmotionsLast => _emotions.Count - 1;
 
     #endregion
 
     #region Properties
 
-    public Vector3 DirectionOfDrop
-    {
-        get
-        {
-            var ghostMovement = GetComponentInParent<GhostMovement>();
-            if (ghostMovement != null)
-            {
-                return ghostMovement.LookDirection;
-            }
-            else
-            {
-                return Helper.GetRandomDir();
-            }
-        }
-    }
+    protected Vector3 DirectionOfDrop => GetComponentInParent<GhostMovement>().LookDirection;
 
-    public Emotion[] Emotions => _emotions;
+    public List<Emotion> Emotions => _emotions;
 
     #endregion
 
     #region Events
 
-    public static event Action onHandle;
+    public static event Action OnHandle;
     public static event Action<EmotionColor> OnEmotionAdded;
     public static event Action<EmotionColor> OnEmotionRemoved;
+    public static event Action<Vector3> OnEmotionDraw;
 
     # endregion
 
@@ -62,12 +49,9 @@ public class EmotionController : MonoBehaviour
         }
     }
 
-    private void Start()
+    protected void Start()
     {
-        OnEmotionAdded += DrawNewEmotion;
-
-        OnEmotionRemoved += UndrawEmotion;
-        OnEmotionRemoved += DropEmotion;
+        CreateEmotionHolders();
     }
 
     private void Update()
@@ -75,55 +59,78 @@ public class EmotionController : MonoBehaviour
         // Drop emotion logic
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (EmotionsCount > 0)         // prevent IndexOutOfRangeException for empty list
+            if (_emotions.Count > 0)         // prevent IndexOutOfRangeException for empty list
             {
-                var emotionToUndraw = RemoveEmotion();
+                UnattachEmotion();
+                var emotionToDrop = RemoveEmotion();
+                DropEmotion(emotionToDrop.EmotionColor);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (_emotions.Count == 5)
+            {
+                FiveSpheres();
             }
         }
     }
 
     public void Handle(EmotionColor emotionColor)
     {
-        if (!EmotionExists(emotionColor))
+        if (!_emotions.Exists(x => x.EmotionColor == emotionColor))
         {
-            var emotionToDraw = AddEmotion(emotionColor);
+            AddEmotion(emotionColor);
+
+            var emotionToLerp = AttachEmotion(emotionColor);
+            
+            StartCoroutine( LerpTo(emotionToLerp, _emotionHolders[EmotionsLast]) );
         }
 
-        if (onHandle != null)
-            onHandle?.Invoke();
+        if (OnHandle != null)
+            OnHandle?.Invoke();
 
-        Debug.Log("Emotions Count: " + EmotionsCount);
-
-        if (EmotionsCount == 5)
-        {
-            if (GetComponentInParent<GhostMovement>() != null)
-            {
-                StartCoroutine("fiveSpheres");
-            }
-        }
+        Debug.Log("Emotions Count: " + _emotions.Count);
     }
 
     // TODO: fix coroutine bag
-    private IEnumerator fiveSpheres()
+    private void FiveSpheres()
     {
-        yield return new WaitForSeconds(1.5f);
-        Debug.Log("Heal");
+        Debug.Log("5 sphere heal");
         
         var ghostHealth = GetComponentInParent<GhostHealth>();
 
         if (ghostHealth != null)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < _emotions.Capacity; i++)
             {
-                var emotionToUndraw = RemoveEmotion();
+                RemoveEmotion();
                 // UndrawEmotion();
-                Destroy(transform.GetChild(i).gameObject);
+                Destroy(_emotionHolders[i].GetChild(0).gameObject);
             }
             
             ghostHealth.UpdateHealth(+50);
             ghostHealth.IncreaseHealthReduction();
+        }
+    }
 
-            _globalAngle = -180;
+    private void CreateEmotionHolders()
+    {
+        float angle = -180f;
+
+        for (int i = 0; i < 5; i++)
+        {          
+            GameObject emotionHolder = Instantiate(new GameObject(), transform.position, Quaternion.identity)
+            as GameObject;
+
+            var direction = (Quaternion.Euler(0, 0, angle) * Vector3.right).normalized;
+
+            emotionHolder.transform.SetParent(this.transform, true);
+            emotionHolder.transform.position = transform.position + direction;
+
+            _emotionHolders.Add(emotionHolder.transform);
+
+            angle -= 45;
         }
     }
 
@@ -146,96 +153,53 @@ public class EmotionController : MonoBehaviour
     protected Emotion AddEmotion(EmotionColor emotionColor)
     {
         var emotionToAdd = new Emotion(emotionColor);
-        var emotionIsAdded = AddToArray(emotionToAdd);
-
-        if (emotionIsAdded)
-        {
-            OnEmotionAdded?.Invoke(emotionToAdd.EmotionColor);
-            return emotionToAdd;
-        }
-
-        throw new OperationCanceledException("Emotion hasn't added to emotion array");
+        _emotions.Add(emotionToAdd);
+        return emotionToAdd;
     }
 
     protected Emotion RemoveEmotion()
     {
-        var emotionToDrop = _emotions[EmotionsCount - 1];
-        
-        if (emotionToDrop != null)
-        {
-            _emotions[EmotionsCount - 1] = null;
-            OnEmotionRemoved.Invoke(emotionToDrop.EmotionColor);
-            return emotionToDrop;
-        }
-
-        throw new Exception("Emotion hasn't removed from the emotion array");
+        var emotionToDrop = _emotions[EmotionsLast];
+        _emotions.Remove(emotionToDrop);
+        return emotionToDrop;
     }
 
     # endregion
 
-    # region Array Methods and Properties
-
-    protected bool AddToArray(Emotion emotionToAdd)
-    {
-        for (int i = 0; i < _emotions.Length; i++)
-        {
-            if (_emotions[i] == null)
-            {
-                _emotions[i] = emotionToAdd;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    protected int EmotionsCount
-    {
-        get 
-        {
-            int count = 0;
-        
-            for (int i = 0; i < _emotions.Length; i++)
-            {
-                if (_emotions[i] != null)
-                {
-                    count++;
-                }
-            }
-
-            return count;
-        }
-    }
-
-    # endregion 
 
     # region Emotion Transform methods
 
-    public void DrawNewEmotion(EmotionColor emotionColor)
+    public Transform AttachEmotion(EmotionColor emotionColor)
     {
-        SpawnEmotionAsChild(_globalAngle, emotionColor);
-        _globalAngle -= _stepAngle;
-    }
-
-    public void UndrawEmotion(EmotionColor emotionColor)
-    {
-        _globalAngle += _stepAngle;
-        Destroy( transform.GetChild(transform.childCount - 1).gameObject );
-    }
-
-    public void SpawnEmotionAsChild(float angle, EmotionColor emotionColor)
-    {
-        DirectionOfAttaching = (Quaternion.Euler(0, 0, angle) * Vector3.right).normalized;
         GameObject emotionObject = Instantiate(GetObjectBy(emotionColor), transform.position, Quaternion.identity)
         as GameObject;
-        emotionObject.transform.SetParent(this.gameObject.transform, true);
-        // emotionObject.transform.position = transform.position + direction * radius;  // replaced into magnet mechanic 
-        emotionObject.transform.position = transform.position;
+
+        emotionObject.transform.SetParent(_emotionHolders[EmotionsLast], true);
+        //emotionObject.transform.position = _emotionHolders[EmotionsLast].position;
+
+
+        return emotionObject.transform;
+    }
+
+    public void UnattachEmotion()
+    {
+        var emotionToDrop = _emotionHolders[EmotionsLast].GetChild(0);
+        _emotionHolders[EmotionsLast].GetChild(0).parent = null;
+        emotionToDrop.transform.position = transform.position + DirectionOfDrop * _dropRadius;
+    }
+
+    private IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
+    {
+        while (!Helper.Reached(emotionToAttach.position, destTransform.position))
+        {
+            yield return new WaitForEndOfFrame();
+            emotionToAttach.position = Vector2.Lerp(emotionToAttach.position, destTransform.position, Time.deltaTime * 1.5f);   //transform from player position to emotionPos
+        }
     }
 
     public void DropEmotion(EmotionColor emotionColor)
     {
-        GameObject emotionWorld = Instantiate(GetObjectBy(emotionColor), transform.position + DirectionOfDrop, Quaternion.identity) 
+        _ = Instantiate(GetObjectBy(emotionColor), transform.position + DirectionOfDrop * _dropRadius, Quaternion.identity) 
         as GameObject;
         // emotionWorld.GetComponent<Rigidbody2D>().AddForce(randomDir * 40f, ForceMode2D.Impulse);
     }
