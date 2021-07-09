@@ -13,8 +13,7 @@ public class MobEmotionController : EmotionController
 
     #region Properties
 
-    protected new Vector3 DirectionOfDrop =>
-        GetRandomDir();
+    protected override Vector3 DirectionOfDrop => GetRandomDir();
         
     # endregion 
 

@@ -57,7 +57,9 @@ public class CollectibleEmotion : MonoBehaviour
 
         var emotionController = GetComponentInParent<EmotionController>();
         if (emotionController != null)  // if parent has emotion controller (has _holderTransform)
-        {            
+        {
+            Debug.Log("AboveHead");
+            
             _internalCollider.enabled = false;
             transform.Find("DetectColliders").gameObject.SetActive(false);
 
@@ -108,7 +110,7 @@ public class CollectibleEmotion : MonoBehaviour
             if (_internalCollider.IsTouching(_nearestTransform.GetComponent<BoxCollider2D>()))
             {
                 _closestEmotionController.Handle(EmotionColor);
-                this.gameObject.SetActive(false);
+                Destroy(this.gameObject);
             }
         }
     }

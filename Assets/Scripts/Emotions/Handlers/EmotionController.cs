@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class EmotionController : MonoBehaviour
 {
-    # region Fields
+    #region Fields
+
+    protected Stack _emotionColors;    
     
     protected List<Emotion> _emotions = new List<Emotion>(5);
     
@@ -19,7 +21,7 @@ public class EmotionController : MonoBehaviour
 
     #region Properties
 
-    protected Vector3 DirectionOfDrop => GetComponentInParent<GhostMovement>().LookDirection;
+    protected virtual Vector3 DirectionOfDrop { get; set; }
 
     public List<Emotion> Emotions => _emotions;
 
@@ -54,27 +56,6 @@ public class EmotionController : MonoBehaviour
         CreateEmotionHolders();
     }
 
-    private void Update()
-    {
-        // Drop emotion logic
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            if (_emotions.Count > 0)         // prevent IndexOutOfRangeException for empty list
-            {
-                DropEmotion();
-                RemoveEmotion();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (_emotions.Count == 5)
-            {
-                FiveSpheres();
-            }
-        }
-    }
-
     public void Handle(EmotionColor emotionColor)
     {
         if (!_emotions.Exists(x => x.EmotionColor == emotionColor))
@@ -82,8 +63,8 @@ public class EmotionController : MonoBehaviour
             AddEmotion(emotionColor);
 
             var emotionToLerp = AttachEmotion(emotionColor);
-            
-            StartCoroutine( LerpTo(emotionToLerp, _emotionHolders[EmotionsLast]) );
+
+            StartCoroutine( WaitForLerp(emotionToLerp, _emotionHolders[EmotionsLast]) );
         }
 
         if (OnHandle != null)
@@ -93,7 +74,7 @@ public class EmotionController : MonoBehaviour
     }
 
     // TODO: fix coroutine bag
-    private void FiveSpheres()
+    protected void FiveSpheres()
     {
         Debug.Log("5 sphere heal");
         
@@ -113,7 +94,7 @@ public class EmotionController : MonoBehaviour
         }
     }
 
-    private void CreateEmotionHolders()
+    protected void CreateEmotionHolders()
     {
         float angle = -180f;
 
@@ -167,34 +148,43 @@ public class EmotionController : MonoBehaviour
 
 
     # region Emotion Transform methods
-
+    
     public Transform AttachEmotion(EmotionColor emotionColor)
     {
-        GameObject emotionObject = Instantiate(GetObjectBy(emotionColor), transform.position, Quaternion.identity)
+        GameObject emotionToAttach = Instantiate(GetObjectBy(emotionColor), transform.position, Quaternion.identity)
         as GameObject;
 
-        emotionObject.transform.SetParent(_emotionHolders[EmotionsLast], true);
-        //emotionObject.transform.position = _emotionHolders[EmotionsLast].position;
+        emotionToAttach.transform.SetParent(_emotionHolders[EmotionsLast], true);
 
-
-        return emotionObject.transform;
+        return emotionToAttach.transform;
     }
 
-    private IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
+    protected IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
     {
         while (!Helper.Reached(emotionToAttach.position, destTransform.position))
         {
             yield return new WaitForEndOfFrame();
-            emotionToAttach.position = Vector2.Lerp(emotionToAttach.position, destTransform.position, Time.deltaTime * 1.5f);   //transform from player position to emotionPos
-        }
+            
+            emotionToAttach.position = Vector2.Lerp(emotionToAttach.position, destTransform.position, Time.deltaTime * 1.5f);   //transform from player position to 
+        }   
+
+        Debug.Log("Lerp Finished");
+    }
+
+    protected IEnumerator WaitForLerp(Transform emotionToAttach, Transform destTransform)
+    {
+        yield return StartCoroutine( LerpTo(emotionToAttach, destTransform) );
     }
 
     public void DropEmotion()
     {
         var emotionColor = _emotions[EmotionsLast].EmotionColor;
-        Destroy(_emotionHolders[EmotionsLast].GetChild(0).gameObject);
-        _ = Instantiate(GetObjectBy(emotionColor), transform.position + DirectionOfDrop * _dropRadius, Quaternion.identity) 
+        
+        _ = Instantiate(GetObjectBy(emotionColor), _emotionHolders[EmotionsLast].position + DirectionOfDrop * _dropRadius, Quaternion.identity) 
         as GameObject;
+        
+        Destroy(_emotionHolders[EmotionsLast].GetChild(0).gameObject);
+
         // emotionWorld.GetComponent<Rigidbody2D>().AddForce(randomDir * 40f, ForceMode2D.Impulse);
     }
 

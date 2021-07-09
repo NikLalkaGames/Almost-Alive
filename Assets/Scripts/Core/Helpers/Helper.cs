@@ -61,5 +61,5 @@ public static class Helper
     }
 
     public static bool Reached(Vector2 currentPosition, Vector2 targetPosition) =>
-        Vector2.Distance(currentPosition, targetPosition) < 1e-3;
+        Vector2.Distance(currentPosition, targetPosition) < 1e-2;
 }

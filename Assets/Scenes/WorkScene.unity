@@ -467,6 +467,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ball_green
       objectReference: {fileID: 0}
+    - target: {fileID: 6866294436508878659, guid: a36f5bb37b30be747949028c6a905b96, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a36f5bb37b30be747949028c6a905b96, type: 3}
 --- !u!1001 &1435813907
