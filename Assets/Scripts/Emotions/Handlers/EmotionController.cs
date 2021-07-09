@@ -61,9 +61,8 @@ public class EmotionController : MonoBehaviour
         {
             if (_emotions.Count > 0)         // prevent IndexOutOfRangeException for empty list
             {
-                UnattachEmotion();
-                var emotionToDrop = RemoveEmotion();
-                DropEmotion(emotionToDrop.EmotionColor);
+                DropEmotion();
+                RemoveEmotion();
             }
         }
 
@@ -181,13 +180,6 @@ public class EmotionController : MonoBehaviour
         return emotionObject.transform;
     }
 
-    public void UnattachEmotion()
-    {
-        var emotionToDrop = _emotionHolders[EmotionsLast].GetChild(0);
-        _emotionHolders[EmotionsLast].GetChild(0).parent = null;
-        emotionToDrop.transform.position = transform.position + DirectionOfDrop * _dropRadius;
-    }
-
     private IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
     {
         while (!Helper.Reached(emotionToAttach.position, destTransform.position))
@@ -197,8 +189,10 @@ public class EmotionController : MonoBehaviour
         }
     }
 
-    public void DropEmotion(EmotionColor emotionColor)
+    public void DropEmotion()
     {
+        var emotionColor = _emotions[EmotionsLast].EmotionColor;
+        Destroy(_emotionHolders[EmotionsLast].GetChild(0).gameObject);
         _ = Instantiate(GetObjectBy(emotionColor), transform.position + DirectionOfDrop * _dropRadius, Quaternion.identity) 
         as GameObject;
         // emotionWorld.GetComponent<Rigidbody2D>().AddForce(randomDir * 40f, ForceMode2D.Impulse);

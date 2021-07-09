@@ -72,9 +72,8 @@ public class MobEmotionController : EmotionController
         Debug.Log("Drop Emotions After Death");
         for (int i = 0; i < transform.childCount; i++)
         {
-            var emotionToDrop = RemoveEmotion();
-            Destroy(transform.GetChild(i).gameObject);      // destroy internal emotion
-            DropEmotion(emotionToDrop.EmotionColor);
+            DropEmotion();
+            RemoveEmotion();
             Debug.Log(_emotions.Count);
         }
     }
