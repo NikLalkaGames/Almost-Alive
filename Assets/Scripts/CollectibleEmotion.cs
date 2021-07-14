@@ -120,7 +120,7 @@ public class CollectibleEmotion : MonoBehaviour
         _fsm.ChangeState(States.Idle);
     }
 
-    # region MonoBehaviour StateMachine
+    # region StateMachine Methods Invocation
 
     private void FixedUpdate()
     {
