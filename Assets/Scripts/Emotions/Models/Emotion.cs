@@ -2,7 +2,7 @@
 
 public class Emotion
 {
-    public EmotionColor Color { get; set; }
+    public EmotionColor Color { get; private set; }
     
-    public Emotion(EmotionColor ec) => Color = ec;
+    public Emotion(EmotionColor color) => Color = color;
 }

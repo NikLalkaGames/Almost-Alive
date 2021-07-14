@@ -60,7 +60,7 @@ public class MobEmotionController : EmotionController
         }
     }
 
-    protected new void Start()
+    protected override void Start()
     {
         base.Start();
         Handle(_consumableHuman.HumanColor);
