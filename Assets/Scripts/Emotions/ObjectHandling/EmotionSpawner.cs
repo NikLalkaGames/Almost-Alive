@@ -8,7 +8,7 @@ public class EmotionSpawner : MonoBehaviour
 
     void Start()
     {
-        EmotionWorld.Spawn(transform.position, emotionToSpawn);
+        EmotionWorld.TakeFromPoolAndPlace(transform.position, emotionToSpawn);
         Destroy(this.gameObject);
     }
 }

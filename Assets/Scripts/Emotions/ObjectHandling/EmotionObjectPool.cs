@@ -11,10 +11,10 @@ public class EmotionObjectPool : MonoBehaviour
     private List<EmotionWorld> _worldEmotions = new List<EmotionWorld>();
 
     //How many bullets do we start with when the game starts
-    private const int INITIAL_POOL_SIZE = 50;
+    private const int INITIAL_POOL_SIZE = 20;
 
     //Sometimes it can be good to put a limit to how many bullets we can isntantiate or we might get millions of them
-    private const int MAX_POOL_SIZE = 100;
+    private const int MAX_POOL_SIZE = 40;
 
     private EmotionWorld firstAvailable;
 
@@ -96,10 +96,10 @@ public class EmotionObjectPool : MonoBehaviour
         }
 
         //Remove it from the linked-list
-        EmotionWorld emotionWorld = firstAvailable;
+        EmotionWorld emotionToActivate = firstAvailable;
 
-        firstAvailable = emotionWorld.next;
+        firstAvailable = emotionToActivate.next;
 
-        return emotionWorld;
+        return emotionToActivate;
     }
 }

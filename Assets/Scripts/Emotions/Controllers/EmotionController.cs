@@ -107,7 +107,7 @@ public class EmotionController : MonoBehaviour
     
     public Transform AttachEmotion(Emotion emotion)
     {
-        var emotionToAttach = EmotionWorld.Spawn(transform.position, emotion).transform;
+        var emotionToAttach = EmotionWorld.TakeFromPoolAndPlace(transform.position, emotion).transform;
 
         emotionToAttach.SetParent(_emotionHolders[LastEmotion], true);
 
@@ -125,7 +125,7 @@ public class EmotionController : MonoBehaviour
         OnEmotionDroped?.Invoke(emotionToDeactivate.GetComponent<EmotionWorld>());
         
         // spawn new emotion object from object pool       
-        EmotionWorld.Spawn(transform.position + DirectionOfDrop * _dropRadius, _emotions[LastEmotion]);
+        EmotionWorld.TakeFromPoolAndPlace(transform.position + DirectionOfDrop * _dropRadius, _emotions[LastEmotion]);
     }
 
     protected IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
@@ -134,7 +134,7 @@ public class EmotionController : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
             
-            if (emotionToAttach == null)
+            if (emotionToAttach.parent == null)
             {
                 yield break;
             }

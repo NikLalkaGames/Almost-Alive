@@ -6,7 +6,7 @@ public class EmotionWorld : MonoBehaviour
 {
     # region Static
 
-    public static EmotionWorld Spawn(Vector3 positionToSpawn, Emotion emotion)
+    public static EmotionWorld TakeFromPoolAndPlace(Vector3 positionToSpawn, Emotion emotion)
     {
         EmotionWorld newEmotoin = EmotionObjectPool.Instance.GetEmotion();
 
