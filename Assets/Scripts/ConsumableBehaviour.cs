@@ -11,7 +11,7 @@ public class ConsumableBehaviour : MonoBehaviour
     private BoxCollider2D _boxCollider;
     private Rigidbody2D _rigidbody2d;
     private HumanController _humanController;
-    private Spawner _spawner;
+    [SerializeField] private Spawner _spawner;
 
     private Sprite _deadSprite;
     
@@ -37,20 +37,19 @@ public class ConsumableBehaviour : MonoBehaviour
         
         // DefineColorByEmotion();
 
-        if ( ( _spawner = GameObject.Find("Spawner").GetComponent<Spawner>() ) != null)
+        if (_spawner != null)
         {
             OnKilled += _spawner.GenerateMatchingHuman;
         }
         else
         {
-            throw new System.NullReferenceException("Spawner object not found");
+            Debug.LogWarning("Spawner object not found");
         }
     }
 
     public void Kill()
     {
-        if (OnKilled != null)
-            OnKilled.Invoke(HumanColor);
+        OnKilled?.Invoke(HumanColor);
 
         _spriteRenderer.sprite = DeadSprite;
         _boxCollider.enabled = false;
