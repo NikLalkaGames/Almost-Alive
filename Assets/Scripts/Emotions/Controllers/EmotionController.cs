@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EmotionController : MonoBehaviour
@@ -13,8 +14,14 @@ public class EmotionController : MonoBehaviour
 
     protected List<Transform> _emotionHolders = new List<Transform>(5);
 
-    protected int LastEmotion => _emotions.Count - 1;
+    public EmotionObjectPool _emotionPool;
 
+    
+    private const int MAX_EMOTIONS_AMOUNT = 5;
+
+    protected int LastEmotion => _emotions.Count - 1;
+    
+    
     #endregion
 
     #region Properties
@@ -28,9 +35,8 @@ public class EmotionController : MonoBehaviour
     #region Events
 
     public static event Action OnHandle;
-    public static event Action<EmotionColor> OnEmotionAdded;
-    public static event Action<EmotionColor> OnEmotionRemoved;
-    public static event Action<Vector3> OnEmotionDraw;
+    public static event Action OnEmotionAttached;
+    public static event Action<EmotionWorld> OnEmotionDroped;
 
     # endregion
 
@@ -38,25 +44,11 @@ public class EmotionController : MonoBehaviour
 
     protected virtual void Start() => CreateEmotionHolders();
 
-    public void Handle(Emotion emotion)
-    {
-        if (!_emotions.Exists(x => x.Color == emotion.Color))
-        {
-            var emotionToLerp = AddEmotion(emotion);
-
-            StartCoroutine( WaitForLerp(emotionToLerp, _emotionHolders[LastEmotion]) );
-        }
-
-        OnHandle?.Invoke();
-
-        Debug.Log("Emotions Count: " + _emotions.Count);
-    }
-
     protected void CreateEmotionHolders()
     {
         float angle = -180f;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < MAX_EMOTIONS_AMOUNT; i++)
         {          
             var direction = (Quaternion.Euler(0, 0, angle) * Vector3.right).normalized;
             
@@ -71,22 +63,26 @@ public class EmotionController : MonoBehaviour
             angle -= 45;
         }
     }
-
-    # region Emotions array changes
-
-    public bool EmotionExists(EmotionColor emotionColor)
+    
+    public bool Handle(Emotion emotion)
     {
-        foreach (var emotion in _emotions)
+        if ( !_emotions.Exists(e => e.Color == emotion.Color) )
         {
-            if (emotion != null && emotion.Color == emotionColor)
-            {
-                Debug.Log("This emotion is already exists!");
-                return true;
-            }
+            var emotionToLerp = AddEmotion(emotion);
+
+            StartCoroutine( LerpTo(emotionToLerp, _emotionHolders[LastEmotion]) );
+            
+            OnHandle?.Invoke();
+            
+            Debug.Log("Emotions Count: " + _emotions.Count);
+
+            return true;
         }
 
         return false;
     }
+
+    # region Emotions array changes
 
     protected Transform AddEmotion(Emotion emotion)
     {
@@ -96,10 +92,12 @@ public class EmotionController : MonoBehaviour
 
     protected Emotion RemoveEmotion()
     {
-        var emotionToDrop = _emotions[LastEmotion];
-        _emotions.Remove(emotionToDrop);
+        DropEmotion();
         
-        return emotionToDrop;
+        var droppedEmotion = _emotions[LastEmotion];
+        _emotions.Remove(droppedEmotion);
+
+        return droppedEmotion;
     }
 
     # endregion
@@ -109,7 +107,7 @@ public class EmotionController : MonoBehaviour
     
     public Transform AttachEmotion(Emotion emotion)
     {
-        var emotionToAttach = EmotionWorld.Spawn(transform.position, emotion);
+        var emotionToAttach = EmotionWorld.Spawn(transform.position, emotion).transform;
 
         emotionToAttach.SetParent(_emotionHolders[LastEmotion], true);
 
@@ -118,11 +116,16 @@ public class EmotionController : MonoBehaviour
 
     public void DropEmotion()
     {
+        var emotionToDeactivate = _emotionHolders[LastEmotion].GetChild(0);
+
+        emotionToDeactivate.SetParent(null, true);
+
+        emotionToDeactivate.gameObject.SetActive(false);
+        
+        OnEmotionDroped?.Invoke(emotionToDeactivate.GetComponent<EmotionWorld>());
+        
+        // spawn new emotion object from object pool       
         EmotionWorld.Spawn(transform.position + DirectionOfDrop * _dropRadius, _emotions[LastEmotion]);
-
-        Destroy(_emotionHolders[LastEmotion].GetChild(0).gameObject);
-
-        // emotionWorld.GetComponent<Rigidbody2D>().AddForce(randomDir * 40f, ForceMode2D.Impulse);
     }
 
     protected IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)

@@ -9,6 +9,6 @@ public class EmotionSpawner : MonoBehaviour
     void Start()
     {
         EmotionWorld.Spawn(transform.position, emotionToSpawn);
-        Destroy(gameObject);
+        Destroy(this.gameObject);
     }
 }

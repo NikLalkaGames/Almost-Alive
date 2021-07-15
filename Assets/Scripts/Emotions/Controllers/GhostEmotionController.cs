@@ -24,7 +24,7 @@ public class GhostEmotionController : EmotionController
         for (int i = 0; i < _emotions.Capacity; i++)
         {
             RemoveEmotion();
-            Destroy(_emotionHolders[i].GetChild(0).gameObject);
+            //Destroy(_emotionHolders[i].GetChild(0).gameObject);
         }
 
         _ghostHealth.UpdateHealth(+50);
@@ -38,7 +38,7 @@ public class GhostEmotionController : EmotionController
         {
             if (_emotions.Count > 0)         // prevent IndexOutOfRangeException for empty list
             {
-                DropEmotion();
+                //DropEmotion();
                 RemoveEmotion();
             }
         }

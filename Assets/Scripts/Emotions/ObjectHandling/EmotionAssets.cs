@@ -15,7 +15,7 @@ public class EmotionAssets : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null) Instance = this;
     }
 
     public Transform pfEmotionWorld;

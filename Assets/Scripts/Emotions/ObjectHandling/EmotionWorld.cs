@@ -1,33 +1,65 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
+
 
 public class EmotionWorld : MonoBehaviour
 {
+    # region Static
+
+    public static EmotionWorld Spawn(Vector3 positionToSpawn, Emotion emotion)
+    {
+        EmotionWorld newEmotoin = EmotionObjectPool.Instance.GetEmotion();
+
+        if (newEmotoin != null)
+        {
+            newEmotoin.gameObject.SetActive(true);
+            newEmotoin.Init(emotion);
+            newEmotoin.transform.position = positionToSpawn;
+            return newEmotoin;
+        }
+            
+        throw new NullReferenceException("Couldn't get a new emotion");
+        // Transform emotionTransform = Instantiate(EmotionAssets.Instance.pfEmotionWorld, position, Quaternion.identity).transform
+    }
+
+    #endregion
+
+    # region Fields
+
     [SerializeField] private Emotion _emotion;
+    
     private SpriteRenderer _spriteRenderer;
+    
     private Animator _animator;
 
+    private BoxCollider2D _internalCollider;
+    
     [SerializeField] private float _idleAnimationSpeed;
 
+    
+    [System.NonSerialized] public EmotionWorld next;    
+    
+    
     public Emotion Emotion => _emotion;
 
-    public static Transform Spawn(Vector2 position, Emotion emotion)
-    {
-        Transform emotionTransform = Instantiate(EmotionAssets.Instance.pfEmotionWorld, position, Quaternion.identity).transform;
+    #endregion
 
-        emotionTransform.GetComponent<EmotionWorld>().SetEmotion(emotion);
+    #region Events
 
-        return emotionTransform;
-    }
+    public static event Action<EmotionWorld> OnDeactivate;
+
+    #endregion
+
+    #region Methods
 
     private void Awake()
     {
+        _internalCollider = GetComponent<BoxCollider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
     }
 
-    public void SetEmotion(Emotion emotion)
+    public void Init(Emotion emotion)
     {
         _emotion = emotion;
         _spriteRenderer.sprite = emotion.GetSprite();
@@ -39,10 +71,14 @@ public class EmotionWorld : MonoBehaviour
         if (other.CompareTag("Player") || other.CompareTag("Consumable")) 
         {
             Debug.Log("Enter");
-            other.GetComponentInChildren<EmotionController>().Handle(_emotion);
-            this.gameObject.SetActive(false);
-        }
+            var isHandled = other.GetComponentInChildren<EmotionController>().Handle(_emotion);     // mock implementation
 
+            if (isHandled)
+            {
+                this.gameObject.SetActive(false);
+                OnDeactivate?.Invoke(this);
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -50,5 +86,6 @@ public class EmotionWorld : MonoBehaviour
         transform.position += new Vector3(0, _idleAnimationSpeed / 1000, 0);
     }
 
-
+    # endregion
+   
 }
