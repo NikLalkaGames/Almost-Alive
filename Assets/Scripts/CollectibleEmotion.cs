@@ -35,6 +35,12 @@ public class CollectibleEmotion : MonoBehaviour
     }
 
     StateMachine<States, StateDriverUnity> _fsm;
+
+    [SerializeField] private Emotion _emotion;
+    private SpriteRenderer _spriteRenderer;
+    [SerializeField] private EmotionColor color;
+
+    public Emotion Emotion => _emotion;
     
     #endregion
 
@@ -48,6 +54,9 @@ public class CollectibleEmotion : MonoBehaviour
 
         // emotion events subscription
         // EmotionController.OnEmotionAdded += ( () => Destroy(this.gameObject) ); //this.gameObject.SetActive(false) );
+
+
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
@@ -109,7 +118,7 @@ public class CollectibleEmotion : MonoBehaviour
             // check in update if touching nearest Collider 
             if (_internalCollider.IsTouching(_nearestTransform.GetComponent<BoxCollider2D>()))
             {
-                _closestEmotionController.Handle(EmotionColor);
+                //_closestEmotionController.Handle(EmotionColor);
                 Destroy(this.gameObject);
             }
         }

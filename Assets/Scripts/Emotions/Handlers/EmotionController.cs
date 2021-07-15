@@ -36,26 +36,13 @@ public class EmotionController : MonoBehaviour
 
     # region Internal Methods
 
-    public GameObject GetObjectBy(EmotionColor emotionColor)
-    {
-        switch (emotionColor)
-        {
-            default:
-            case EmotionColor.blue: return Resources.Load("ball_blue") as GameObject;
-            case EmotionColor.green: return Resources.Load("ball_green") as GameObject;
-            case EmotionColor.pink: return Resources.Load("ball_pink") as GameObject;
-            case EmotionColor.purple: return Resources.Load("ball_purple") as GameObject;
-            case EmotionColor.yellow: return Resources.Load("ball_yellow") as GameObject;
-        }
-    }
-
     protected virtual void Start() => CreateEmotionHolders();
 
-    public void Handle(EmotionColor emotionColor)
+    public void Handle(Emotion emotion)
     {
-        if (!_emotions.Exists(x => x.Color == emotionColor))
+        if (!_emotions.Exists(x => x.Color == emotion.Color))
         {
-            var emotionToLerp = AddEmotion(emotionColor);
+            var emotionToLerp = AddEmotion(emotion);
 
             StartCoroutine( WaitForLerp(emotionToLerp, _emotionHolders[LastEmotion]) );
         }
@@ -101,13 +88,10 @@ public class EmotionController : MonoBehaviour
         return false;
     }
 
-    protected Transform AddEmotion(EmotionColor emotionColor)
+    protected Transform AddEmotion(Emotion emotion)
     {
-        var emotionToAdd = new Emotion(emotionColor);
-        _emotions.Add(emotionToAdd);
-
-        var attachedEmotionTransform = AttachEmotion(emotionColor);
-        return attachedEmotionTransform;
+        _emotions.Add(emotion);
+        return AttachEmotion(emotion);
     }
 
     protected Emotion RemoveEmotion()
@@ -123,9 +107,9 @@ public class EmotionController : MonoBehaviour
 
     # region Emotion Transform methods
     
-    public Transform AttachEmotion(EmotionColor emotionColor)
+    public Transform AttachEmotion(Emotion emotion)
     {
-        var emotionToAttach = Instantiate(GetObjectBy(emotionColor), transform.position, Quaternion.identity).transform;
+        var emotionToAttach = EmotionWorld.Spawn(transform.position, emotion);
 
         emotionToAttach.SetParent(_emotionHolders[LastEmotion], true);
 
@@ -134,10 +118,7 @@ public class EmotionController : MonoBehaviour
 
     public void DropEmotion()
     {
-        var emotionColor = _emotions[LastEmotion].Color;
-
-        _ = Instantiate(GetObjectBy(emotionColor), transform.position + DirectionOfDrop * _dropRadius, Quaternion.identity)
-        as GameObject;
+        EmotionWorld.Spawn(transform.position + DirectionOfDrop * _dropRadius, _emotions[LastEmotion]);
 
         Destroy(_emotionHolders[LastEmotion].GetChild(0).gameObject);
 

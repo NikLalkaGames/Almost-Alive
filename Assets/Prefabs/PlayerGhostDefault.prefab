@@ -377,10 +377,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4054309704232783987}
     m_Modifications:
-    - target: {fileID: 5462713775067153722, guid: 824a8ad35b22dc84e9bcc3881e46b70a, type: 3}
-      propertyPath: _dropRadius
-      value: 1.2
-      objectReference: {fileID: 0}
     - target: {fileID: 5462713775067153724, guid: 824a8ad35b22dc84e9bcc3881e46b70a, type: 3}
       propertyPath: m_Name
       value: EmotionHolder
@@ -429,8 +425,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5462713775067153722, guid: 824a8ad35b22dc84e9bcc3881e46b70a, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 824a8ad35b22dc84e9bcc3881e46b70a, type: 3}
 --- !u!1 &1157382658 stripped
 GameObject:

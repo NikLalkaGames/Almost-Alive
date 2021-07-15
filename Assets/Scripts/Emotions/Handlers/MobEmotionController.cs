@@ -63,7 +63,7 @@ public class MobEmotionController : EmotionController
     protected override void Start()
     {
         base.Start();
-        Handle(_consumableHuman.HumanColor);
+        //Handle(_consumableHuman.HumanColor);
     }
     
     public void DropEmotionsAfterDeath(EmotionColor emotionColor)
