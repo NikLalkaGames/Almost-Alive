@@ -18,18 +18,18 @@ public class EmotionObjectPool : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log(transform);
         if (Instance == null) Instance = this;
 
         EmotionController.OnEmotionDetached += ConfigureDeactivatedObject;
         EmotionWorld.OnDeactivate += ConfigureDeactivatedObject;
-    }
 
-    private void Start()
-    {
         if (EmotionWorldPrefab == null)
         {
             Debug.LogError("Need a reference to the EmotionWorld prefab");
         }
+
+        //
 
         for (int i = 0; i < INITIAL_POOL_SIZE; i++)
         {
