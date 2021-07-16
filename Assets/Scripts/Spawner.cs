@@ -67,11 +67,11 @@ public class Spawner : MonoBehaviour
     {
         switch (killedColor)
         {
-            case EmotionColor.pink    :    var humanPink = Generator("Human");   humanPink.GetComponent<ConsumableBehaviour>().humanColor = EmotionColor.pink;      break;
-            case EmotionColor.blue    :    var humanBlue = Generator("Human");   humanBlue.GetComponent<ConsumableBehaviour>().humanColor = EmotionColor.blue;      break;
-            case EmotionColor.yellow  :    var humanYellow = Generator("Human"); humanYellow.GetComponent<ConsumableBehaviour>().humanColor = EmotionColor.yellow;  break;
-            case EmotionColor.purple  :    var humanPurple = Generator("Human"); humanPurple.GetComponent<ConsumableBehaviour>().humanColor = EmotionColor.purple;  break;
-            case EmotionColor.green   :    var humanGreen = Generator("Human");  humanGreen.GetComponent<ConsumableBehaviour>().humanColor = EmotionColor.green;    break;
+            case EmotionColor.pink    :    var humanPink = Generator("Human");   humanPink.GetComponent<ConsumableBehaviour>().HumanColor = EmotionColor.pink;      break;
+            case EmotionColor.blue    :    var humanBlue = Generator("Human");   humanBlue.GetComponent<ConsumableBehaviour>().HumanColor = EmotionColor.blue;      break;
+            case EmotionColor.yellow  :    var humanYellow = Generator("Human"); humanYellow.GetComponent<ConsumableBehaviour>().HumanColor = EmotionColor.yellow;  break;
+            case EmotionColor.purple  :    var humanPurple = Generator("Human"); humanPurple.GetComponent<ConsumableBehaviour>().HumanColor = EmotionColor.purple;  break;
+            case EmotionColor.green   :    var humanGreen = Generator("Human");  humanGreen.GetComponent<ConsumableBehaviour>().HumanColor = EmotionColor.green;    break;
         }
         Debug.Log("Revival of human is successful (ReInstantiation)");
     }

@@ -23,7 +23,7 @@ public class GhostMovement : MonoBehaviour
     private Vector2 _movement;
     private Vector2 _mouseTarget;
 
-    public Vector2 LookDirection =>_lookDirection;
+    public Vector2 LookDirection => _lookDirection;
     public Vector2 MouseTarget => _mouseTarget;
 
     # endregion
@@ -47,13 +47,6 @@ public class GhostMovement : MonoBehaviour
         GetMovementInput();
         GetMouseInput();
         SetLookDirection(); // based on mouse input
-
-        // TODO: move later emotion drop to emotion controller 
-        // emotion drop
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            _emotionController.Handle(EmotionColor.none);
-        }
 
         // Debug.DrawLine(transform.position, mouseTarget, Color.red);
         Debug.DrawRay(transform.position, _lookDirection, Color.red);

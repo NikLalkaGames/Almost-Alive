@@ -5,6 +5,5 @@
     pink,
     purple,
     yellow,
-    white,
-    none
+    white
 }
