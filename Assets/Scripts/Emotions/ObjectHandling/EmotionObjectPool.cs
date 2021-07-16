@@ -14,7 +14,7 @@ public class EmotionObjectPool : MonoBehaviour
 
     private const int MAX_POOL_SIZE = 40;
 
-    private EmotionWorld firstAvailable;
+    private EmotionWorld firstAvailable;        // first available deactivated object in list
 
     private void Awake()
     {
@@ -28,7 +28,7 @@ public class EmotionObjectPool : MonoBehaviour
     {
         if (EmotionWorldPrefab == null)
         {
-            Debug.LogError("Need a reference to the bullet prefab");
+            Debug.LogError("Need a reference to the EmotionWorld prefab");
         }
 
         for (int i = 0; i < INITIAL_POOL_SIZE; i++)

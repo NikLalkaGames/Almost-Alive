@@ -13,7 +13,7 @@ public class EmotionController : MonoBehaviour
 
     protected List<Transform> _emotionHolders = new List<Transform>(5);
 
-    [SerializeField] private Transform _emotionObjectPool;
+    private Transform _emotionObjectPool;
     
     private const int MAX_EMOTIONS_AMOUNT = 5;
 
@@ -39,7 +39,17 @@ public class EmotionController : MonoBehaviour
 
     # region Internal Methods
 
-    protected virtual void Start() => CreateEmotionHolders();
+    protected virtual void Start()
+    {
+        CreateEmotionHolders();
+
+        if (EmotionObjectPool.Instance == null)
+        {
+            Debug.LogError($"Need emotion object pool gameObject on scene");
+        }
+
+        _emotionObjectPool = EmotionObjectPool.Instance.transform;
+    }
 
     protected void CreateEmotionHolders()
     {
