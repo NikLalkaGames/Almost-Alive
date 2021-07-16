@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EmotionAssets : MonoBehaviour
 {
+    public static EmotionAssets Instance { get; private set; }
+    
     [System.Serializable]
     public class EmotionAsset
     {
@@ -11,7 +13,6 @@ public class EmotionAssets : MonoBehaviour
         public RuntimeAnimatorController animController;
     }
     
-    public static EmotionAssets Instance { get; private set; }
 
     private void Awake()
     {

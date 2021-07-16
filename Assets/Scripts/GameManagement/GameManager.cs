@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     private void Start() 
     {
-        StartCoroutine(SceneLoader.instance.LoadScene("EntryMenu", 0.5f));
+        StartCoroutine(SceneLoader.instance.LoadScene("MainMenu", 0.5f));
     }
 
     public void RefreshGamingStats()

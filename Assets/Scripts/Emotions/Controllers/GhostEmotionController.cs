@@ -24,7 +24,6 @@ public class GhostEmotionController : EmotionController
         for (int i = 0; i < _emotions.Capacity; i++)
         {
             RemoveEmotion();
-            //Destroy(_emotionHolders[i].GetChild(0).gameObject);
         }
 
         _ghostHealth.UpdateHealth(+50);
@@ -33,13 +32,11 @@ public class GhostEmotionController : EmotionController
 
     private void Update()
     {
-        // Drop emotion logic
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (_emotions.Count > 0)         // prevent IndexOutOfRangeException for empty list
+            if (_emotions.Count > 0)
             {
-                //DropEmotion();
-                RemoveEmotion();
+                RemoveAndThrowEmotion();
             }
         }
 
@@ -47,7 +44,7 @@ public class GhostEmotionController : EmotionController
         {
             if (_emotions.Count == 5)
             {
-                // show ui and replace if statements
+                // TODO: show ui and replace if statements
                 FiveSpheres();
             }
         }

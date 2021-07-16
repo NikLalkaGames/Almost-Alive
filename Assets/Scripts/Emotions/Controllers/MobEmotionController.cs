@@ -70,10 +70,11 @@ public class MobEmotionController : EmotionController
     public void DropEmotionsAfterDeath(EmotionColor emotionColor)
     {
         Debug.Log("Drop Emotions After Death");
-        for (int i = 0; i < transform.childCount; i++)
+
+        var emotionsCount = LastEmotion;
+        for (int i = 0; i < emotionsCount; i++)
         {
-            DropEmotion();
-            RemoveEmotion();
+            RemoveAndThrowEmotion();
             Debug.Log(_emotions.Count);
         }
     }

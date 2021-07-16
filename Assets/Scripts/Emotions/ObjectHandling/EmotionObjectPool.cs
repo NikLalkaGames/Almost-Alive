@@ -10,10 +10,8 @@ public class EmotionObjectPool : MonoBehaviour
 
     private List<EmotionWorld> _worldEmotions = new List<EmotionWorld>();
 
-    //How many bullets do we start with when the game starts
     private const int INITIAL_POOL_SIZE = 20;
 
-    //Sometimes it can be good to put a limit to how many bullets we can isntantiate or we might get millions of them
     private const int MAX_POOL_SIZE = 40;
 
     private EmotionWorld firstAvailable;
@@ -22,7 +20,7 @@ public class EmotionObjectPool : MonoBehaviour
     {
         if (Instance == null) Instance = this;
 
-        EmotionController.OnEmotionDroped += ConfigureDeactivatedObject;
+        EmotionController.OnEmotionDetached += ConfigureDeactivatedObject;
         EmotionWorld.OnDeactivate += ConfigureDeactivatedObject;
     }
 
@@ -33,29 +31,21 @@ public class EmotionObjectPool : MonoBehaviour
             Debug.LogError("Need a reference to the bullet prefab");
         }
 
-
-        //Instantiate new bullets and put them in a list for later use
         for (int i = 0; i < INITIAL_POOL_SIZE; i++)
         {
             GenerateEmotion();
         }
 
-
-        //Create the linked-list
         firstAvailable = _worldEmotions[0];
 
-        //Each bullet points to the next
         for (int i = 0; i < _worldEmotions.Count - 1; i++)
         {
             _worldEmotions[i].next = _worldEmotions[i + 1];
         }
 
-        //The last one terminates the linked-list
         _worldEmotions[_worldEmotions.Count - 1].next = null;
     }
 
-
-    //Generate a single new bullet and put it in the list
     private void GenerateEmotion()
     {
         var newEmotion = Instantiate(EmotionWorldPrefab, transform);

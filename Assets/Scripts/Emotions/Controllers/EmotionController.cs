@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class EmotionController : MonoBehaviour
@@ -14,14 +13,12 @@ public class EmotionController : MonoBehaviour
 
     protected List<Transform> _emotionHolders = new List<Transform>(5);
 
-    public EmotionObjectPool _emotionPool;
-
+    [SerializeField] private Transform _emotionObjectPool;
     
     private const int MAX_EMOTIONS_AMOUNT = 5;
 
     protected int LastEmotion => _emotions.Count - 1;
-    
-    
+
     #endregion
 
     #region Properties
@@ -36,7 +33,7 @@ public class EmotionController : MonoBehaviour
 
     public static event Action OnHandle;
     public static event Action OnEmotionAttached;
-    public static event Action<EmotionWorld> OnEmotionDroped;
+    public static event Action<EmotionWorld> OnEmotionDetached;
 
     # endregion
 
@@ -52,13 +49,13 @@ public class EmotionController : MonoBehaviour
         {          
             var direction = (Quaternion.Euler(0, 0, angle) * Vector3.right).normalized;
             
-            GameObject emotionHolder = Instantiate(new GameObject(), transform.position, Quaternion.identity)
-            as GameObject;
+            var emotionHolder = Instantiate(new GameObject(), 
+                                            transform.position + direction, 
+                                            Quaternion.identity, 
+                                            transform)
+                                            .transform;
 
-            emotionHolder.transform.SetParent(this.transform, true);
-            emotionHolder.transform.position = transform.position + direction;
-
-            _emotionHolders.Add(emotionHolder.transform);
+            _emotionHolders.Add(emotionHolder);
 
             angle -= 45;
         }
@@ -87,17 +84,28 @@ public class EmotionController : MonoBehaviour
     protected Transform AddEmotion(Emotion emotion)
     {
         _emotions.Add(emotion);
-        return AttachEmotion(emotion);
+
+        var attachedEmotion = AttachEmotion(emotion);
+        
+        return attachedEmotion;
     }
 
-    protected Emotion RemoveEmotion()
+    protected Transform RemoveEmotion()
     {
-        DropEmotion();
+        var unattachedEmotion = UnattachEmotion();
         
-        var droppedEmotion = _emotions[LastEmotion];
-        _emotions.Remove(droppedEmotion);
+        _emotions.RemoveAt(LastEmotion);
 
-        return droppedEmotion;
+        return unattachedEmotion;
+    }
+
+    protected Transform RemoveAndThrowEmotion()
+    {
+        EmotionWorld.TakeFromPoolAndPlace(transform.position + DirectionOfDrop * _dropRadius, _emotions[LastEmotion]);
+        
+        var removedEmotion = RemoveEmotion();
+
+        return removedEmotion;
     }
 
     # endregion
@@ -114,18 +122,18 @@ public class EmotionController : MonoBehaviour
         return emotionToAttach;
     }
 
-    public void DropEmotion()
+    public Transform UnattachEmotion()
     {
         var emotionToDeactivate = _emotionHolders[LastEmotion].GetChild(0);
 
-        emotionToDeactivate.SetParent(null, true);
-
         emotionToDeactivate.gameObject.SetActive(false);
         
-        OnEmotionDroped?.Invoke(emotionToDeactivate.GetComponent<EmotionWorld>());
-        
-        // spawn new emotion object from object pool       
-        EmotionWorld.TakeFromPoolAndPlace(transform.position + DirectionOfDrop * _dropRadius, _emotions[LastEmotion]);
+        emotionToDeactivate.SetParent(_emotionObjectPool, true);          // return to pool or can fully unparent
+
+        // send notification to object pool to configure new disabled emotion
+        OnEmotionDetached?.Invoke(emotionToDeactivate.GetComponent<EmotionWorld>());
+
+        return emotionToDeactivate;
     }
 
     protected IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
@@ -134,7 +142,7 @@ public class EmotionController : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
             
-            if (emotionToAttach.parent == null)
+            if (emotionToAttach.parent == _emotionObjectPool)     // can be null if want to fully unparent
             {
                 yield break;
             }
