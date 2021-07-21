@@ -21,14 +21,14 @@ public class EmotionColliderDetector : ColliderDetector
         StopCoroutine( _coroutine );
     }
 
-    protected IEnumerator MagnetTo(Transform MagnetObject, Transform MagnetToObject)
+    protected IEnumerator MagnetTo(Transform magnetFrom, Transform magnetTo)
     {
-        var speed = 0f;
-        while (!Helper.Reached(MagnetObject.position, MagnetToObject.position))
+        float pickUpSpeed = 0f;
+        while (!Helper.Reached(magnetFrom.position, magnetTo.position))
         {
             yield return new WaitForEndOfFrame();
-            speed += 0.01f;
-            MagnetObject.position = Vector2.MoveTowards(MagnetObject.position, MagnetToObject.position, speed * Time.deltaTime);   //transform from player position to 
+            pickUpSpeed = 1.5f - Vector2.Distance(magnetFrom.position, magnetTo.position);
+            magnetFrom.position = Vector2.MoveTowards(magnetFrom.position, magnetTo.position, pickUpSpeed * Time.deltaTime);   //transform from player position to 
         }
     }
 }
