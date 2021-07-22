@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace ColliderDetecting.Interfaces
+namespace Core.CollisionDetecting.Interfaces
 {
-    interface IColliderDetector
+    internal interface IColliderDetector
     {
         void OnTriggerEnter2D(Collider2D other);
         void OnTriggerExit2D(Collider2D other);

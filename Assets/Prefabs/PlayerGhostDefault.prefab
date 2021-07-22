@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1de7efec7580e946b7353ffe72ac632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dropRadius: 1.5
+  dropRadius: 1.5
 --- !u!1 &1757589164
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,9 +176,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867f9c6e13e72b942aaab4aa7f7adc58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
-  _defaultSpeed: 2
-  _speedModifier: 1
+  speed: 2
+  defaultSpeed: 2
+  speedModifier: 1
 --- !u!50 &1237543985802322674
 Rigidbody2D:
   serializedVersion: 4
@@ -238,10 +238,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 384b5340f9ee6a54fa5d7d5538847973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
-  _healthReductionValue: 0.017
-  _timeInvincible: 1
-  _invincibleTimer: 0
+  maxHealth: 100
+  healthReductionValue: 0.017
+  timeInvincible: 1
+  invincibleTimer: 0
 --- !u!114 &-3426061447729375430
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GhostBehaviours;
 using UnityEngine;
 
 public class ProjectileController : MonoBehaviour

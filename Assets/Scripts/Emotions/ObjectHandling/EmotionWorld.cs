@@ -1,4 +1,7 @@
 ﻿using System;
+using Emotions.Controllers;
+using Emotions.Models;
+using Emotions.ObjectHandling;
 using UnityEngine;
 
 

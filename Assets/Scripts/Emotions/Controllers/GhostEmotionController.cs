@@ -1,51 +1,46 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using GhostBehaviours;
 using UnityEngine;
 
-public class GhostEmotionController : EmotionController
+namespace Emotions.Controllers
 {
-    private GhostMovement _ghostMovement;
-
-    private GhostHealth _ghostHealth;
-    
-    protected override Vector3 DirectionOfDrop => _ghostMovement.LookDirection;
-
-    protected override void Start()
+    public class GhostEmotionController : EmotionController
     {
-        base.Start();
-        _ghostMovement = GetComponentInParent<GhostMovement>();
-        _ghostHealth = GetComponentInParent<GhostHealth>();
-    }
+        protected override Vector3 DirectionOfDrop => GhostMovement.Instance.LookDirection;
 
-    protected void FiveSpheres()
-    {
-        Debug.Log("5 sphere heal");
-
-        for (int i = 0; i < _emotions.Capacity; i++)
+        public static event Action<float> OnGhostHeal;
+        public static event Action<float> OnGhostFatigue;
+        
+        private void FiveSpheres()
         {
-            RemoveEmotion();
-        }
+            Debug.Log("5 sphere heal");
 
-        _ghostHealth.UpdateHealth(+50);
-        _ghostHealth.IncreaseHealthReduction();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            if (_emotions.Count > 0)
+            for (var i = 0; i < _emotions.Capacity; i++)
             {
-                RemoveAndThrowEmotion();
+                RemoveEmotion();
             }
+
+            OnGhostHeal?.Invoke(+50);
+            OnGhostFatigue?.Invoke(default);
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        private void Update()
         {
-            if (_emotions.Count == 5)
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                // TODO: show ui and replace if statements
-                FiveSpheres();
+                if (_emotions.Count > 0)
+                {
+                    RemoveAndThrowEmotion();
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (_emotions.Count == 5)
+                {
+                    // TODO: show ui and replace if statements
+                    FiveSpheres();
+                }
             }
         }
     }

@@ -1,24 +1,24 @@
 using System.Collections;
 using UnityEngine;
 
-namespace ColliderDetecting
+namespace Core.CollisionDetecting
 {
     public class EmotionColliderDetector : ColliderDetector
     {
         public override void OnTriggerEnter2D(Collider2D other) 
         {   
-            _coroutine = MagnetTo(other.transform, transform);
+            coroutine = MagnetTo(other.transform, transform);
 
             if (other.CompareTag("Emotion") )
             {
-                StartCoroutine( _coroutine ); //fix multiple TriggerEnter
+                StartCoroutine( coroutine ); //fix multiple TriggerEnter
             }
         }
 
         public override void OnTriggerExit2D(Collider2D other) 
         {
             Debug.Log("StopCoroutine");
-            StopCoroutine( _coroutine );
+            StopCoroutine( coroutine );
         }
 
         private static IEnumerator MagnetTo(Transform magnetFrom, Transform magnetTo)
@@ -26,7 +26,7 @@ namespace ColliderDetecting
             var magnetFromPosition = magnetFrom.position;   // cached
             var magnetToPosition = magnetTo.position;       // cached
 
-            while (!Helper.Reached(magnetFrom.position, magnetTo.position))
+            while (!Helpers.Helpers.Reached(magnetFrom.position, magnetTo.position))
             {
                 yield return new WaitForEndOfFrame();
 

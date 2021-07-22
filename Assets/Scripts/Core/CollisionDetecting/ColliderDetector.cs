@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections;
-using ColliderDetecting.Interfaces;
+﻿using System.Collections;
+using Core.CollisionDetecting.Interfaces;
 using UnityEngine;
 
-namespace ColliderDetecting
+namespace Core.CollisionDetecting
 {
     public abstract class ColliderDetector : MonoBehaviour, IColliderDetector
     {
-        protected IEnumerator _coroutine;
+        protected IEnumerator coroutine;
 
         public abstract void OnTriggerEnter2D(Collider2D other);
         public abstract void OnTriggerExit2D(Collider2D other);
