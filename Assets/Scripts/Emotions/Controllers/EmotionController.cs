@@ -99,7 +99,7 @@ namespace Emotions.Controllers
             return false;
         }
 
-        # region Emotions array changes
+        # region Emotions data manipulation
 
         protected Transform AddEmotion(Emotion emotion)
         {
