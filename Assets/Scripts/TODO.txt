@@ -1,0 +1,9 @@
+﻿ - fix orbs animation 
+ - Emotion LerpOut (Drop) Behaviour
+ - Try to find better way of disabling and enabling Colliders of emotions
+  
+ - Add collider detecting of mobs (ghost enemies collider detector)
+ - Combat behaviour for ghost
+ - ConsumableBehaviour response to player Combat behaviour
+ 
+ - Start creating AI for humans
