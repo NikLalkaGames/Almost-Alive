@@ -49,8 +49,6 @@ public class EmotionWorld : MonoBehaviour
 
     #region Events
 
-    public static event Func<Emotion, bool> OnHandled;
-    
     /// <summary>
     /// Configure deactivated emotion callback invoker after emotion removing from emotion world       
     /// </summary>

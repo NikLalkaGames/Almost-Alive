@@ -43,7 +43,7 @@ namespace Emotions.Controllers
         /// <summary>
         /// Little humans event for defining colors on handle
         /// </summary>
-        public static event Action OnHandle;
+        public static event Action OnHandle;        // TODO: Debug and understand how it properly work
         
         /// <summary>
         /// Configure deactivated emotion callback invoker after emotion detaching    
@@ -56,7 +56,7 @@ namespace Emotions.Controllers
 
         protected virtual void Awake()
         {
-            EmotionColliderDetector.OnEmotionCheck += EmotionExists;
+            // EmotionColliderDetector.OnEmotionCheck += EmotionExists;
         }
 
         protected virtual void Start()
@@ -111,8 +111,8 @@ namespace Emotions.Controllers
             return false;
         }
 
-        public bool EmotionExists(Collider2D other) => 
-            _emotions.Exists(e => e.Color == other.GetComponent<EmotionWorld>().Emotion.Color);
+        public bool EmotionExists(Emotion emotion) => 
+            _emotions.Exists(e => e.Color == emotion.Color);
         
 
         # region Emotions data manipulation
