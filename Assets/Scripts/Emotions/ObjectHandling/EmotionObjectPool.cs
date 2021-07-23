@@ -16,33 +16,11 @@ namespace Emotions.ObjectHandling
 
         private const int MAX_POOL_SIZE = 40;
 
-<<<<<<< HEAD
-    private void Awake()
-    {
-        Debug.Log(transform);
-        if (Instance == null) Instance = this;
-
-        EmotionController.OnEmotionDetached += ConfigureDeactivatedObject;
-        EmotionWorld.OnDeactivate += ConfigureDeactivatedObject;
-
-        if (EmotionWorldPrefab == null)
-        {
-            Debug.LogError("Need a reference to the EmotionWorld prefab");
-        }
-
-        //
-
-        for (int i = 0; i < INITIAL_POOL_SIZE; i++)
-        {
-            GenerateEmotion();
-        }
-=======
         private EmotionWorld _firstAvailable;        // first available deactivated object in list
 
         private void Awake()
         {
             if (Instance == null) Instance = this;
->>>>>>> refactoring/Colliders
 
             EmotionController.OnEmotionDetached += ConfigureDeactivatedObject;
             EmotionWorld.OnDeactivate += ConfigureDeactivatedObject;
