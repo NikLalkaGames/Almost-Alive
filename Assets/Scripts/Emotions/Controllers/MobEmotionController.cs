@@ -1,99 +1,108 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using static Helper;
+﻿using Emotions.Models;
 using UnityEngine;
+using static Core.Helpers.Helpers;
 
-public class MobEmotionController : EmotionController
+namespace Emotions.Controllers
 {
-    # region Fields
+    public class MobEmotionController : EmotionController
+    {
+        # region Fields
     
-    private ConsumableBehaviour _consumableHuman;
+        private ConsumableBehaviour _consumableHuman;
 
-    #endregion
+        #endregion
 
-    #region Properties
+        #region Properties
 
-    protected override Vector3 DirectionOfDrop => GetRandomDir();
+        protected override Vector3 DirectionOfDrop => GetRandomDir();
         
-    # endregion 
+        # endregion 
 
-    #region SpriteGetters
+        #region SpriteGetters
 
-    public Sprite GetHumanSprite(EmotionColor color)
-    {
-        switch (color)
+        public static Sprite GetHumanSprite(EmotionColor color)
         {
-            default:
-            case EmotionColor.blue: return Resources.Load<Sprite>("blue");
-            case EmotionColor.green: return Resources.Load<Sprite>("green");
-            case EmotionColor.pink: return Resources.Load<Sprite>("pink");
-            case EmotionColor.purple: return Resources.Load<Sprite>("purple");
-            case EmotionColor.yellow: return Resources.Load<Sprite>("yellow");
-            case EmotionColor.white: return Resources.Load<Sprite>("white");
+            switch (color)
+            {
+                default:
+                case EmotionColor.blue: return Resources.Load<Sprite>("blue");
+                case EmotionColor.green: return Resources.Load<Sprite>("green");
+                case EmotionColor.pink: return Resources.Load<Sprite>("pink");
+                case EmotionColor.purple: return Resources.Load<Sprite>("purple");
+                case EmotionColor.yellow: return Resources.Load<Sprite>("yellow");
+                case EmotionColor.white: return Resources.Load<Sprite>("white");
+            }
         }
-    }
 
-    public Sprite GetDeadSprite(EmotionColor color)
-    {
-        switch (color)
+        public static Sprite GetDeadSprite(EmotionColor color)
         {
-            default:
-            case EmotionColor.blue: return Resources.Load<Sprite>("blue_dead");
-            case EmotionColor.green: return Resources.Load<Sprite>("green_dead");
-            case EmotionColor.pink: return Resources.Load<Sprite>("pink_dead");
-            case EmotionColor.purple: return Resources.Load<Sprite>("purple_dead");
-            case EmotionColor.yellow: return Resources.Load<Sprite>("yellow_dead");
-            case EmotionColor.white: return Resources.Load<Sprite>("white_dead");
+            switch (color)
+            {
+                default:
+                case EmotionColor.blue: return Resources.Load<Sprite>("blue_dead");
+                case EmotionColor.green: return Resources.Load<Sprite>("green_dead");
+                case EmotionColor.pink: return Resources.Load<Sprite>("pink_dead");
+                case EmotionColor.purple: return Resources.Load<Sprite>("purple_dead");
+                case EmotionColor.yellow: return Resources.Load<Sprite>("yellow_dead");
+                case EmotionColor.white: return Resources.Load<Sprite>("white_dead");
+            }
         }
-    }
 
-    # endregion
+        # endregion
 
-    private void Awake()
-    {
-        _consumableHuman = GetComponentInParent<ConsumableBehaviour>();
+        private void Awake()
+        {
+            _consumableHuman = GetComponentInParent<ConsumableBehaviour>();
         
-        if (_consumableHuman != null)
-        {
-            OnHandle += DefineSkinColor;
-            ConsumableBehaviour.OnKilled += DropEmotionsAfterDeath;
+            if (_consumableHuman != null)
+            {
+                OnHandle += DefineSkinColor;
+                ConsumableBehaviour.OnKilled += DropEmotionsAfterDeath;
+            }
         }
-    }
 
-    protected override void Start()
-    {
-        base.Start();
-        var humanEmotion = new Emotion(_consumableHuman.HumanColor);
-        Handle(humanEmotion);
-    }
-    
-    public void DropEmotionsAfterDeath(EmotionColor emotionColor)
-    {
-        Debug.Log("Drop Emotions After Death");
-
-        var emotionsCount = LastEmotion;
-        for (int i = 0; i < emotionsCount; i++)
+        protected override void Start()
         {
-            RemoveAndThrowEmotion();
-            Debug.Log(_emotions.Count);
+            base.Start();
+            var humanEmotion = new Emotion(_consumableHuman.HumanColor);
+            Handle(humanEmotion);
         }
-    }
-
-    public void DefineSkinColor()
-    {
-        if (_emotions.Count <= 1)
+        
+        /// <summary>
+        /// Drop emotions callback for humans event OnKilled
+        /// </summary>
+        /// <param name="emotionColor"></param>
+        public void DropEmotionsAfterDeath(EmotionColor emotionColor)
         {
-            _consumableHuman.HumanSprite = GetHumanSprite(_consumableHuman.HumanColor);
-            _consumableHuman.DeadSprite = GetDeadSprite(_consumableHuman.HumanColor);
-            // change animation controller of human
-        }
-        else
-        {
-            _consumableHuman.HumanColor = EmotionColor.white;
-            _consumableHuman.HumanSprite = GetHumanSprite(_consumableHuman.HumanColor);
-            _consumableHuman.DeadSprite = GetDeadSprite(_consumableHuman.HumanColor);
-            // change animation controller of human
-        }
-    }
+            Debug.Log("Drop Emotions After Death");
 
+            var emotionsCount = LastEmotion;
+            for (int i = 0; i < emotionsCount; i++)
+            {
+                RemoveAndThrowEmotion();
+                Debug.Log(_emotions.Count);
+            }
+        }
+        
+        /// <summary>
+        /// Little humans callback for defining colors 
+        /// </summary>
+        public void DefineSkinColor()
+        {
+            if (_emotions.Count <= 1)
+            {
+                _consumableHuman.HumanSprite = GetHumanSprite(_consumableHuman.HumanColor);
+                _consumableHuman.DeadSprite = GetDeadSprite(_consumableHuman.HumanColor);
+                // change animation controller of human
+            }
+            else
+            {
+                _consumableHuman.HumanColor = EmotionColor.white;
+                _consumableHuman.HumanSprite = GetHumanSprite(_consumableHuman.HumanColor);
+                _consumableHuman.DeadSprite = GetDeadSprite(_consumableHuman.HumanColor);
+                // change animation controller of human
+            }
+        }
+
+    }
 }

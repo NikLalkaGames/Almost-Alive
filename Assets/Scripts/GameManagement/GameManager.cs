@@ -1,40 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using GhostBehaviours;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using TMPro;
 
-public class GameManager : MonoBehaviour
+namespace GameManagement
 {
-    public static GameManager instance = null;
-    
-    [SerializeField] private SceneLoader _sceneLoader;
-
-    private GhostMovement _ghostControl;
-
-    private GameObject _playerUI;
-
-    private void Awake() 
+    public class GameManager : MonoBehaviour
     {
-        Debug.Log("GameManager Awake");
-        if (instance == null) instance = this;
-        Application.targetFrameRate = 60;
-        DontDestroyOnLoad(this.gameObject);
-    }
+        public static GameManager Instance { get; set; } = null;
 
-    private void Start() 
-    {
-        StartCoroutine(SceneLoader.instance.LoadScene("MainMenu", 0.5f));
-    }
+        [SerializeField] private SceneLoader _sceneLoader;
 
-    public void RefreshGamingStats()
-    {
-        // may be more code
-    }
+        private GhostMovement _ghostControl;
 
-    private void RefreshPlayerData()
-    {
+        private GameObject _playerUI;
 
+        private void Awake() 
+        {
+            Debug.Log("GameManager Awake");
+            if (Instance == null) Instance = this;
+            Application.targetFrameRate = 60;
+            DontDestroyOnLoad(this.gameObject);
+        }
+
+        private void Start() 
+        {
+            StartCoroutine(SceneLoader.instance.LoadScene("MainMenu", 0.5f));
+        }
+
+        public void RefreshGamingStats()
+        {
+            // may be more code
+        }
+
+        private void RefreshPlayerData()
+        {
+
+        }
     }
 }

@@ -1,4 +1,7 @@
 ﻿using System;
+using Emotions.Controllers;
+using Emotions.Models;
+using Emotions.ObjectHandling;
 using UnityEngine;
 
 
@@ -46,6 +49,9 @@ public class EmotionWorld : MonoBehaviour
 
     #region Events
 
+    /// <summary>
+    /// Configure deactivated emotion callback invoker after emotion removing from emotion world       
+    /// </summary>
     public static event Action<EmotionWorld> OnDeactivate;
 
     #endregion
@@ -57,6 +63,7 @@ public class EmotionWorld : MonoBehaviour
         _internalCollider = GetComponent<BoxCollider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
+        
     }
 
     public void Init(Emotion emotion)
@@ -71,7 +78,7 @@ public class EmotionWorld : MonoBehaviour
         if (other.CompareTag("Player") || other.CompareTag("Consumable")) 
         {
             Debug.Log("Enter");
-            var isHandled = other.GetComponentInChildren<EmotionController>().Handle(_emotion);     // mock implementation
+            var isHandled = other.GetComponentInChildren<EmotionController>().Handle(_emotion);
 
             if (isHandled)
             {

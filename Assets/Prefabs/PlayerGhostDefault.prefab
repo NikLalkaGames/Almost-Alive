@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1de7efec7580e946b7353ffe72ac632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dropRadius: 1.5
---- !u!1 &1851574903
+  dropRadius: 1.5
+--- !u!1 &1757589164
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21,38 +21,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1851574904}
-  - component: {fileID: 1851574905}
-  - component: {fileID: 1851574906}
-  - component: {fileID: 2991208347283737285}
+  - component: {fileID: 1757589165}
+  - component: {fileID: 1757589167}
+  - component: {fileID: 8167268023812091511}
   m_Layer: 0
-  m_Name: DetectEnemiesZone
+  m_Name: EmotionColliderDetector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1851574904
+--- !u!4 &1757589165
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851574903}
+  m_GameObject: {fileID: 1757589164}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4054309704232783987}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1851574905
+--- !u!58 &1757589167
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851574903}
+  m_GameObject: {fileID: 1757589164}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -61,29 +60,17 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.7
---- !u!114 &1851574906
+  m_Radius: 1
+--- !u!114 &8167268023812091511
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851574903}
+  m_GameObject: {fileID: 1757589164}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2f0dd6dc4eb076498f6e7c16ec90d78, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2991208347283737285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851574903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f76c38324125c3241b9617c601442041, type: 3}
+  m_Script: {fileID: 11500000, guid: f6fff178e7554bf4d8a49d87e7eca382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4054309704232783989
@@ -121,8 +108,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4054309704631914074}
-  - {fileID: 1851574904}
   - {fileID: 1157382659}
+  - {fileID: 1757589165}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -189,9 +176,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867f9c6e13e72b942aaab4aa7f7adc58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
-  _defaultSpeed: 2
-  _speedModifier: 1
+  speed: 2
+  defaultSpeed: 2
+  speedModifier: 1
 --- !u!50 &1237543985802322674
 Rigidbody2D:
   serializedVersion: 4
@@ -251,10 +238,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 384b5340f9ee6a54fa5d7d5538847973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
-  _healthReductionValue: 0.017
-  _timeInvincible: 1
-  _invincibleTimer: 0
+  maxHealth: 100
+  healthReductionValue: 0.017
+  timeInvincible: 1
+  invincibleTimer: 0
 --- !u!114 &-3426061447729375430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,7 +398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5462713775067153725, guid: 824a8ad35b22dc84e9bcc3881e46b70a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5462713775067153725, guid: 824a8ad35b22dc84e9bcc3881e46b70a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

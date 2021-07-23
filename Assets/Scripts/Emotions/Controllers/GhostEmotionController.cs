@@ -1,52 +1,60 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using EventManagement;
+using GhostBehaviours;
 using UnityEngine;
 
-public class GhostEmotionController : EmotionController
+namespace Emotions.Controllers
 {
-    private GhostMovement _ghostMovement;
-
-    private GhostHealth _ghostHealth;
-    
-    protected override Vector3 DirectionOfDrop => _ghostMovement.LookDirection;
-
-    protected override void Start()
+    public class GhostEmotionController : EmotionController
     {
-        base.Start();
-        _ghostMovement = GetComponentInParent<GhostMovement>();
-        _ghostHealth = GetComponentInParent<GhostHealth>();
-    }
+        protected override Vector3 DirectionOfDrop => GhostMovement.Instance.LookDirection;
+        
+        /// <summary>
+        /// Ghost Heal after 5 orbs event
+        /// </summary>
+        public static event Action<float> OnGhostHeal;
+        
+        /// <summary>
+        /// Ghost health reduction increment event  
+        /// </summary>
+        public static event Action<float> OnGhostFatigue;
 
-    protected void FiveSpheres()
-    {
-        Debug.Log("5 sphere heal");
-
-        for (int i = 0; i < _emotions.Capacity; i++)
+        private void FiveSpheres()
         {
-            RemoveEmotion();
+            Debug.Log("5 sphere heal");
+
+            for (var i = 0; i < _emotions.Capacity; i++)
+            {
+                RemoveEmotion();
+            }
+
+            OnGhostHeal?.Invoke(+50);
+            OnGhostFatigue?.Invoke(default);
         }
 
-        _ghostHealth.UpdateHealth(+50);
-        _ghostHealth.IncreaseHealthReduction();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
+        private void Update()
         {
-            if (_emotions.Count > 0)
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                RemoveAndThrowEmotion();
+                if (_emotions.Count > 0)
+                {
+                    RemoveAndThrowEmotion();
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (_emotions.Count == 5)
+                {
+                    // TODO: show ui and replace if statements
+                    FiveSpheres();
+                }
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        public class MyEventParams : EventParam
         {
-            if (_emotions.Count == 5)
-            {
-                // TODO: show ui and replace if statements
-                FiveSpheres();
-            }
+            public int increasedHealth;
         }
     }
 }

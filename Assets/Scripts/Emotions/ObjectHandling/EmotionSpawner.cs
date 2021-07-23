@@ -1,14 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Emotions.Models;
 using UnityEngine;
 
-public class EmotionSpawner : MonoBehaviour
+namespace Emotions.ObjectHandling
 {
-    public Emotion emotionToSpawn;
-
-    void Start()
+    public class EmotionSpawner : MonoBehaviour
     {
-        EmotionWorld.TakeFromPoolAndPlace(transform.position, emotionToSpawn);
-        Destroy(this.gameObject);
+        public Emotion emotionToSpawn;
+
+        private void Start()
+        {
+            EmotionWorld.TakeFromPoolAndPlace(transform.position, emotionToSpawn);
+            Destroy(this.gameObject);
+        }
     }
 }

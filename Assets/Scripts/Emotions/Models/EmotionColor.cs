@@ -1,9 +1,12 @@
-﻿public enum EmotionColor
+﻿namespace Emotions.Models
 {
-    blue,
-    green,
-    pink,
-    purple,
-    yellow,
-    white
+    public enum EmotionColor
+    {
+        blue,
+        green,
+        pink,
+        purple,
+        yellow,
+        white
+    }
 }

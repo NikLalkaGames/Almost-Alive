@@ -1,25 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class EmotionAssets : MonoBehaviour
+namespace Emotions.ObjectHandling
 {
-    public static EmotionAssets Instance { get; private set; }
-    
-    [System.Serializable]
-    public class EmotionAsset
+    public class EmotionAssets : MonoBehaviour
     {
-        public Sprite sprite;
-        public RuntimeAnimatorController animController;
-    }
+        public static EmotionAssets Instance { get; private set; }
+    
+        [System.Serializable]
+        public class EmotionAsset
+        {
+            public Sprite sprite;
+            public RuntimeAnimatorController animController;
+        }
     
 
-    private void Awake()
-    {
-        if (Instance == null) Instance = this;
+        private void Awake()
+        {
+            if (Instance == null) Instance = this;
+        }
+
+        public Transform pfEmotionWorld;
+
+        public List<EmotionAsset> assets = new List<EmotionAsset>(5);
     }
-
-    public Transform pfEmotionWorld;
-
-    public List<EmotionAsset> assets = new List<EmotionAsset>(5);
 }
