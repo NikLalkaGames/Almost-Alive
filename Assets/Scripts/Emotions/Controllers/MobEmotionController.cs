@@ -67,7 +67,11 @@ namespace Emotions.Controllers
             var humanEmotion = new Emotion(_consumableHuman.HumanColor);
             Handle(humanEmotion);
         }
-    
+        
+        /// <summary>
+        /// Drop emotions callback for humans event OnKilled
+        /// </summary>
+        /// <param name="emotionColor"></param>
         public void DropEmotionsAfterDeath(EmotionColor emotionColor)
         {
             Debug.Log("Drop Emotions After Death");
@@ -79,7 +83,10 @@ namespace Emotions.Controllers
                 Debug.Log(_emotions.Count);
             }
         }
-
+        
+        /// <summary>
+        /// Little humans callback for defining colors 
+        /// </summary>
         public void DefineSkinColor()
         {
             if (_emotions.Count <= 1)

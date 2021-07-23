@@ -1,4 +1,5 @@
-﻿using GameManagement;
+﻿using EventManagement;
+using GameManagement;
 using UI;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -34,7 +35,7 @@ namespace GhostBehaviours
         private void Awake()
         {
             OnGhostHeal += UpdateHealth;
-            OnGhostHeal += IncreaseHealthReduction;
+            OnGhostFatigue += IncreaseHealthReduction;
         }
 
         void Start()

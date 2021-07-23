@@ -4,12 +4,8 @@ using UnityEngine;
 
 namespace EventManagement
 {
-    public struct EventParam
+    public class EventParam
     {
-        public string stringValue;
-        public int intValue;
-        public float floatValue;
-        public bool boolValue;
     }
     
     public class EventManager : MonoBehaviour

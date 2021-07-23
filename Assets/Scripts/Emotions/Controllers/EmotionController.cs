@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Core.CollisionDetecting;
 using Core.Helpers;
 using Emotions.Models;
 using Emotions.ObjectHandling;
@@ -38,17 +39,30 @@ namespace Emotions.Controllers
         #endregion
 
         #region Events
-
+        
+        /// <summary>
+        /// Little humans event for defining colors on handle
+        /// </summary>
         public static event Action OnHandle;
-        public static event Action OnEmotionAttached;
+        
+        /// <summary>
+        /// Configure deactivated emotion callback invoker after emotion detaching    
+        /// </summary>
         public static event Action<EmotionWorld> OnEmotionDetached;
 
         # endregion
 
         # region Internal Methods
 
+        protected virtual void Awake()
+        {
+            EmotionColliderDetector.OnEmotionCheck += EmotionExists;
+        }
+
         protected virtual void Start()
         {
+            _transform = transform;
+            
             CreateEmotionHolders();
 
             if (EmotionObjectPool.Instance == null)
@@ -57,8 +71,6 @@ namespace Emotions.Controllers
             }
 
             _emotionObjectPool = EmotionObjectPool.Instance.transform;
-
-            _transform = transform;
         }
 
         protected void CreateEmotionHolders()
@@ -88,9 +100,9 @@ namespace Emotions.Controllers
                 var emotionToLerp = AddEmotion(emotion);
 
                 StartCoroutine( LerpTo(emotionToLerp, _emotionHolders[LastEmotion]) );
-            
-                OnHandle?.Invoke();
-            
+                
+                OnHandle?.Invoke();         // ? can be deleted
+                
                 Debug.Log("Emotions Count: " + _emotions.Count);
 
                 return true;
@@ -98,6 +110,10 @@ namespace Emotions.Controllers
 
             return false;
         }
+
+        public bool EmotionExists(Collider2D other) => 
+            _emotions.Exists(e => e.Color == other.GetComponent<EmotionWorld>().Emotion.Color);
+        
 
         # region Emotions data manipulation
 
@@ -139,6 +155,8 @@ namespace Emotions.Controllers
 
             emotionToAttach.SetParent(_emotionHolders[LastEmotion], true);
 
+            emotionToAttach.GetComponent<Collider2D>().enabled = false;         // may be replace on events ?
+
             return emotionToAttach;
         }
 
@@ -149,8 +167,9 @@ namespace Emotions.Controllers
             emotionToDeactivate.gameObject.SetActive(false);
         
             emotionToDeactivate.SetParent(_emotionObjectPool, true);          // return to pool or can fully unparent
-
-            // send notification to object pool to configure new disabled emotion
+            
+            emotionToDeactivate.GetComponent<Collider2D>().enabled = true;
+            
             OnEmotionDetached?.Invoke(emotionToDeactivate.GetComponent<EmotionWorld>());
 
             return emotionToDeactivate;

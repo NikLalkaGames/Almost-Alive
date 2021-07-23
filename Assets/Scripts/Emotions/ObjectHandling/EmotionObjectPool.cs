@@ -24,10 +24,7 @@ namespace Emotions.ObjectHandling
 
             EmotionController.OnEmotionDetached += ConfigureDeactivatedObject;
             EmotionWorld.OnDeactivate += ConfigureDeactivatedObject;
-        }
-
-        private void Start()
-        {
+            
             if (EmotionWorldPrefab == null)
             {
                 Debug.LogError("Need a reference to the EmotionWorld prefab");
