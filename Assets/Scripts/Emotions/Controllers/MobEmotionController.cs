@@ -50,7 +50,7 @@ namespace Emotions.Controllers
 
         # endregion
 
-        private void Awake()
+        protected override void Awake()
         {
             _consumableHuman = GetComponentInParent<ConsumableBehaviour>();
         
@@ -72,7 +72,7 @@ namespace Emotions.Controllers
         /// Drop emotions callback for humans event OnKilled
         /// </summary>
         /// <param name="emotionColor"></param>
-        public void DropEmotionsAfterDeath(EmotionColor emotionColor)
+        private void DropEmotionsAfterDeath(EmotionColor emotionColor)
         {
             Debug.Log("Drop Emotions After Death");
 

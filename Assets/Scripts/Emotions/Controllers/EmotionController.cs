@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Core.CollisionDetecting;
-using Core.Helpers;
+using Core.CollisionDetection;
+using static Core.Helpers.Helpers;
 using Emotions.Models;
 using Emotions.ObjectHandling;
 using UnityEngine;
@@ -18,11 +19,12 @@ namespace Emotions.Controllers
     
         [SerializeField] protected float dropRadius;
 
-        protected List<Transform> _emotionHolders = new List<Transform>(5);
+        private List<Transform> _emotionHolders = new List<Transform>(5);
 
         private Transform _emotionObjectPool;
     
         private const int MAX_EMOTIONS_AMOUNT = 5;
+        
 
         protected int LastEmotion => _emotions.Count - 1;
 
@@ -50,6 +52,8 @@ namespace Emotions.Controllers
         /// </summary>
         public static event Action<EmotionWorld> OnEmotionDetached;
 
+        public static event Action<EmotionWorld> OnEmotionAttached;
+
         # endregion
 
         # region Internal Methods
@@ -73,15 +77,16 @@ namespace Emotions.Controllers
             _emotionObjectPool = EmotionObjectPool.Instance.transform;
         }
 
-        protected void CreateEmotionHolders()
+        private void CreateEmotionHolders()
         {
             var angle = -180f;
 
-            for (int i = 0; i < MAX_EMOTIONS_AMOUNT; i++)
+            for (var i = 0; i < MAX_EMOTIONS_AMOUNT; i++)
             {          
                 var direction = (Quaternion.Euler(0, 0, angle) * Vector3.right).normalized;
             
-                var emotionHolder = Instantiate(new GameObject(), 
+                var emotionHolder = Instantiate(
+                        new GameObject(), 
                         transform.position + direction, 
                         Quaternion.identity, 
                         _transform)
@@ -117,7 +122,7 @@ namespace Emotions.Controllers
 
         # region Emotions data manipulation
 
-        protected Transform AddEmotion(Emotion emotion)
+        private Transform AddEmotion(Emotion emotion)
         {
             _emotions.Add(emotion);
 
@@ -148,36 +153,38 @@ namespace Emotions.Controllers
 
 
         # region Emotion Transform methods
-    
-        public Transform AttachEmotion(Emotion emotion)
+
+        private Transform AttachEmotion(Emotion emotion)
         {
-            var emotionToAttach = EmotionWorld.TakeFromPoolAndPlace(transform.position, emotion).transform;
+            var emotionWorld = EmotionWorld.TakeFromPoolAndPlace(transform.position, emotion);
+
+            //emotionWorld.ActivateCollider(false);
+            
+            OnEmotionAttached?.Invoke(emotionWorld);
+            
+            var emotionToAttach = emotionWorld.transform;
 
             emotionToAttach.SetParent(_emotionHolders[LastEmotion], true);
-
-            emotionToAttach.GetComponent<Collider2D>().enabled = false;         // may be replace on events ?
 
             return emotionToAttach;
         }
 
-        public Transform DetachEmotion()
+        private Transform DetachEmotion()
         {
             var emotionToDeactivate = _emotionHolders[LastEmotion].GetChild(0);
 
             emotionToDeactivate.gameObject.SetActive(false);
         
             emotionToDeactivate.SetParent(_emotionObjectPool, true);          // return to pool or can fully unparent
-            
-            emotionToDeactivate.GetComponent<Collider2D>().enabled = true;
-            
+
             OnEmotionDetached?.Invoke(emotionToDeactivate.GetComponent<EmotionWorld>());
 
             return emotionToDeactivate;
         }
 
-        protected IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
+        private IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
         {
-            while (!Helpers.Reached(emotionToAttach.position, destTransform.position))
+            while (!Reached(emotionToAttach.position, destTransform.position))
             {
                 yield return new WaitForEndOfFrame();
             
@@ -190,6 +197,21 @@ namespace Emotions.Controllers
             }
 
             Debug.Log("Lerp Finished");
+        }
+
+        public static IEnumerator MagnetTo(Transform magnetFrom, Transform magnetTo, float colliderRadius)
+        {
+            while (!Reached(magnetFrom.position, magnetTo.position))
+            {
+                yield return new WaitForEndOfFrame();
+
+                var magnetFromPosition = (Vector2) magnetFrom.position;
+                var toPosition = magnetTo.position;
+                var pickUpSpeed =  colliderRadius - Vector2.Distance(magnetFromPosition, toPosition);
+                
+                magnetFromPosition = Vector2.MoveTowards(magnetFromPosition, toPosition, pickUpSpeed * Time.deltaTime);
+                magnetFrom.position = magnetFromPosition;
+            }
         }
 
         protected IEnumerator WaitForLerp(Transform emotionToAttach, Transform destTransform)

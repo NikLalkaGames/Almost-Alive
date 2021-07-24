@@ -2,7 +2,7 @@
 using Core.CollisionDetecting.Interfaces;
 using UnityEngine;
 
-namespace Core.CollisionDetecting
+namespace Core.CollisionDetection
 {
     public abstract class ColliderDetector : MonoBehaviour, IColliderDetector
     {

@@ -51,10 +51,5 @@ namespace Emotions.Controllers
                 }
             }
         }
-
-        public class MyEventParams : EventParam
-        {
-            public int increasedHealth;
-        }
     }
 }
