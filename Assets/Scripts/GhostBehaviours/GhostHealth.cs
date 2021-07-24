@@ -1,101 +1,119 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using EventManagement;
+using GameManagement;
+using UI;
 using UnityEngine;
+using UnityEngine.Serialization;
+using static Emotions.Controllers.GhostEmotionController;
 
-public class GhostHealth : MonoBehaviour
+namespace GhostBehaviours
 {
-    # region Fields
+    public class GhostHealth : MonoBehaviour
+    {
+        # region Fields
     
-    // health fields
-    [SerializeField] private float _maxHealth;
-    private float _health;
-    [SerializeField] private float _healthReductionValue;
-    private HealthBar _healthBar;
+        // health fields
+        
+        [SerializeField] private float maxHealth;
+        
+        private float _health;
+        
+        [SerializeField] private float healthReductionValue;
+        
+        private HealthBar _healthBar;
 
-    // iframe vairalbes
-    public float _timeInvincible = 1f;
-    public float _invincibleTimer;
+        
+        // iframe variables
+        
+        public float timeInvincible = 1f;
+        
+        public float invincibleTimer;
 
-    # endregion
+        # endregion
 
-    # region Methods
+        # region Methods
 
-    void Start()
-    {
-        _health = _maxHealth;
-        _healthBar = HealthBar.instance;
-    }
-
-    public void Damage(int damageAmount)
-    {
-        if (_invincibleTimer < 0)
+        private void Awake()
         {
-            _health += damageAmount;
-            if (_health > 0)
+            OnGhostHeal += UpdateHealth;
+            OnGhostFatigue += IncreaseHealthReduction;
+        }
+
+        void Start()
+        {
+            _health = maxHealth;
+            _healthBar = HealthBar.Instance;
+        }
+
+        public void Heal(float healAmount)
+        {
+            _health = Mathf.Clamp(_health + healAmount, 0, maxHealth);
+            _healthBar.SetValue(_health / maxHealth);
+            Debug.Log("Health has been restored: " + _health / maxHealth);
+        }
+        
+        public void Damage(float damageAmount)
+        {
+            if (invincibleTimer < 0)
             {
-                _healthBar.SetValue(_health / _maxHealth);
-                _invincibleTimer = _timeInvincible;
-                Debug.Log("Health has been reduced: " + _health / _maxHealth);
+                _health += damageAmount;
+                if (_health > 0)
+                {
+                    _healthBar.SetValue(_health / maxHealth);
+                    invincibleTimer = timeInvincible;
+                    Debug.Log("Health has been reduced: " + _health / maxHealth);
+                }
+                else
+                {
+                    SceneLoader.instance.LoadScene("EntryMenu");            // TODO: later change to restart scene
+                }
+            }
+        }
+
+        public void UpdateHealth(float amount)
+        {
+            if (amount < 0)
+            {
+                Damage(amount);
             }
             else
             {
-                SceneLoader.instance.LoadScene("EntryMenu");            // TODO: later change to restart scene
+                Heal(amount);
             }
         }
-    }
 
-    public void Heal(int healAmount)
-    {
-        _health = Mathf.Clamp(_health + healAmount, 0, _maxHealth);
-        _healthBar.SetValue(_health / _maxHealth);
-        Debug.Log("Health has been restored: " + _health / _maxHealth);
-    }
 
-    public void UpdateHealth(int amount)
-    {
-        if (amount < 0)
+        // TODO: Delete on release
+        private void Update()
         {
-            Damage(amount);
-        }
-        else
-        {
-            Heal(amount);
-        }
-    }
+            if (Input.GetKey(KeyCode.Space))
+            {
+                UpdateHealth(-10);
+                invincibleTimer -= 0.1f;
+            }
 
-
-    // TODO: Delete on release
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            UpdateHealth(-10);
-            _invincibleTimer -= 0.1f;
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                UpdateHealth(+30);
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.H))
+        private void FixedUpdate() 
         {
-            UpdateHealth(+30);
-        }
-    }
-
-    private void FixedUpdate() 
-    {
-        if (_invincibleTimer >= 0) _invincibleTimer -= Time.fixedDeltaTime;
+            if (invincibleTimer >= 0) invincibleTimer -= Time.fixedDeltaTime;
         
-        if (_health > 0)
-        {
-            _health -= _healthReductionValue;
-            _healthBar.SetValue(_health / _maxHealth);
+            if (_health > 0)
+            {
+                _health -= healthReductionValue;
+                _healthBar.SetValue(_health / maxHealth);
+            }
+            else
+            {
+                SceneLoader.instance.LoadScene("EntryMenu");
+            }
         }
-        else
-        {
-            SceneLoader.instance.LoadScene("EntryMenu");
-        }
+
+        public void IncreaseHealthReduction(float value = 0.001f) => healthReductionValue += value;
+
+        # endregion
     }
-
-    public void IncreaseHealthReduction(float value = 0.001f) => _healthReductionValue += value;
-
-    # endregion
 }
