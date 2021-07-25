@@ -1,5 +1,4 @@
 ﻿ - Emotion LerpOut (Drop) Behaviour (Fara)
- - Add collider section (children gameObject) to each emotion controller bearer (Fara)
  - Find out how works static events with instance callbacks
  - Test Action< MyEventArgs : EventArgs > Event and if it works, create EventManager
  
