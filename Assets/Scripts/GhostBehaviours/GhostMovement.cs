@@ -24,6 +24,7 @@ namespace GhostBehaviours
         private Vector2 _lookDirection;
         private Vector2 _movement;
         private Vector2 _mouseTarget;
+        private Camera _camera;
 
         public Vector2 LookDirection => _lookDirection;
         public Vector2 MouseTarget => _mouseTarget;
@@ -35,10 +36,7 @@ namespace GhostBehaviours
         private void Awake()
         {
             Instance = this;
-        }
-
-        private void Start()
-        {
+            _camera = Camera.main;
             _rigidbody2d = GetComponent<Rigidbody2D>();
             _animator = GetComponent<Animator>();
             _emotionController = GetComponentInChildren<EmotionController>();
@@ -68,7 +66,7 @@ namespace GhostBehaviours
 
         private void GetMouseInput()
         {
-            _mouseTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _mouseTarget = _camera.ScreenToWorldPoint(Input.mousePosition);
         }
 
         private void SetLookDirection()
@@ -78,7 +76,7 @@ namespace GhostBehaviours
 
         private void FixedUpdate()
         {
-            Vector2 positionToMove = _rigidbody2d.position;
+            var positionToMove = _rigidbody2d.position;
             positionToMove += _movement * (defaultSpeed * speedModifier * Time.fixedDeltaTime);
             _rigidbody2d.MovePosition(positionToMove);
         }

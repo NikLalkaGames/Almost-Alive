@@ -11,18 +11,17 @@ namespace Emotions.ObjectHandling
 
         public static EmotionWorld TakeFromPoolAndPlace(Vector2 positionToSpawn, Emotion emotion)
         {
-            var newEmotoin = EmotionObjectPool.Instance.GetEmotion();
+            var newEmotion = EmotionObjectPool.Instance.GetEmotion();
 
-            if (newEmotoin != null)
+            if (newEmotion != null)
             {
-                newEmotoin.gameObject.SetActive(true);
-                newEmotoin.Init(emotion);
-                newEmotoin.transform.position = positionToSpawn;
-                return newEmotoin;
+                newEmotion.gameObject.SetActive(true);
+                newEmotion.Init(emotion);
+                newEmotion.transform.position = positionToSpawn;
+                return newEmotion;
             }
             
             throw new NullReferenceException("Couldn't get a new emotion");
-            // Transform emotionTransform = Instantiate(EmotionAssets.Instance.pfEmotionWorld, position, Quaternion.identity).transform
         }
 
         private static void OnEmotionAttached(EmotionWorld emotionWorld)
@@ -93,7 +92,7 @@ namespace Emotions.ObjectHandling
         {
             if (!other.CompareTag("Player") && !other.CompareTag("Consumable")) return;
             
-            Debug.Log("Enter inter collider of emotion controller holder parent");
+            Debug.Log("Enter internal collider of emotion controller holder parent");
             var isHandled = other.GetComponentInChildren<EmotionController>().Handle(_emotion);     // any way to create callback ?
         
             if (isHandled)
@@ -104,7 +103,9 @@ namespace Emotions.ObjectHandling
         }
 
         private void ActivateCollider(bool state) => _internalCollider.enabled = state;
+        
         private void ActivateAnimatorState(bool state) => _animator.SetBool(ChangeStateToChild, state);
+
         private void FixedUpdate()
         {
             transform.position += new Vector3(0, _idleAnimationSpeed / 1000, 0);
