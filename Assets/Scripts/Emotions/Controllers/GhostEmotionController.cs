@@ -38,8 +38,7 @@ namespace Emotions.Controllers
             {
                 if (_emotions.Count > 0)
                 {
-                    var emotionToDrop = RemoveAndThrowEmotion();
-                    StartCoroutine( LerpTo(emotionToDrop, emotionToDrop.position + DirectionOfDrop) );
+                    RemoveAndThrowEmotion();
                 }
             }
 

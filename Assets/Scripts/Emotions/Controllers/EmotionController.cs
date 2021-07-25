@@ -34,7 +34,7 @@ namespace Emotions.Controllers
 
         #region Properties
 
-        protected virtual Vector3 DirectionOfDrop { get; set; }
+        protected virtual Vector3 DirectionOfDrop { get; }
 
         public List<Emotion> Emotions => _emotions;
 
@@ -142,11 +142,17 @@ namespace Emotions.Controllers
 
         protected Transform RemoveAndThrowEmotion()
         {
-            var emotionToThrow = EmotionWorld.TakeFromPoolAndPlace(_emotionHolders[LastEmotion].position, _emotions[LastEmotion]).transform;
-        
-            RemoveEmotion();        // return emotion transform to pool and remove emotion data from List
+            var emotionToThrow = EmotionWorld.TakeFromPoolAndPlace(_emotionHolders[LastEmotion].position, _emotions[LastEmotion]);
 
-            return emotionToThrow;  // return emotion for drop coroutine
+            var emotionThrowTransform = emotionToThrow.transform;
+                
+            RemoveEmotion();        // return removed emotion to pool and remove emotion data from collection
+            
+            emotionToThrow.ActivateCollider(false);
+            
+            StartCoroutine( WaitCoroutine( LerpTo(emotionThrowTransform, emotionThrowTransform.position + DirectionOfDrop, emotionToThrow) ) );
+
+            return emotionThrowTransform;  // return emotion for drop coroutine
         }
 
         # endregion
@@ -173,7 +179,7 @@ namespace Emotions.Controllers
 
             emotionToDeactivate.gameObject.SetActive(false);
         
-            emotionToDeactivate.SetParent(_emotionObjectPool, true);          // return to pool or can fully unparent
+            emotionToDeactivate.SetParent(_emotionObjectPool, true);          // emotion return to pool or can fully be unparented
 
             OnEmotionDetached?.Invoke(emotionToDeactivate.GetComponent<EmotionWorld>());
 
@@ -197,39 +203,33 @@ namespace Emotions.Controllers
             Debug.Log("Lerp Finished");
         }
 
-        protected static IEnumerator LerpTo(Transform emotionToDrop, Vector2 destPosition)
+        private static IEnumerator LerpTo(Transform emotionToDrop, Vector2 destPosition, EmotionWorld emotionWorld)
         {
             while (!Reached(emotionToDrop.position, destPosition))
             {
                 yield return new WaitForEndOfFrame();
 
-                if (emotionToDrop == null)
-                {
-                    yield break;
-                }
-
                 emotionToDrop.position = Vector2.Lerp(emotionToDrop.position, destPosition, Time.deltaTime * 1.5f);
-            }
-        }
-
-        public static IEnumerator MagnetTo(Transform magnetFrom, Transform magnetTo, float colliderRadius)
-        {
-            while (!Reached(magnetFrom.position, magnetTo.position))
-            {
-                yield return new WaitForEndOfFrame();
-
-                var magnetFromPosition = (Vector2) magnetFrom.position;
-                var toPosition = magnetTo.position;
-                var pickUpSpeed =  colliderRadius - Vector2.Distance(magnetFromPosition, toPosition);
                 
-                magnetFromPosition = Vector2.MoveTowards(magnetFromPosition, toPosition, pickUpSpeed * Time.deltaTime);
-                magnetFrom.position = magnetFromPosition;
+                Debug.Log("Lerp Out");
             }
+            
+            emotionWorld.ActivateCollider(true);
+        }
+        
+        public static void MagnetStep(Transform magnetFrom, Transform magnetTo, float colliderRadius)
+        {
+            var magnetFromPosition = (Vector2) magnetFrom.position;
+            var toPosition = magnetTo.position;
+            var pickUpSpeed =  colliderRadius - Vector2.Distance(magnetFromPosition, toPosition);
+            
+            magnetFromPosition = Vector2.MoveTowards(magnetFromPosition, toPosition, pickUpSpeed * Time.deltaTime);
+            magnetFrom.position = magnetFromPosition;
         }
 
-        protected IEnumerator WaitForLerp(Transform emotionToAttach, Transform destTransform)
+        private IEnumerator WaitCoroutine(IEnumerator coroutine)
         {
-            yield return StartCoroutine( LerpTo(emotionToAttach, destTransform) );
+            yield return StartCoroutine( coroutine );
         }
 
         # endregion

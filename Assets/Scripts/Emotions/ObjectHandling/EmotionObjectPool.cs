@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Emotions.Controllers;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Emotions.ObjectHandling
 {
@@ -8,7 +9,7 @@ namespace Emotions.ObjectHandling
     {
         public static EmotionObjectPool Instance { get; private set; }
 
-        public EmotionWorld EmotionWorldPrefab;
+        [FormerlySerializedAs("EmotionWorldPrefab")] public EmotionWorld emotionWorldPrefab;
 
         private List<EmotionWorld> _worldEmotions = new List<EmotionWorld>();
 
@@ -25,7 +26,7 @@ namespace Emotions.ObjectHandling
             EmotionController.OnEmotionDetached += ConfigureDeactivatedObject;
             EmotionWorld.OnDeactivate += ConfigureDeactivatedObject;
             
-            if (EmotionWorldPrefab == null)
+            if (emotionWorldPrefab == null)
             {
                 Debug.LogError("Need a reference to the EmotionWorld prefab");
             }
@@ -47,7 +48,7 @@ namespace Emotions.ObjectHandling
 
         private void GenerateEmotion()
         {
-            var newEmotion = Instantiate(EmotionWorldPrefab, transform);
+            var newEmotion = Instantiate(emotionWorldPrefab, transform);
 
             newEmotion.gameObject.SetActive(false);
 
