@@ -77,7 +77,7 @@ namespace Emotions.Controllers
             Debug.Log("Drop Emotions After Death");
 
             var emotionsCount = LastEmotion;
-            for (int i = 0; i < emotionsCount; i++)
+            for (var i = 0; i < emotionsCount; i++)
             {
                 RemoveAndThrowEmotion();
                 Debug.Log(_emotions.Count);
@@ -87,7 +87,7 @@ namespace Emotions.Controllers
         /// <summary>
         /// Little humans callback for defining colors 
         /// </summary>
-        public void DefineSkinColor()
+        private void DefineSkinColor()
         {
             if (_emotions.Count <= 1)
             {

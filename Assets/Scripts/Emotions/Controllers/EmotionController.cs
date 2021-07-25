@@ -133,20 +133,20 @@ namespace Emotions.Controllers
 
         protected Transform RemoveEmotion()
         {
-            var unattachedEmotion = DetachEmotion();
+            var detachedEmotion = DetachEmotion();
         
             _emotions.RemoveAt(LastEmotion);
 
-            return unattachedEmotion;
+            return detachedEmotion;
         }
 
         protected Transform RemoveAndThrowEmotion()
         {
-            EmotionWorld.TakeFromPoolAndPlace(transform.position + DirectionOfDrop * dropRadius, _emotions[LastEmotion]);
+            var emotionToThrow = EmotionWorld.TakeFromPoolAndPlace(_emotionHolders[LastEmotion].position, _emotions[LastEmotion]).transform;
         
-            var removedEmotion = RemoveEmotion();
+            RemoveEmotion();        // return emotion transform to pool and remove emotion data from List
 
-            return removedEmotion;
+            return emotionToThrow;  // return emotion for drop coroutine
         }
 
         # endregion
@@ -157,14 +157,12 @@ namespace Emotions.Controllers
         private Transform AttachEmotion(Emotion emotion)
         {
             var emotionWorld = EmotionWorld.TakeFromPoolAndPlace(transform.position, emotion);
-
-            //emotionWorld.ActivateCollider(false);
-            
-            OnEmotionAttached?.Invoke(emotionWorld);
             
             var emotionToAttach = emotionWorld.transform;
 
             emotionToAttach.SetParent(_emotionHolders[LastEmotion], true);
+
+            OnEmotionAttached?.Invoke(emotionWorld);
 
             return emotionToAttach;
         }
@@ -179,7 +177,7 @@ namespace Emotions.Controllers
 
             OnEmotionDetached?.Invoke(emotionToDeactivate.GetComponent<EmotionWorld>());
 
-            return emotionToDeactivate;
+            return emotionToDeactivate;     // pooled emotion (stored in emotion object pool)
         }
 
         private IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
@@ -188,7 +186,7 @@ namespace Emotions.Controllers
             {
                 yield return new WaitForEndOfFrame();
             
-                if (emotionToAttach.parent == _emotionObjectPool)     // can be null if want to fully unparent
+                if (emotionToAttach.parent == _emotionObjectPool)     // can be null if want to fully unparented
                 {
                     yield break;
                 }
@@ -197,6 +195,21 @@ namespace Emotions.Controllers
             }
 
             Debug.Log("Lerp Finished");
+        }
+
+        protected static IEnumerator LerpTo(Transform emotionToDrop, Vector2 destPosition)
+        {
+            while (!Reached(emotionToDrop.position, destPosition))
+            {
+                yield return new WaitForEndOfFrame();
+
+                if (emotionToDrop == null)
+                {
+                    yield break;
+                }
+
+                emotionToDrop.position = Vector2.Lerp(emotionToDrop.position, destPosition, Time.deltaTime * 1.5f);
+            }
         }
 
         public static IEnumerator MagnetTo(Transform magnetFrom, Transform magnetTo, float colliderRadius)

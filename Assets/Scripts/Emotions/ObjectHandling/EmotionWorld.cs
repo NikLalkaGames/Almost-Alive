@@ -11,14 +11,14 @@ namespace Emotions.ObjectHandling
 
         public static EmotionWorld TakeFromPoolAndPlace(Vector2 positionToSpawn, Emotion emotion)
         {
-            var newEmotoin = EmotionObjectPool.Instance.GetEmotion();
+            var newEmotion = EmotionObjectPool.Instance.GetEmotion();
 
-            if (newEmotoin != null)
+            if (newEmotion != null)
             {
-                newEmotoin.gameObject.SetActive(true);
-                newEmotoin.Init(emotion);
-                newEmotoin.transform.position = positionToSpawn;
-                return newEmotoin;
+                newEmotion.gameObject.SetActive(true);
+                newEmotion.Init(emotion);
+                newEmotion.transform.position = positionToSpawn;
+                return newEmotion;
             }
             
             throw new NullReferenceException("Couldn't get a new emotion");
