@@ -102,7 +102,7 @@ namespace Emotions.ObjectHandling
             }
         }
 
-        private void ActivateCollider(bool state) => _internalCollider.enabled = state;
+        public void ActivateCollider(bool state) => _internalCollider.enabled = state;
         
         private void ActivateAnimatorState(bool state) => _animator.SetBool(ChangeStateToChild, state);
 
