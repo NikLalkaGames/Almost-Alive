@@ -27,11 +27,13 @@ namespace Emotions.ObjectHandling
         private static void OnEmotionAttached(EmotionWorld emotionWorld)
         {
             emotionWorld.ActivateCollider(false);
+            emotionWorld.ActivateAnimatorState(true);
         }
 
         private static void OnEmotionDetached(EmotionWorld emotionWorld)
         {
             emotionWorld.ActivateCollider(true);
+            emotionWorld.ActivateAnimatorState(false);
         }
     
         #endregion
@@ -48,9 +50,11 @@ namespace Emotions.ObjectHandling
     
         [SerializeField] private float _idleAnimationSpeed;
 
-        [System.NonSerialized] public EmotionWorld next;    
-    
-    
+        [System.NonSerialized] public EmotionWorld next;
+        
+        private static readonly int ChangeStateToChild = Animator.StringToHash("ChangeStateToChild");
+
+
         public Emotion Emotion => _emotion;
 
         #endregion
@@ -98,7 +102,9 @@ namespace Emotions.ObjectHandling
             }
         }
 
-        public void ActivateCollider(bool state) => _internalCollider.enabled = state;
+        private void ActivateCollider(bool state) => _internalCollider.enabled = state;
+        
+        private void ActivateAnimatorState(bool state) => _animator.SetBool(ChangeStateToChild, state);
 
         private void FixedUpdate()
         {
