@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 namespace Emotions.ObjectHandling
 {
@@ -12,6 +13,7 @@ namespace Emotions.ObjectHandling
         {
             public Sprite sprite;
             public RuntimeAnimatorController animController;
+            public GameObject particleObject;
         }
     
 
