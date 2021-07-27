@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Core.CollisionDetecting;
 using Core.CollisionDetection;
-using static Core.Helpers.Helpers;
+using Core.Helpers;
 using Emotions.Models;
 using Emotions.ObjectHandling;
 using UnityEngine;
@@ -21,7 +21,7 @@ namespace Emotions.Controllers
 
         private List<Transform> _emotionHolders = new List<Transform>(5);
 
-        private Transform _emotionObjectPool;
+        private Transform _emotionObjectPoolLocation;
     
         private const int MAX_EMOTIONS_AMOUNT = 5;
         
@@ -74,7 +74,7 @@ namespace Emotions.Controllers
                 Debug.LogError($"Need emotion object pool gameObject on scene");
             }
 
-            _emotionObjectPool = EmotionObjectPool.Instance.transform;
+            _emotionObjectPoolLocation = EmotionObjectPool.Instance.transform;
         }
 
         private void CreateEmotionHolders()
@@ -148,7 +148,7 @@ namespace Emotions.Controllers
                 
             RemoveEmotion();        // return removed emotion to pool and remove emotion data from collection
             
-            emotionToThrow.ActivateCollider(false);
+            emotionToThrow.ActivateCollider(false);     // turn off emotion collider detector magnet behaviour
             
             StartCoroutine( WaitCoroutine( LerpTo(emotionThrowTransform, emotionThrowTransform.position + DirectionOfDrop, emotionToThrow) ) );
 
@@ -179,7 +179,7 @@ namespace Emotions.Controllers
 
             emotionToDeactivate.gameObject.SetActive(false);
         
-            emotionToDeactivate.SetParent(_emotionObjectPool, true);          // emotion return to pool or can fully be unparented
+            emotionToDeactivate.SetParent(_emotionObjectPoolLocation, true);          // emotion return to pool or can fully be unparented
 
             OnEmotionDetached?.Invoke(emotionToDeactivate.GetComponent<EmotionWorld>());
 
@@ -188,11 +188,11 @@ namespace Emotions.Controllers
 
         private IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
         {
-            while (!Reached(emotionToAttach.position, destTransform.position))
+            while (!Helpers.Reached(emotionToAttach.position, destTransform.position))
             {
                 yield return new WaitForEndOfFrame();
             
-                if (emotionToAttach.parent == _emotionObjectPool)     // can be null if want to fully unparented
+                if (emotionToAttach.parent == _emotionObjectPoolLocation)     // can be null if want to fully unparented
                 {
                     yield break;
                 }
@@ -205,7 +205,7 @@ namespace Emotions.Controllers
 
         private static IEnumerator LerpTo(Transform emotionToDrop, Vector2 destPosition, EmotionWorld emotionWorld)
         {
-            while (!Reached(emotionToDrop.position, destPosition))
+            while (!Helpers.Reached(emotionToDrop.position, destPosition))
             {
                 yield return new WaitForEndOfFrame();
 
