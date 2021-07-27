@@ -48,8 +48,6 @@ namespace Emotions.ObjectHandling
         private Animator _animator;
 
         private BoxCollider2D _internalCollider;
-
-        private ParticleSystem _particleSystem;
     
         [SerializeField] private float _idleAnimationSpeed;
 
@@ -78,7 +76,6 @@ namespace Emotions.ObjectHandling
             _internalCollider = GetComponent<BoxCollider2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
-            _particleSystem = GetComponent<ParticleSystem>();
 
             EmotionController.OnEmotionAttached += OnEmotionAttached;
             EmotionController.OnEmotionDetached += OnEmotionDetached;
@@ -90,7 +87,7 @@ namespace Emotions.ObjectHandling
             _emotion = emotion;
             _spriteRenderer.sprite = emotion.GetSprite();
             _animator.runtimeAnimatorController = emotion.GetAnimatorController();
-            var particleChildObject = Instantiate(emotion.GetParticleObject(), transform);
+            Instantiate(emotion.GetParticleObject(), transform);
         }
 
         private void OnTriggerEnter2D(Collider2D other)

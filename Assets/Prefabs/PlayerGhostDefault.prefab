@@ -44,9 +44,8 @@ GameObject:
   - component: {fileID: 4054309704232783984}
   - component: {fileID: 1237543985802322674}
   - component: {fileID: 1176814613}
-  - component: {fileID: 4496532060798858962}
-  - component: {fileID: -3426061447729375430}
   - component: {fileID: -4251293722923108183}
+  - component: {fileID: 2648889491528357676}
   m_Layer: 0
   m_Name: PlayerGhostDefault
   m_TagString: Player
@@ -184,35 +183,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.29088056, y: 0.38038778}
   m_EdgeRadius: 0
---- !u!114 &4496532060798858962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4054309704232783989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 384b5340f9ee6a54fa5d7d5538847973, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  healthReductionValue: 0.017
-  timeInvincible: 1
-  invincibleTimer: 0
---- !u!114 &-3426061447729375430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4054309704232783989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32486c030df9b634ab8c354bb10da847, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxProjectileCount: 3
 --- !u!95 &-4251293722923108183
 Animator:
   serializedVersion: 3
@@ -232,6 +202,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2648889491528357676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4054309704232783989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 409c7227d42247ae9a3f01ed8c232f2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  timeInvincible: 1
+  healthReductionValue: 0.017
+  healthReductionIncrement: 0.001
+  fiveOrbsHealValue: 50
 --- !u!1 &4297825784146260105
 GameObject:
   m_ObjectHideFlags: 0
