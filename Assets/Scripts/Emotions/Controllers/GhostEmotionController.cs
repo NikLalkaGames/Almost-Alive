@@ -1,5 +1,4 @@
 ﻿using System;
-using EventManagement;
 using GhostBehaviours;
 using UnityEngine;
 
@@ -8,18 +7,13 @@ namespace Emotions.Controllers
     public class GhostEmotionController : EmotionController
     {
         protected override Vector3 DirectionOfDrop => GhostMovement.Instance.LookDirection;
-        
-        /// <summary>
-        /// Ghost Heal after 5 orbs event
-        /// </summary>
-        public static event Action<float> OnGhostHeal;
-        
-        /// <summary>
-        /// Ghost health reduction increment event  
-        /// </summary>
-        public static event Action<float> OnGhostFatigue;
 
-        private void FiveSpheres()
+        /// <summary>
+        /// Event occurs when player ghost collect five orbs
+        /// </summary>
+        public static event Action OnFiveOrbsCollected;
+
+        private void FiveOrbs()
         {
             Debug.Log("5 sphere heal");
 
@@ -27,9 +21,8 @@ namespace Emotions.Controllers
             {
                 RemoveEmotion();
             }
-
-            OnGhostHeal?.Invoke(+50);
-            OnGhostFatigue?.Invoke(default);
+            
+            OnFiveOrbsCollected?.Invoke();
         }
 
         private void Update()
@@ -47,7 +40,7 @@ namespace Emotions.Controllers
                 if (_emotions.Count == 5)
                 {
                     // TODO: show ui and replace if statements
-                    FiveSpheres();
+                    FiveOrbs();
                 }
             }
         }
