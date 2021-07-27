@@ -40,6 +40,18 @@ namespace Emotions.Models
             }
         }
 
-
+        public GameObject GetParticleObject()
+        {
+            switch (Color)
+            {
+                case EmotionColor.blue: return EmotionAssets.Instance.assets[0].particleObject;
+                case EmotionColor.green: return EmotionAssets.Instance.assets[1].particleObject;
+                case EmotionColor.pink: return EmotionAssets.Instance.assets[2].particleObject;
+                case EmotionColor.purple: return EmotionAssets.Instance.assets[3].particleObject;
+                case EmotionColor.yellow: return EmotionAssets.Instance.assets[4].particleObject;
+            
+                default: throw new System.ArgumentException("The Method received wrong particle");
+            }
+        }
     }
 }
