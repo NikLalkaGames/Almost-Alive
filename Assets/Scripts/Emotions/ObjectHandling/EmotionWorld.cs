@@ -19,7 +19,6 @@ namespace Emotions.ObjectHandling
                 newEmotion.gameObject.SetActive(true);
                 newEmotion.Init(emotion);
                 newEmotion.transform.position = positionToSpawn;
-                newEmotion.transform.rotation = Quaternion.Euler(-45,0,0);
                 return newEmotion;
             }
             

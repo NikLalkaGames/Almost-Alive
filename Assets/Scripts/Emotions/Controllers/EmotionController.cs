@@ -87,11 +87,10 @@ namespace Emotions.Controllers
             
                 var emotionHolder = Instantiate(
                         new GameObject(), 
-                        transform.position + direction, 
-                        Quaternion.identity, 
+                        _transform.position + direction, 
+                        Quaternion.Euler(0,0,0), 
                         _transform)
                     .transform;
-
                 _emotionHolders.Add(emotionHolder);
 
                 angle -= 45;
@@ -150,7 +149,7 @@ namespace Emotions.Controllers
             
             emotionToThrow.ActivateCollider(false);     // turn off emotion collider detector magnet behaviour
             
-            StartCoroutine( WaitCoroutine( LerpTo(emotionThrowTransform, emotionThrowTransform.position + DirectionOfDrop, emotionToThrow) ) );
+            StartCoroutine( WaitCoroutine( LerpTo(emotionThrowTransform, emotionThrowTransform.position + DirectionOfDrop * dropRadius, emotionToThrow) ) );
 
             return emotionThrowTransform;  // return emotion for drop coroutine
         }
