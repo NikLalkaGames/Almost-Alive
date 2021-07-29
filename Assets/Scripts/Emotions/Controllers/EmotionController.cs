@@ -86,10 +86,10 @@ namespace Emotions.Controllers
                 var direction = (Quaternion.Euler(0, 0, angle) * Vector3.right).normalized;
             
                 var emotionHolder = Instantiate(
-                        new GameObject(), 
-                        transform.position + direction, 
-                        Quaternion.identity, 
-                        _transform)
+                    new GameObject(), 
+                    transform.position + direction, 
+                    Quaternion.identity, 
+                    _transform)
                     .transform;
 
                 _emotionHolders.Add(emotionHolder);

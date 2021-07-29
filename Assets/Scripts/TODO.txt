@@ -1,4 +1,4 @@
-﻿ - Generic Object pool for every disposable object in the game
+﻿ - Generic Object pool for every disposable object in the game (done)
  - Emotion controller logic change (handle EmotionWorld behaviour)
  - Create emotion object prefabs (fill object pools with this objects) 
  - Delete Emotion Assets Class
