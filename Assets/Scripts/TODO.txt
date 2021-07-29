@@ -1,6 +1,9 @@
-﻿ - Emotion LerpOut (Drop) Behaviour (Fara)
- - Find out how works static events with instance callbacks
- - Test Action< MyEventArgs : EventArgs > Event and if it works, create EventManager
+﻿ - Generic Object pool for every disposable object in the game
+ - Emotion controller logic change (handle EmotionWorld behaviour)
+ - Create emotion object prefabs (fill object pools with this objects) 
+ - Delete Emotion Assets Class
+ - Delete Emotion model methods (only model stays)
+ - return emotions to pool only after death or usage (five orbs) (find places)
  
  - Fix orbs animation (Nik) +
  - Add collider detecting of mobs (ghost enemies collider detector) (Nik)
