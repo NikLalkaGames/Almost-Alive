@@ -334,7 +334,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2778609950560250264, guid: 32abddc24b7131d43923a2f94a5fcf6a, type: 3}
       propertyPath: m_Radius
-      value: 1.4
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 2778609950560250266, guid: 32abddc24b7131d43923a2f94a5fcf6a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -390,7 +390,7 @@ PrefabInstance:
       objectReference: {fileID: 9097869564676301771}
     - target: {fileID: 6329930195855288640, guid: 32abddc24b7131d43923a2f94a5fcf6a, type: 3}
       propertyPath: colliderRadius
-      value: 2.5
+      value: 2.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32abddc24b7131d43923a2f94a5fcf6a, type: 3}
