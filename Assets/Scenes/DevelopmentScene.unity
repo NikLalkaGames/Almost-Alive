@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &542397105
+--- !u!1 &76239834
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,42 +131,85 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 542397107}
-  - component: {fileID: 542397106}
+  - component: {fileID: 76239836}
+  - component: {fileID: 76239835}
   m_Layer: 0
-  m_Name: EmotionSpawner (5)
+  m_Name: Spawner (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &542397106
+--- !u!114 &76239835
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 542397105}
+  m_GameObject: {fileID: 76239834}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4712dcb1b7834c4ba77daeb44be19f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 3847c06737724a92af1c488cab6e4e4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emotionToSpawn:
-    _emotionColor: 0
---- !u!4 &542397107
+  objectType: PinkOrb
+--- !u!4 &76239836
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 542397105}
+  m_GameObject: {fileID: 76239834}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.46, y: 2.98, z: 0}
+  m_LocalPosition: {x: 4.46, y: 0.32, z: -5.1874647}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &550121399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 550121401}
+  - component: {fileID: 550121400}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &550121400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550121399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3847c06737724a92af1c488cab6e4e4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectType: BlueOrb
+--- !u!4 &550121401
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550121399}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.04, y: -2.36, z: -5.1874647}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &602631312
 GameObject:
@@ -232,7 +275,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &810386231
 PrefabInstance:
@@ -279,7 +322,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3030819657142666397, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3030819657142666397, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -344,7 +387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3030819657142666397, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3030819657142666397, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -364,7 +407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
---- !u!1 &1010183511
+--- !u!1 &1107746709
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -372,88 +415,99 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1010183513}
-  - component: {fileID: 1010183512}
+  - component: {fileID: 1107746711}
+  - component: {fileID: 1107746710}
   m_Layer: 0
-  m_Name: EmotionSpawner
+  m_Name: Spawner (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1010183512
+--- !u!114 &1107746710
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1010183511}
+  m_GameObject: {fileID: 1107746709}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4712dcb1b7834c4ba77daeb44be19f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 3847c06737724a92af1c488cab6e4e4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emotionToSpawn:
-    _emotionColor: 0
---- !u!4 &1010183513
+  objectType: PurpleOrb
+--- !u!4 &1107746711
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1010183511}
+  m_GameObject: {fileID: 1107746709}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.31, y: 3.68, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1022797229
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1022797231}
-  - component: {fileID: 1022797230}
-  m_Layer: 0
-  m_Name: EmotionSpawner (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1022797230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1022797229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4712dcb1b7834c4ba77daeb44be19f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  emotionToSpawn:
-    _emotionColor: 1
---- !u!4 &1022797231
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1022797229}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.34, y: 3.13, z: 0}
+  m_LocalPosition: {x: 5.46, y: 1.17, z: -5.1874647}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1111694686
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.30111027
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098919, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308478584098921, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
+      propertyPath: m_Name
+      value: ObjectPooler
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a3c5f9c4380e9424393d74026a5a0113, type: 3}
 --- !u!1001 &1316474456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -499,7 +553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3030819657142666397, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3030819657142666397, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -519,7 +573,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
---- !u!1 &1404864775
+--- !u!1 &1330288548
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -527,42 +581,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1404864777}
-  - component: {fileID: 1404864776}
+  - component: {fileID: 1330288550}
+  - component: {fileID: 1330288549}
   m_Layer: 0
-  m_Name: EmotionSpawner (6)
+  m_Name: Spawner (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1404864776
+--- !u!114 &1330288549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1404864775}
+  m_GameObject: {fileID: 1330288548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4712dcb1b7834c4ba77daeb44be19f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 3847c06737724a92af1c488cab6e4e4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emotionToSpawn:
-    _emotionColor: 1
---- !u!4 &1404864777
+  objectType: GreenOrb
+--- !u!4 &1330288550
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1404864775}
+  m_GameObject: {fileID: 1330288548}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.58, y: -1.8, z: 0}
+  m_LocalPosition: {x: 4.93, y: 3.52, z: -5.1874647}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1435813907
 PrefabInstance:
@@ -713,7 +766,7 @@ RectTransform:
   m_Children:
   - {fileID: 1974039497}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -765,7 +818,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3030819657142666397, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3030819657142666397, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -781,12 +834,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
---- !u!4 &1784040595 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-  m_PrefabInstance: {fileID: 2026601145}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1859883485
+--- !u!1 &1882262993
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -794,89 +842,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1859883487}
-  - component: {fileID: 1859883486}
+  - component: {fileID: 1882262995}
+  - component: {fileID: 1882262994}
   m_Layer: 0
-  m_Name: EmotionSpawner (2)
+  m_Name: Spawner (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1859883486
+--- !u!114 &1882262994
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859883485}
+  m_GameObject: {fileID: 1882262993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4712dcb1b7834c4ba77daeb44be19f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 3847c06737724a92af1c488cab6e4e4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emotionToSpawn:
-    _emotionColor: 4
---- !u!4 &1859883487
+  objectType: BlueOrb
+--- !u!4 &1882262995
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859883485}
+  m_GameObject: {fileID: 1882262993}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.81, y: 3.61, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1898520407
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1898520409}
-  - component: {fileID: 1898520408}
-  m_Layer: 0
-  m_Name: EmotionSpawner (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1898520408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1898520407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4712dcb1b7834c4ba77daeb44be19f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  emotionToSpawn:
-    _emotionColor: 2
---- !u!4 &1898520409
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1898520407}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.01, y: 3.04, z: 0}
+  m_LocalPosition: {x: 3.49, y: -1.83, z: -5.1874647}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1902459926
+--- !u!1 &1963001135
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -884,42 +886,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1902459928}
-  - component: {fileID: 1902459927}
+  - component: {fileID: 1963001137}
+  - component: {fileID: 1963001136}
   m_Layer: 0
-  m_Name: EmotionSpawner (4)
+  m_Name: Spawner (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1902459927
+--- !u!114 &1963001136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902459926}
+  m_GameObject: {fileID: 1963001135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4712dcb1b7834c4ba77daeb44be19f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 3847c06737724a92af1c488cab6e4e4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emotionToSpawn:
-    _emotionColor: 3
---- !u!4 &1902459928
+  objectType: YellowOrb
+--- !u!4 &1963001137
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902459926}
+  m_GameObject: {fileID: 1963001135}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.55, y: 0.69, z: 0}
+  m_LocalPosition: {x: 6.3, y: 2.15, z: -5.1874647}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1974039497 stripped
 RectTransform:
@@ -981,159 +982,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3836779239670212364, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
+      propertyPath: baseBallObjectType
+      value: YellowOrb
+      objectReference: {fileID: 0}
+    - target: {fileID: 3836779239670212364, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
+      propertyPath: startOrb
+      value: YellowOrb
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 564c50337ec8cde47b6f8524fde9420f, type: 3}
---- !u!1001 &2026601145
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 2126488533}
-    m_Modifications:
-    - target: {fileID: 4260158735401195663, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_Name
-      value: EmotionAssets
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3.814514
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6.629651
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.6178995
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4260158735401195888, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 42b91c3d2d0c07b44a83b424de4c2421, type: 3}
---- !u!4 &2054475849 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-  m_PrefabInstance: {fileID: 1480914220981913075}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2126488532
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2126488533}
-  m_Layer: 0
-  m_Name: ObjectManagement
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2126488533
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2126488532}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.814514, y: 3.370349, z: -1.6178995}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1784040595}
-  - {fileID: 2054475849}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1480914220981913075
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 2126488533}
-    m_Modifications:
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3.814514
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6.629651
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.6178995
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782922, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480914220136782923, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
-      propertyPath: m_Name
-      value: EmotionObjectPool
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 373229a3ef10cba479b1b540eb1537dc, type: 3}
 --- !u!1001 &4863257631269248292
 PrefabInstance:
   m_ObjectHideFlags: 0

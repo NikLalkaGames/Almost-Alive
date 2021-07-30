@@ -44,9 +44,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   definedPools:
-  - tag: Cubes
-    prefab: {fileID: 0}
-    initialSize: 0
-  - tag: Orbs
-    prefab: {fileID: 0}
-    initialSize: 0
+  - objectType: 
+    prefab: {fileID: 6574211002606870453, guid: a4f98e23a4cdbf9458758aac390845f4, type: 3}
+    initialSize: 20
+  - objectType: 
+    prefab: {fileID: 6574211002606870453, guid: c991ea7fc4f592c4abf8b6bc1e81d348, type: 3}
+    initialSize: 20
+  - objectType: 
+    prefab: {fileID: 6574211002606870453, guid: 659f72dbbdb27fe4385786a18d63dbf8, type: 3}
+    initialSize: 20
+  - objectType: 
+    prefab: {fileID: 6574211002606870453, guid: 282ccbc28aa8ce84caeb0e838cc46a5f, type: 3}
+    initialSize: 20
+  - objectType: 
+    prefab: {fileID: 6574211002606870453, guid: a73ead710f3665b45b8adddb58ce5051, type: 3}
+    initialSize: 20

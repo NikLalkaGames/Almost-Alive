@@ -295,6 +295,9 @@ MonoBehaviour:
   - tag: Orb
     prefab: {fileID: 8477293714291513205, guid: 73a172f717dd02a44b268090cb17837e, type: 3}
     initialSize: 20
+  - tag: AgraGhost1
+    prefab: {fileID: 4054309704232783989, guid: f3086c60e7229ec4e99e98dd66203039, type: 3}
+    initialSize: 20
 --- !u!4 &1728450425
 Transform:
   m_ObjectHideFlags: 0

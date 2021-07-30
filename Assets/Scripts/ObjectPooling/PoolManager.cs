@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ObjectPooling
 {
@@ -11,7 +13,7 @@ namespace ObjectPooling
         [System.Serializable]
         public class Pool
         {
-            public string tag;
+            public string objectType;
             public GameObject prefab;
             public int initialSize;
         }
@@ -24,7 +26,13 @@ namespace ObjectPooling
             if (Instance == null) Instance = this;
             
             _poolDictionary = new Dictionary<string, Queue<GameObject>>();
-
+            
+            // define names for object pools
+            foreach (var pool in definedPools)
+            {
+                pool.objectType = pool.prefab.name;
+            }
+            
             foreach (var pool in definedPools)
             {
                 var objectPool = new Queue<GameObject>();
@@ -36,11 +44,40 @@ namespace ObjectPooling
                     objectPool.Enqueue(objectToPool);
                 }
                 
-                _poolDictionary.Add(pool.tag, objectPool);
+                _poolDictionary.Add(pool.objectType, objectPool);
             }
         }
+
+        public void WarmPool(string objectType, GameObject prefab, int size)
+        {
+            var objectPool = new Queue<GameObject>();
+                
+            for (var i = 0; i < size; i++)
+            {
+                var objectToPool = Instantiate(prefab, transform);     // instantiate as child
+                objectToPool.SetActive(false);
+                objectPool.Enqueue(objectToPool);
+            }
+                
+            _poolDictionary.Add(objectType, objectPool);
+        }
+
+        public void WarmPool(Pool pool)
+        {
+            var objectPool = new Queue<GameObject>();
+                
+            for (var i = 0; i < pool.initialSize; i++)
+            {
+                var objectToPool = Instantiate(pool.prefab, transform);     // instantiate as child
+                objectToPool.SetActive(false);
+                objectPool.Enqueue(objectToPool);
+            }
+                
+            _poolDictionary.Add(pool.objectType, objectPool);
+        }
         
-        public GameObject TakeAndPlace(string objectType, Vector2 positionToSpawn, Quaternion quaternion = default)
+        
+        public GameObject SpawnFromPool(string objectType, Vector2 positionToSpawn, Quaternion quaternion = default)
         {
             if (!_poolDictionary.ContainsKey(objectType))
             {
@@ -55,7 +92,7 @@ namespace ObjectPooling
             return objectToSpawn;
         }
 
-        public void Return(string objectType, GameObject objectToReturn)
+        public void ReturnToPool(string objectType, GameObject objectToReturn)
         {
             if (!_poolDictionary.ContainsKey(objectType))
             {

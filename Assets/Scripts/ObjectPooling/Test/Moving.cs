@@ -19,7 +19,7 @@ namespace ObjectPooling.Test
             
             if (Vector3.Distance(transform.position, _startPos) > 10f)
             {
-                PoolManager.Instance.Return(category, this.gameObject);
+                PoolManager.Instance.ReturnToPool(category, this.gameObject);
             }
             
         }

@@ -4,18 +4,12 @@ namespace ObjectPooling.Test
 {
     public class SpawnerTempo : MonoBehaviour
     {
-        public float timeToSpawn;
-        private float _timer;
+        public string objectType;
 
-        private void Update()
+        private void Start()
         {
-            _timer -= Time.deltaTime;
-            
-            if (_timer < 0)
-            {
-                _timer = timeToSpawn;
-                PoolManager.Instance.TakeAndPlace("Cube", transform.position);
-            }
+            PoolManager.Instance.SpawnFromPool(objectType, transform.position);
+            Destroy(this.gameObject);
         }
     }
 }

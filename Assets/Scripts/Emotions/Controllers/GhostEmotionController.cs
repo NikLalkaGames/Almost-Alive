@@ -15,11 +15,12 @@ namespace Emotions.Controllers
 
         private void FiveOrbs()
         {
-            Debug.Log("5 sphere heal");
+            Debug.Log("5 orbs consumption invocation");
 
-            for (var i = 0; i < _emotions.Capacity; i++)
+            var capacity = _emotions.Count;
+            for (var i = 0; i < capacity; i++)
             {
-                RemoveEmotion();
+                ReturnEmotion();            // return emotion to pool
             }
             
             OnFiveOrbsCollected?.Invoke();
@@ -31,7 +32,7 @@ namespace Emotions.Controllers
             {
                 if (_emotions.Count > 0)
                 {
-                    RemoveAndThrowEmotion();
+                    ThrowEmotion();
                 }
             }
 

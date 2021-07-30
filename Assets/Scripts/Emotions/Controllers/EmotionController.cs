@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Core.CollisionDetecting;
-using Core.CollisionDetection;
 using Core.Helpers;
 using Emotions.Models;
-using Emotions.ObjectHandling;
+using Emotions.Object;
+using ObjectPooling;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Emotion = Emotions.Object.Emotion;
 
 namespace Emotions.Controllers
 {
     public class EmotionController : MonoBehaviour
     {
         #region Fields
-    
-        protected List<Emotion> _emotions = new List<Emotion>(5);
-    
+
+        protected List<Emotion> _emotions = new List<Emotion>();    // List<EmotionColor>
+
         [SerializeField] protected float dropRadius;
 
         private List<Transform> _emotionHolders = new List<Transform>(5);
 
-        private Transform _emotionObjectPoolLocation;
+        protected PoolManager _poolManager;
     
         private const int MAX_EMOTIONS_AMOUNT = 5;
         
@@ -41,42 +40,29 @@ namespace Emotions.Controllers
         #endregion
 
         #region Events
-        
+
         /// <summary>
         /// Little humans event for defining colors on handle
         /// </summary>
-        public static event Action OnHandle;        // TODO: Debug and understand how it properly work
-        
-        /// <summary>
-        /// Configure deactivated emotion callback invoker after emotion detaching    
-        /// </summary>
-        public static event Action<EmotionWorld> OnEmotionDetached;
-
-        public static event Action<EmotionWorld> OnEmotionAttached;
+        protected event Action OnHandle;
 
         # endregion
 
         # region Internal Methods
 
-        protected virtual void Awake()
-        {
-            // EmotionColliderDetector.OnEmotionCheck += EmotionExists;
-        }
-
         protected virtual void Start()
         {
             _transform = transform;
-            
             CreateEmotionHolders();
 
-            if (EmotionObjectPool.Instance == null)
+            if (PoolManager.Instance == null)
             {
                 Debug.LogError($"Need emotion object pool gameObject on scene");
             }
-
-            _emotionObjectPoolLocation = EmotionObjectPool.Instance.transform;
+            _poolManager = PoolManager.Instance;
         }
 
+        //TODO: create new way of positioning emotions in 3d space
         private void CreateEmotionHolders()
         {
             var angle = -180f;
@@ -97,23 +83,20 @@ namespace Emotions.Controllers
                 angle -= 45;
             }
         }
-    
-        public bool Handle(Emotion emotion)
+
+        public bool Handle(Emotion comingEmotion)
         {
-            if ( !_emotions.Exists(e => e.Color == emotion.Color) )
-            {
-                var emotionToLerp = AddEmotion(emotion);
+            if (_emotions.Exists(e => e.Color == comingEmotion.Color)) return false;
+            
+            var emotionToLerp = AddEmotion(comingEmotion);
 
-                StartCoroutine( LerpTo(emotionToLerp, _emotionHolders[LastEmotion]) );
+            StartCoroutine( LerpTo(emotionToLerp.transform, _emotionHolders[LastEmotion]) );
                 
-                OnHandle?.Invoke();         // ? can be deleted
+            OnHandle?.Invoke();         // ? can be deleted
                 
-                Debug.Log("Emotions Count: " + _emotions.Count);
+            Debug.Log("Emotions Count: " + _emotions.Count);
 
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         public bool EmotionExists(Emotion emotion) => 
@@ -122,7 +105,7 @@ namespace Emotions.Controllers
 
         # region Emotions data manipulation
 
-        private Transform AddEmotion(Emotion emotion)
+        private Emotion AddEmotion(Emotion emotion)
         {
             _emotions.Add(emotion);
 
@@ -131,28 +114,34 @@ namespace Emotions.Controllers
             return attachedEmotion;
         }
 
-        protected Transform RemoveEmotion()
+        private void RemoveEmotion()
         {
-            var detachedEmotion = DetachEmotion();
-        
             _emotions.RemoveAt(LastEmotion);
-
-            return detachedEmotion;
         }
 
-        protected Transform RemoveAndThrowEmotion()
+        protected void ReturnEmotion()
         {
-            var emotionToThrow = EmotionWorld.TakeFromPoolAndPlace(_emotionHolders[LastEmotion].position, _emotions[LastEmotion]);
-
-            var emotionThrowTransform = emotionToThrow.transform;
+            var detachedEmotion = DetachEmotion();
+            
+            _poolManager.ReturnToPool(detachedEmotion.category, detachedEmotion.gameObject);
                 
-            RemoveEmotion();        // return removed emotion to pool and remove emotion data from collection
+            RemoveEmotion();
+        }
+
+        protected void ThrowEmotion()
+        {
+            var emotionToThrow = DetachEmotion();
+
+            RemoveEmotion();
             
             emotionToThrow.ActivateCollider(false);     // turn off emotion collider detector magnet behaviour
-            
-            StartCoroutine( WaitCoroutine( LerpTo(emotionThrowTransform, emotionThrowTransform.position + DirectionOfDrop, emotionToThrow) ) );
 
-            return emotionThrowTransform;  // return emotion for drop coroutine
+            var emotionToThrowTransform = emotionToThrow.transform;
+            
+            StartCoroutine( WaitCoroutine( LerpTo(
+                emotionToThrowTransform, 
+                emotionToThrowTransform.position + DirectionOfDrop, 
+                emotionToThrow) ) );
         }
 
         # endregion
@@ -160,30 +149,22 @@ namespace Emotions.Controllers
 
         # region Emotion Transform methods
 
-        private Transform AttachEmotion(Emotion emotion)
+        private Emotion AttachEmotion(Emotion emotion)
         {
-            var emotionWorld = EmotionWorld.TakeFromPoolAndPlace(transform.position, emotion);
-            
-            var emotionToAttach = emotionWorld.transform;
+            emotion.transform.SetParent(_emotionHolders[LastEmotion], true);
 
-            emotionToAttach.SetParent(_emotionHolders[LastEmotion], true);
+            emotion.OnEmotionAttached();
 
-            OnEmotionAttached?.Invoke(emotionWorld);
-
-            return emotionToAttach;
+            return emotion;
         }
 
-        private Transform DetachEmotion()
+        private Emotion DetachEmotion()
         {
-            var emotionToDeactivate = _emotionHolders[LastEmotion].GetChild(0);
+            var emotionToDetach = _emotions[LastEmotion];
+            
+            emotionToDetach.transform.SetParent(_poolManager.transform, true);          // emotion returns to pool
 
-            emotionToDeactivate.gameObject.SetActive(false);
-        
-            emotionToDeactivate.SetParent(_emotionObjectPoolLocation, true);          // emotion return to pool or can fully be unparented
-
-            OnEmotionDetached?.Invoke(emotionToDeactivate.GetComponent<EmotionWorld>());
-
-            return emotionToDeactivate;     // pooled emotion (stored in emotion object pool)
+            return emotionToDetach;
         }
 
         private IEnumerator LerpTo(Transform emotionToAttach, Transform destTransform)
@@ -192,7 +173,7 @@ namespace Emotions.Controllers
             {
                 yield return new WaitForEndOfFrame();
             
-                if (emotionToAttach.parent == _emotionObjectPoolLocation)     // can be null if want to fully unparented
+                if (emotionToAttach.parent == _poolManager.transform)     // can be null if want to fully unparented
                 {
                     yield break;
                 }
@@ -203,7 +184,7 @@ namespace Emotions.Controllers
             Debug.Log("Lerp Finished");
         }
 
-        private static IEnumerator LerpTo(Transform emotionToDrop, Vector2 destPosition, EmotionWorld emotionWorld)
+        private static IEnumerator LerpTo(Transform emotionToDrop, Vector2 destPosition, Emotion emotion)
         {
             while (!Helpers.Reached(emotionToDrop.position, destPosition))
             {
@@ -214,7 +195,7 @@ namespace Emotions.Controllers
                 Debug.Log("Lerp Out");
             }
             
-            emotionWorld.ActivateCollider(true);
+            emotion.ActivateCollider(true);
         }
         
         public static void MagnetStep(Transform magnetFrom, Transform magnetTo, float colliderRadius)

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using Emotions.Controllers;
-using Emotions.ObjectHandling;
+using Emotions.Object;
 using UnityEngine;
 using static Emotions.Controllers.EmotionController;
-using static Core.Helpers.Helpers;
 
 namespace Core.CollisionDetection
 {
@@ -28,7 +27,7 @@ namespace Core.CollisionDetection
             var otherTransform = other.transform;
             
             if (other.CompareTag("Emotion") && !_caughtEmotionTransforms.Contains(otherTransform)
-                && !emotionController.EmotionExists(other.GetComponent<EmotionWorld>().Emotion) )       // TODO: get rid of GetComponent method
+                && !emotionController.EmotionExists(other.GetComponent<Emotion>()) )       // TODO: get rid of GetComponent method
             {
                 _caughtEmotionTransforms.Add(otherTransform);
             }

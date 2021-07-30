@@ -1,9 +1,9 @@
 ﻿ - Generic Object pool for every disposable object in the game (done)
- - Emotion controller logic change (handle EmotionWorld behaviour)
- - Create emotion object prefabs (fill object pools with this objects) 
- - Delete Emotion Assets Class
- - Delete Emotion model methods (only model stays)
- - return emotions to pool only after death or usage (five orbs) (find places)
+ - Emotion controller logic change (handle EmotionWorld behaviour) (done)
+ - Create emotion object prefabs (fill object pools with this objects) (done)
+ - Delete Emotion Assets Class (done)
+ - Delete Emotion model methods (only model stays) (done)
+ - return emotions to pool only after death or usage (five orbs) (find places) (done)
  
  - Fix orbs animation (Nik) +
  - Add collider detecting of mobs (ghost enemies collider detector) (Nik)
