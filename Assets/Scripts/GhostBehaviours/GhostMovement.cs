@@ -21,7 +21,7 @@ namespace GhostBehaviours
         private Rigidbody2D _rigidbody2d;
 
         // sight and movement 
-        private RaycastHit hit;
+        private RaycastHit _hit;
         private Vector3 _lookDirection;
         private Vector2 _movement;
         private Vector3 _mouseTarget;
@@ -68,13 +68,13 @@ namespace GhostBehaviours
         private void GetMouseInput()
         {
             //_mouseTarget = _camera.ScreenToWorldPoint(Input.mousePosition) ;
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-            Physics.Raycast(ray, out hit);
+            var ray = _camera.ScreenPointToRay(Input.mousePosition);
+            Physics.Raycast(ray, out _hit);
         }
 
         private void SetLookDirection()
         {
-            _lookDirection = (hit.point - transform.position).normalized;
+            _lookDirection = (_hit.point - transform.position).normalized;
         }
 
         private void FixedUpdate()

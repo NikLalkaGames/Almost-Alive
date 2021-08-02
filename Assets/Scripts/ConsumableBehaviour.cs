@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Emotions.Models;
 using Enemies;
+using Enemies.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 

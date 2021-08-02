@@ -1,7 +1,6 @@
-﻿using System;
-using Emotions.Models;
+﻿using Emotions.Models;
 using Emotions.Object;
-using Enemies;
+using Enemies.Interfaces;
 using UnityEngine;
 using static Core.Helpers.Helpers;
 
@@ -11,7 +10,7 @@ namespace Emotions.Controllers
     {
         # region Fields
 
-        private SpriteRenderer _parentSpriteRenderer;
+        [SerializeField] private SpriteRenderer mobSpriteRenderer;
         
         public string startOrb;
         
@@ -35,16 +34,12 @@ namespace Emotions.Controllers
                 default: return Color.white;
             }
         }
-        
 
         protected void Awake()
         {
-            var enemy = GetComponentInParent<IEnemy>();
-            if (enemy == null) return;
-
-            _parentSpriteRenderer = GetComponentInParent<SpriteRenderer>();
-
             OnHandle += DefineSkinColor;
+            
+            if (!transform.parent.TryGetComponent(out IEnemy enemy)) return;
             enemy.OnKill += DropEmotionsAfterDeath;
         }
 
@@ -52,13 +47,11 @@ namespace Emotions.Controllers
         {
             base.Start();
 
-            var emotion = _poolManager
-                .SpawnFromPool(startOrb, transform.position)
-                .GetComponent<Emotion>();
-            
-            Handle(emotion);        // for humans
+            _poolManager.SpawnFromPool(startOrb, transform.position).TryGetComponent(out Emotion emotion);
+            Handle(emotion);                // handle one emotion for humans -> branch class in to subclasses if want get different behaviour
         }
         
+        // TODO: Test it!
         /// <summary>
         /// Drop emotions callback for humans event OnKilled
         /// </summary>
@@ -79,7 +72,7 @@ namespace Emotions.Controllers
         /// </summary>
         private void DefineSkinColor()
         {
-            _parentSpriteRenderer.color = _emotions.Count == 1 ? EmotionToColor() : Color.white;
+            mobSpriteRenderer.color = _emotions.Count == 1 ? EmotionToColor() : Color.white;
             // TODO: change color of animations in animation controller
         }
 

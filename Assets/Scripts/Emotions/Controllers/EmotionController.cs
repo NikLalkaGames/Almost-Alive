@@ -69,15 +69,19 @@ namespace Emotions.Controllers
 
             for (var i = 0; i < MAX_EMOTIONS_AMOUNT; i++)
             {          
-                var direction = (Quaternion.Euler(0, 0, angle) * Vector3.right).normalized;
+                var direction = (Quaternion.Euler(-45, 0, angle) * Vector3.right).normalized;
             
                 var emotionHolder = Instantiate(
                     new GameObject(), 
-                    transform.position + direction, 
+                    transform.position + direction * 0.8f, 
                     Quaternion.identity, 
                     _transform)
                     .transform;
+                
                 _emotionHolders.Add(emotionHolder);
+
+                //var emotionHolderTransform = emotionHolder.transform;
+                //emotionHolderTransform.position = Quaternion.Euler(-45, 0, 0) * emotionHolder.transform.position;
 
                 angle -= 45;
             }
@@ -177,19 +181,19 @@ namespace Emotions.Controllers
                     yield break;
                 }
 
-                emotionToAttach.position = Vector2.Lerp(emotionToAttach.position, destTransform.position, Time.deltaTime * 1.5f);   //transform from player position to 
+                emotionToAttach.position = Vector3.Lerp(emotionToAttach.position, destTransform.position, Time.deltaTime * 1.5f);   //transform from player position to 
             }
 
             Debug.Log("Lerp Finished");
         }
 
-        private static IEnumerator LerpTo(Transform emotionToDrop, Vector2 destPosition, Emotion emotion)
+        private static IEnumerator LerpTo(Transform emotionToDrop, Vector3 destPosition, Emotion emotion)
         {
             while (!Helpers.Reached(emotionToDrop.position, destPosition))
             {
                 yield return new WaitForEndOfFrame();
 
-                emotionToDrop.position = Vector2.Lerp(emotionToDrop.position, destPosition, Time.deltaTime * 1.5f);
+                emotionToDrop.position = Vector3.Lerp(emotionToDrop.position, destPosition, Time.deltaTime * 1.5f);
                 
                 Debug.Log("Lerp Out");
             }
@@ -199,11 +203,11 @@ namespace Emotions.Controllers
         
         public static void MagnetStep(Transform magnetFrom, Transform magnetTo, float colliderRadius)
         {
-            var magnetFromPosition = (Vector2) magnetFrom.position;
+            var magnetFromPosition = magnetFrom.position;
             var toPosition = magnetTo.position;
-            var pickUpSpeed =  colliderRadius - Vector2.Distance(magnetFromPosition, toPosition);
+            var pickUpSpeed =  colliderRadius - Vector3.Distance(magnetFromPosition, toPosition);
             
-            magnetFromPosition = Vector2.MoveTowards(magnetFromPosition, toPosition, pickUpSpeed * Time.deltaTime);
+            magnetFromPosition = Vector3.MoveTowards(magnetFromPosition, toPosition, 1.2f * pickUpSpeed * Time.deltaTime);
             magnetFrom.position = magnetFromPosition;
         }
 

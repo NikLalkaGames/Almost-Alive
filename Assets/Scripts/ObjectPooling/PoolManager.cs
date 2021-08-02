@@ -77,7 +77,7 @@ namespace ObjectPooling
         }
         
         
-        public GameObject SpawnFromPool(string objectType, Vector2 positionToSpawn, Quaternion quaternion = default)
+        public GameObject SpawnFromPool(string objectType, Vector2 positionToSpawn)
         {
             if (!_poolDictionary.ContainsKey(objectType))
             {
@@ -87,7 +87,6 @@ namespace ObjectPooling
             var objectToSpawn = _poolDictionary[objectType].Dequeue();
             objectToSpawn.SetActive(true);
             objectToSpawn.transform.position = positionToSpawn;
-            objectToSpawn.transform.rotation = quaternion;
 
             return objectToSpawn;
         }

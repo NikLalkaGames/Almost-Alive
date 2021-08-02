@@ -29,7 +29,7 @@ Transform:
   m_Children:
   - {fileID: 1757589165}
   m_Father: {fileID: 4054309704232783987}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4054309704232783989
 GameObject:
@@ -62,9 +62,9 @@ Transform:
   m_LocalPosition: {x: -2.64, y: 0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 7747318374334169330}
   - {fileID: 1744681318323266337}
   - {fileID: 4954449033503190406}
-  - {fileID: 7747318374334169330}
   - {fileID: 8338986007154947417}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -118,7 +118,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0105368495, y: -0.096024275}
+  m_Offset: {x: 0.033835948, y: 0.098814726}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -129,7 +129,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.29088056, y: 0.38038778}
+  m_Size: {x: 0.37962615, y: 0.24378443}
   m_EdgeRadius: 0
 --- !u!114 &2648889491528357676
 MonoBehaviour:
@@ -177,7 +177,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4054309704232783987}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9097869564676301771
 MonoBehaviour:
@@ -307,11 +307,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7672041850571631944, guid: 184e337b4be9e844986bedf65fb82d03, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.48
+      value: -1.91
       objectReference: {fileID: 0}
     - target: {fileID: 7672041850571631944, guid: 184e337b4be9e844986bedf65fb82d03, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.98
+      value: -4.55
       objectReference: {fileID: 0}
     - target: {fileID: 7672041850571631944, guid: 184e337b4be9e844986bedf65fb82d03, type: 3}
       propertyPath: m_LocalRotation.x
@@ -331,7 +331,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7672041850571631944, guid: 184e337b4be9e844986bedf65fb82d03, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7672041850571631944, guid: 184e337b4be9e844986bedf65fb82d03, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
