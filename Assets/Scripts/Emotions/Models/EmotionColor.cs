@@ -2,11 +2,10 @@
 {
     public enum EmotionColor
     {
-        blue,
-        green,
-        pink,
-        purple,
-        yellow,
-        white
+        Blue,
+        Green,
+        Pink,
+        Purple,
+        Yellow
     }
 }

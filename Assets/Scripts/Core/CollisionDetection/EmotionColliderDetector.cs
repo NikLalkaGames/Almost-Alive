@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Emotions.Controllers;
-using Emotions.ObjectHandling;
+using Emotions.Models;
+using Emotions.Object;
 using UnityEngine;
 using static Emotions.Controllers.EmotionController;
 
@@ -13,37 +14,42 @@ namespace Core.CollisionDetection
 
         public float colliderRadius;
 
-        private List<Transform> _caughtEmotionTransforms = new List<Transform>();
+        private Dictionary<EmotionColor, Transform>
+            _caughtEmotionTransforms = new Dictionary<EmotionColor, Transform>();
 
         private void LateUpdate()
         {
-            foreach (var emotionTransform in _caughtEmotionTransforms)
+            foreach (var emotion in _caughtEmotionTransforms)
             {
-                MagnetStep(emotionTransform, transform, colliderRadius);
+                MagnetStep(emotion.Value, transform, colliderRadius);
             }
         }
-
+        
         public override void OnTriggerEnter2D(Collider2D other)
         {
-            var otherTransform = other.transform;
-            
-            if (other.CompareTag("Emotion") && !_caughtEmotionTransforms.Contains(otherTransform)
-                && !emotionController.EmotionExists(other.GetComponent<EmotionWorld>().Emotion) )
+            if (other.TryGetComponent(out Emotion emotion))
             {
-                _caughtEmotionTransforms.Add(otherTransform);
+                var otherTransform = other.transform;
+                if (!_caughtEmotionTransforms.ContainsKey(emotion.Color) && !emotionController.EmotionExists(emotion))
+                {
+                    _caughtEmotionTransforms.Add(emotion.Color, otherTransform);
+                }
             }
         }
 
         public override void OnTriggerExit2D(Collider2D other)
         {
-            var otherTransform = other.transform;
-            
-            if (_caughtEmotionTransforms.Contains(otherTransform))
+            if (other.TryGetComponent(out Emotion emotion))
             {
-                _caughtEmotionTransforms.Remove(otherTransform);
+                var otherTransform = other.transform;
+                if (_caughtEmotionTransforms.ContainsKey(emotion.Color)
+                    && _caughtEmotionTransforms.ContainsValue(otherTransform))
+                {
+                    _caughtEmotionTransforms.Remove(emotion.Color);
+                }
             }
         }
         
+        
     }
-    
 }

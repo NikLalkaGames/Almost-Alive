@@ -72,10 +72,17 @@ namespace Emotions.Controllers
                 var direction = (Quaternion.Euler(0, 0, angle) * Vector3.right).normalized;
             
                 var emotionHolder = Instantiate(
+<<<<<<< HEAD
+                        new GameObject(), 
+                        _transform.position + direction, 
+                        Quaternion.Euler(0,0,0), 
+                        _transform)
+=======
                     new GameObject(), 
                     transform.position + direction, 
                     Quaternion.identity, 
                     _transform)
+>>>>>>> refactoring/improved-flywieght-and-object-pooling
                     .transform;
                 _emotionHolders.Add(emotionHolder);
 
@@ -134,6 +141,11 @@ namespace Emotions.Controllers
             RemoveEmotion();
             
             emotionToThrow.ActivateCollider(false);     // turn off emotion collider detector magnet behaviour
+<<<<<<< HEAD
+            
+            StartCoroutine( WaitCoroutine( LerpTo(emotionThrowTransform, emotionThrowTransform.position + DirectionOfDrop * dropRadius, emotionToThrow) ) );
+=======
+>>>>>>> refactoring/improved-flywieght-and-object-pooling
 
             var emotionToThrowTransform = emotionToThrow.transform;
             
