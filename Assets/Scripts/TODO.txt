@@ -1,8 +1,5 @@
-﻿ - Emotion LerpOut (Drop) Behaviour (Fara)
- - Find out how works static events with instance callbacks
- - Test Action< MyEventArgs : EventArgs > Event and if it works, create EventManager
- 
- - Fix orbs animation (Nik) +
+﻿ - Fix particles for emotions in 3d (Nik)
+
  - Add collider detecting of mobs (ghost enemies collider detector) (Nik)
  - Enemies detecting in Combat behaviour script based on IDamageable interface (each gameObject that contain such script with Damageable interface can be "damaged") (Nik)
  - Combat behaviour for ghost (Nik)

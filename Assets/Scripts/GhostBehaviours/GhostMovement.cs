@@ -21,13 +21,14 @@ namespace GhostBehaviours
         private Rigidbody2D _rigidbody2d;
 
         // sight and movement 
-        private Vector2 _lookDirection;
+        private RaycastHit _hit;
+        private Vector3 _lookDirection;
         private Vector2 _movement;
-        private Vector2 _mouseTarget;
+        private Vector3 _mouseTarget;
         private Camera _camera;
 
         public Vector2 LookDirection => _lookDirection;
-        public Vector2 MouseTarget => _mouseTarget;
+        public Vector3 MouseTarget => _mouseTarget;
 
         # endregion
 
@@ -38,7 +39,7 @@ namespace GhostBehaviours
             Instance = this;
             _camera = Camera.main;
             _rigidbody2d = GetComponent<Rigidbody2D>();
-            _animator = GetComponent<Animator>();
+            _animator = GetComponentInChildren<Animator>();
             _emotionController = GetComponentInChildren<EmotionController>();
         }
 
@@ -66,12 +67,14 @@ namespace GhostBehaviours
 
         private void GetMouseInput()
         {
-            _mouseTarget = _camera.ScreenToWorldPoint(Input.mousePosition);
+            //_mouseTarget = _camera.ScreenToWorldPoint(Input.mousePosition) ;
+            var ray = _camera.ScreenPointToRay(Input.mousePosition);
+            Physics.Raycast(ray, out _hit);
         }
 
         private void SetLookDirection()
         {
-            _lookDirection = (_mouseTarget - _rigidbody2d.position).normalized;
+            _lookDirection = (_hit.point - transform.position).normalized;
         }
 
         private void FixedUpdate()
