@@ -893,10 +893,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerGhostDefault
       objectReference: {fileID: 0}
-    - target: {fileID: 8167268023812091511, guid: f3086c60e7229ec4e99e98dd66203039, type: 3}
-      propertyPath: colliderRadius
-      value: 2.4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3086c60e7229ec4e99e98dd66203039, type: 3}
 --- !u!1 &1450103394
