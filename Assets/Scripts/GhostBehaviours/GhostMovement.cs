@@ -10,21 +10,30 @@ namespace GhostBehaviours
         # region Fields
     
         // controllers
-        public static GhostMovement Instance { get; set; }
+        public static GhostMovement Instance { get; private set; } = null;
+        
         private Animator _animator;
+        
         private EmotionController _emotionController;
 
         // physics
         [SerializeField] private float speed;
+        
         [SerializeField] private float defaultSpeed;
+        
         [SerializeField] private float speedModifier;
+        
         private Rigidbody2D _rigidbody2d;
 
         // sight and movement 
         private RaycastHit _hit;
+        
         private Vector3 _lookDirection;
+        
         private Vector2 _movement;
+        
         private Vector3 _mouseTarget;
+        
         private Camera _camera;
 
         public Vector2 LookDirection => _lookDirection;
@@ -36,7 +45,7 @@ namespace GhostBehaviours
 
         private void Awake()
         {
-            Instance = this;
+            if (Instance == null) Instance = this;
             _camera = Camera.main;
             _rigidbody2d = GetComponent<Rigidbody2D>();
             _animator = GetComponentInChildren<Animator>();
