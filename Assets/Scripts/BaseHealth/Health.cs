@@ -35,20 +35,20 @@ namespace BaseHealth
             _healthBar = HealthBar.Instance;
         }
 
-        protected void Heal(float amount)
+        public void Heal(float amount)
         {
             _health = Mathf.Clamp(_health + amount, 0, maxHealth);
             _healthBar.SetValue(_health / maxHealth);
         }
         
-        protected void Damage(float amount)
+        public void Damage(float amount)
         {
             if (_invincibleTimer >= 0) return;          // cannot damage while decrementing invincible time
             Reduce(amount);
             _invincibleTimer = timeInvincible;
         }
 
-        protected void Reduce(float amount)
+        public void Reduce(float amount)
         {
             _health -= amount;
             _healthBar.SetValue(_health / maxHealth);
