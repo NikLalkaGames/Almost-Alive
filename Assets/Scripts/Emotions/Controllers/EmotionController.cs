@@ -61,8 +61,7 @@ namespace Emotions.Controllers
             }
             _poolManager = PoolManager.Instance;
         }
-
-        //TODO: create new way of positioning emotions in 3d space
+        
         private void CreateEmotionHolders()
         {
             var angle = -180f;
