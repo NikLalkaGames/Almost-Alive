@@ -144,10 +144,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  defense: 0
+  immortal: 1
   timeInvincible: 1
   healthReductionValue: 0.017
   healthReductionIncrement: 0.001
   fiveOrbsHealValue: 50
+  healthBar: {fileID: 0}
 --- !u!1 &4297825784146260105
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,15 +354,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7672041850571631951, guid: 184e337b4be9e844986bedf65fb82d03, type: 3}
       propertyPath: m_BackGroundColor.r
-      value: 0.054901965
+      value: 0.38679248
       objectReference: {fileID: 0}
     - target: {fileID: 7672041850571631951, guid: 184e337b4be9e844986bedf65fb82d03, type: 3}
       propertyPath: m_BackGroundColor.g
-      value: 0.427451
+      value: 0.38679248
       objectReference: {fileID: 0}
     - target: {fileID: 7672041850571631951, guid: 184e337b4be9e844986bedf65fb82d03, type: 3}
       propertyPath: m_BackGroundColor.b
-      value: 0.7960785
+      value: 0.38679248
       objectReference: {fileID: 0}
     - target: {fileID: 7672041850571631951, guid: 184e337b4be9e844986bedf65fb82d03, type: 3}
       propertyPath: orthographic
