@@ -77,6 +77,9 @@ namespace GhostBehaviours
             //_mouseTarget = _camera.ScreenToWorldPoint(Input.mousePosition) ;
             var ray = _camera.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out _hit);
+            
+            // Debug.DrawRay(ray.origin, ray.direction, Color.red);
+            //Debug.DrawLine(ray.origin, _hit.point, Color.green);
         }
 
         private void SetLookDirection()
