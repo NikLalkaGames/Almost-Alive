@@ -48,7 +48,7 @@ namespace Emotions.Controllers
 
         # endregion
 
-        # region Internal Methods
+        # region Methods
 
         protected virtual void Start()
         {
@@ -101,11 +101,7 @@ namespace Emotions.Controllers
             return true;
         }
 
-        public bool EmotionExists(Emotion emotion) => 
-            _emotions.Exists(e => e.Color == emotion.Color);
-        
-
-        # region Emotions data manipulation
+        # region Emotions data management
 
         private Emotion AddEmotion(Emotion emotion)
         {
@@ -147,9 +143,8 @@ namespace Emotions.Controllers
         }
 
         # endregion
-
-
-        # region Emotion Transform methods  
+        
+        # region Emotion transform control  
 
         private Emotion AttachEmotion(Emotion emotion)
         {
@@ -200,15 +195,7 @@ namespace Emotions.Controllers
             emotion.ActivateCollider(true);
         }
         
-        public static void MagnetStep(Transform magnetFrom, Transform magnetTo, float colliderRadius)
-        {
-            var magnetFromPosition = magnetFrom.position;
-            var toPosition = magnetTo.position;
-            var pickUpSpeed =  colliderRadius - Vector3.Distance(magnetFromPosition, toPosition);
-            
-            magnetFromPosition = Vector3.MoveTowards(magnetFromPosition, toPosition, 1.2f * pickUpSpeed * Time.deltaTime);
-            magnetFrom.position = magnetFromPosition;
-        }
+        
 
         private IEnumerator WaitCoroutine(IEnumerator coroutine)
         {

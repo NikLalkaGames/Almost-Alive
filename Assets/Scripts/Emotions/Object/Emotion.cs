@@ -12,14 +12,14 @@ namespace Emotions.Object
 
         public void OnEmotionAttached()
         {
-            this.ActivateCollider(false);
-            this.ActivateAnimatorState(true);
+            ActivateCollider(false);
+            ActivateAnimatorState(true);
         }
 
         public void OnEmotionDetached()
         {
-            this.ActivateCollider(true);
-            this.ActivateAnimatorState(false);
+            ActivateCollider(true);
+            ActivateAnimatorState(false);
         }
     
         #endregion
@@ -50,20 +50,7 @@ namespace Emotions.Object
             _internalCollider = GetComponent<BoxCollider>();
             _animator = GetComponentInChildren<Animator>();
         }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Mob") || other.CompareTag("Player"))
-            {
-                var emotionController = other.GetComponentInChildren<EmotionController>();
-                if (emotionController == null) return;
-                
-                Debug.Log("Emotion has entered into internal collider ");
-                emotionController.Handle(this);
-                ActivateCollider(false);    
-            }
-        }
-
+        
         public void ActivateCollider(bool state) => _internalCollider.enabled = state;
         
         private void ActivateAnimatorState(bool state) => _animator.SetBool(ChangeStateToChild, state);

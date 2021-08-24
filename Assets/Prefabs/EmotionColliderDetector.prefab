@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2778609950560250266}
-  - component: {fileID: 2778609950560250264}
   - component: {fileID: 6329930195855288640}
+  - component: {fileID: 4330639909224858999}
   m_Layer: 0
   m_Name: EmotionColliderDetector
   m_TagString: Untagged
@@ -32,22 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &2778609950560250264
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2778609950560250267}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 1
 --- !u!114 &6329930195855288640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,5 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6fff178e7554bf4d8a49d87e7eca382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emotionController: {fileID: 0}
   colliderRadius: 2
+  emotionController: {fileID: 0}
+--- !u!135 &4330639909224858999
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2778609950560250267}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.3
+  m_Center: {x: 0, y: 0, z: 0}
