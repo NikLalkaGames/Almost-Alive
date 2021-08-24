@@ -72,7 +72,7 @@ namespace Emotions.Controllers
             
                 var emotionHolder = Instantiate(
                     new GameObject(), 
-                    transform.position + direction * 0.8f, 
+                    transform.position + direction, 
                     Quaternion.identity, 
                     _transform)
                     .transform;
@@ -149,7 +149,7 @@ namespace Emotions.Controllers
         # endregion
 
 
-        # region Emotion Transform methods
+        # region Emotion Transform methods  
 
         private Emotion AttachEmotion(Emotion emotion)
         {

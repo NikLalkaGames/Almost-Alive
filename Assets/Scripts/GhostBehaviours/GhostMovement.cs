@@ -17,20 +17,18 @@ namespace GhostBehaviours
         private EmotionController _emotionController;
 
         // physics
-        [SerializeField] private float speed;
-        
         [SerializeField] private float defaultSpeed;
         
         [SerializeField] private float speedModifier;
         
-        private Rigidbody2D _rigidbody2d;
+        private Rigidbody _rigidbody;
 
         // sight and movement 
         private RaycastHit _hit;
         
         private Vector3 _lookDirection;
         
-        private Vector2 _movement;
+        private Vector3 _movement;
         
         private Vector3 _mouseTarget;
         
@@ -47,7 +45,7 @@ namespace GhostBehaviours
         {
             if (Instance == null) Instance = this;
             _camera = Camera.main;
-            _rigidbody2d = GetComponent<Rigidbody2D>();
+            _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponentInChildren<Animator>();
             _emotionController = GetComponentInChildren<EmotionController>();
         }
@@ -88,9 +86,9 @@ namespace GhostBehaviours
 
         private void FixedUpdate()
         {
-            var positionToMove = _rigidbody2d.position;
+            var positionToMove = _rigidbody.position;
             positionToMove += _movement * (defaultSpeed * speedModifier * Time.fixedDeltaTime);
-            _rigidbody2d.MovePosition(positionToMove);
+            _rigidbody.MovePosition(positionToMove);
         }
 
         # endregion

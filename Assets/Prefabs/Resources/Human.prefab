@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 4340974393789287524}
   m_Layer: 9
   m_Name: Human
-  m_TagString: Consumable
+  m_TagString: Mob
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

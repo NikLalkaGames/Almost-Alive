@@ -7,9 +7,8 @@ TagManager:
   - Background
   - Ground
   - Object
-  - Consumable
-  - Enemy
   - Emotion
+  - Mob
   layers:
   - Default
   - TransparentFX
