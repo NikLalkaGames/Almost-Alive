@@ -9,9 +9,9 @@ namespace Core.Health
         
         #region Health
         
-        [SerializeField] protected float maxHealth;     // 100
-        
-        protected float _healthValue;
+        [SerializeField] private float maxHealth;     // 100
+
+        private float _healthValue;
         
         #endregion 
         
@@ -37,27 +37,35 @@ namespace Core.Health
         
         #region Properties
 
-        public float Value => _healthValue;
+        protected float HealthValue
+        {
+            get => _healthValue;
+            set => _healthValue = Mathf.Clamp(_healthValue + value, 0, MaxHealth);
+        }
+
+        protected float MaxHealth => maxHealth;
         
         #endregion
 
         # region Methods
         
-        protected virtual void Start() => _healthValue = maxHealth;
+        protected virtual void Start() => HealthValue = MaxHealth;
 
         public virtual void Restore(float amount) =>
-            _healthValue = Mathf.Clamp(_healthValue + amount, 0, maxHealth);
+            HealthValue += amount;
         
         public virtual void TryToDamage(float amount)
         {
             if (_invincibleTimer >= 0) return;
+
             var damage = Mathf.Clamp(amount - defense, 0f, Mathf.Infinity );
             Reduce(damage);
+            
             _invincibleTimer = timeInvincible;
         }
 
         public virtual void Reduce(float amount) => 
-            _healthValue -= amount;
+            HealthValue -= amount;
 
         protected virtual void FixedUpdate()
         {

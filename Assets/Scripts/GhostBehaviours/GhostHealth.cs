@@ -29,20 +29,20 @@ namespace GhostBehaviours
         protected override void Start()
         {
             base.Start();
-            healthBar.maxValue = maxHealth;
+            healthBar.maxValue = MaxHealth;
         }
 
         public override void Restore(float amount)
         {
             base.Restore(amount);
-            healthBar.value = _healthValue;
+            healthBar.value = HealthValue;
         }
 
         public override void Reduce(float amount)
         {
             base.Reduce(amount);
-            healthBar.value = _healthValue;
-            if (_healthValue < 0) SceneLoader.instance.LoadScene("EntryMenu");
+            healthBar.value = HealthValue;
+            if (HealthValue < 0) SceneLoader.instance.LoadScene("EntryMenu");
         }
         
         private void IncreaseHealthReduction(float value = 0.001f) => 
