@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6fff178e7554bf4d8a49d87e7eca382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderRadius: 2
+  colliderRadius: 2.4
   emotionController: {fileID: 0}
 --- !u!135 &4330639909224858999
 SphereCollider:
