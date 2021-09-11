@@ -42,7 +42,7 @@ namespace GhostBehaviours
         {
             base.Reduce(amount);
             healthBar.value = HealthValue;
-            if (HealthValue < 0) SceneLoader.instance.LoadScene("EntryMenu");
+            if (HealthValue <= 0) SceneLoader.instance.LoadScene("EntryMenu");
         }
         
         private void IncreaseHealthReduction(float value = 0.001f) => 

@@ -40,7 +40,7 @@ namespace Core.Health
         protected float HealthValue
         {
             get => _healthValue;
-            set => _healthValue = Mathf.Clamp(_healthValue + value, 0, MaxHealth);
+            set => _healthValue = Mathf.Clamp(value, 0, MaxHealth);
         }
 
         protected float MaxHealth => maxHealth;
