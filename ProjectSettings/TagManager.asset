@@ -7,9 +7,8 @@ TagManager:
   - Background
   - Ground
   - Object
-  - Consumable
-  - Enemy
   - Emotion
+  - Mob
   layers:
   - Default
   - TransparentFX
@@ -23,7 +22,7 @@ TagManager:
   - Consumable
   - Enemy
   - Player
-  - 
+  - EmotionCollider
   - 
   - 
   - 

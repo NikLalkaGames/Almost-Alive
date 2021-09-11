@@ -1,10 +1,8 @@
 ﻿- Fix particles for emotions in 3d (Nik)
 - Skeletal animation for ghost (Nik)
 
-- Add collider detecting of mobs (ghost enemies collider detector) (Fara)
-- Enemies detecting in Combat behaviour script based on IDamageable interface (each gameObject that contain such script with Damageable interface can be "damaged") (Fara)
 - 3d hit detection in combat (Fara)
 - Combat behaviour for ghost (Fara)
-- ConsumableBehaviour response to player Combat behaviour (Fara)
+- MobBehaviour response to player Combat behaviour (Fara)
 
 - Start creating AI for humans
