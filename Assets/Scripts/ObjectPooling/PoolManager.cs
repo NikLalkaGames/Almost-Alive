@@ -75,8 +75,7 @@ namespace ObjectPooling
                 
             _poolDictionary.Add(pool.objectType, objectPool);
         }
-        
-        
+
         public GameObject SpawnFromPool(string objectType, Vector2 positionToSpawn)
         {
             if (!_poolDictionary.ContainsKey(objectType))

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Emotions.Controllers;
 using Emotions.Models;
 using UnityEngine;
@@ -11,14 +12,14 @@ namespace Emotions.Object
 
         public void OnEmotionAttached()
         {
-            this.ActivateCollider(false);
-            this.ActivateAnimatorState(true);
+            ActivateCollider(false);
+            ActivateAnimatorState(true);
         }
 
         public void OnEmotionDetached()
         {
-            this.ActivateCollider(true);
-            this.ActivateAnimatorState(false);
+            ActivateCollider(true);
+            ActivateAnimatorState(false);
         }
     
         #endregion
@@ -30,7 +31,7 @@ namespace Emotions.Object
         public string category;
 
         // collision 
-        private BoxCollider2D _internalCollider;
+        private BoxCollider _internalCollider;
         
         // animator behaviour
         [SerializeField] private float idleAnimationSpeed;
@@ -46,27 +47,10 @@ namespace Emotions.Object
 
         private void Awake()
         {
-            _internalCollider = GetComponent<BoxCollider2D>();
-            _animator = GetComponent<Animator>();
-            
-            //EmotionController.OnEmotionAttached += OnEmotionAttached;
-            //EmotionController.OnEmotionDetached += OnEmotionDetached;
+            _internalCollider = GetComponent<BoxCollider>();
+            _animator = GetComponentInChildren<Animator>();
         }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (!other.CompareTag("Player") && !other.CompareTag("Consumable")) return;
-            
-            Debug.Log("Enter internal collider of emotion controller holder parent");
-            var isHandled = other.GetComponentInChildren<EmotionController>().Handle(this);     // any way to create callback ?
         
-            if (isHandled)
-            {
-                // this.gameObject.SetActive(false);
-                // OnDeactivate?.Invoke(this);
-            }
-        }
-
         public void ActivateCollider(bool state) => _internalCollider.enabled = state;
         
         private void ActivateAnimatorState(bool state) => _animator.SetBool(ChangeStateToChild, state);

@@ -10,21 +10,28 @@ namespace GhostBehaviours
         # region Fields
     
         // controllers
-        public static GhostMovement Instance { get; set; }
+        public static GhostMovement Instance { get; private set; } = null;
+        
         private Animator _animator;
+        
         private EmotionController _emotionController;
 
         // physics
-        [SerializeField] private float speed;
         [SerializeField] private float defaultSpeed;
+        
         [SerializeField] private float speedModifier;
-        private Rigidbody2D _rigidbody2d;
+        
+        private Rigidbody _rigidbody;
 
         // sight and movement 
         private RaycastHit _hit;
+        
         private Vector3 _lookDirection;
-        private Vector2 _movement;
+        
+        private Vector3 _movement;
+        
         private Vector3 _mouseTarget;
+        
         private Camera _camera;
 
         public Vector2 LookDirection => _lookDirection;
@@ -36,9 +43,9 @@ namespace GhostBehaviours
 
         private void Awake()
         {
-            Instance = this;
+            if (Instance == null) Instance = this;
             _camera = Camera.main;
-            _rigidbody2d = GetComponent<Rigidbody2D>();
+            _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponentInChildren<Animator>();
             _emotionController = GetComponentInChildren<EmotionController>();
         }
@@ -70,6 +77,9 @@ namespace GhostBehaviours
             //_mouseTarget = _camera.ScreenToWorldPoint(Input.mousePosition) ;
             var ray = _camera.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out _hit);
+            
+            // Debug.DrawRay(ray.origin, ray.direction, Color.red);
+            //Debug.DrawLine(ray.origin, _hit.point, Color.green);
         }
 
         private void SetLookDirection()
@@ -79,9 +89,9 @@ namespace GhostBehaviours
 
         private void FixedUpdate()
         {
-            var positionToMove = _rigidbody2d.position;
+            var positionToMove = _rigidbody.position;
             positionToMove += _movement * (defaultSpeed * speedModifier * Time.fixedDeltaTime);
-            _rigidbody2d.MovePosition(positionToMove);
+            _rigidbody.MovePosition(positionToMove);
         }
 
         # endregion

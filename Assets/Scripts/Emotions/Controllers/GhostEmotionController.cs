@@ -6,12 +6,16 @@ namespace Emotions.Controllers
 {
     public class GhostEmotionController : EmotionController
     {
+        public static GhostEmotionController Instance { get; private set; } = null;
+        
         protected override Vector3 DirectionOfDrop => GhostMovement.Instance.LookDirection;
 
-        /// <summary>
-        /// Event occurs when player ghost collect five orbs
-        /// </summary>
         public static event Action OnFiveOrbsCollected;
+
+        private void Awake()
+        {
+            if (Instance == null) Instance = this;
+        }
 
         private void FiveOrbs()
         {

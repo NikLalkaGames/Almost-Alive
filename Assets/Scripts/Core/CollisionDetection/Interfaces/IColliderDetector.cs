@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 
-namespace Core.CollisionDetecting.Interfaces
+namespace Core.CollisionDetection.Interfaces
 {
-    internal interface IColliderDetector
+    public interface IColliderDetector
     {
-        void OnTriggerEnter2D(Collider2D other);
-        void OnTriggerExit2D(Collider2D other);
+        void OnTriggerEnter(Collider other);
+
+        void OnTriggerExit(Collider other);
     }
 }
