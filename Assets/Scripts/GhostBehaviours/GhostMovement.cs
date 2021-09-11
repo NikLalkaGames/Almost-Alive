@@ -14,7 +14,6 @@ namespace GhostBehaviours
         
         private Animator _animator;
         
-        private EmotionController _emotionController;
 
         // physics
         [SerializeField] private float defaultSpeed;
@@ -22,6 +21,7 @@ namespace GhostBehaviours
         [SerializeField] private float speedModifier;
         
         private Rigidbody _rigidbody;
+        
 
         // sight and movement 
         private RaycastHit _hit;
@@ -47,7 +47,6 @@ namespace GhostBehaviours
             _camera = Camera.main;
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponentInChildren<Animator>();
-            _emotionController = GetComponentInChildren<EmotionController>();
         }
 
         private void Update()
