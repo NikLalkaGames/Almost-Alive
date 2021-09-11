@@ -28,6 +28,11 @@ namespace GhostBehaviours
 
         protected override void Start()
         {
+            if (healthBar is null)
+            {
+                Debug.LogError("You need to bind ghost health bar in field");
+            }
+            
             base.Start();
             healthBar.maxValue = MaxHealth;
         }
