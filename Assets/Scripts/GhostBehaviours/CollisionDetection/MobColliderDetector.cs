@@ -1,10 +1,8 @@
-﻿using System;
-using Core.CollisionDetection.Interfaces;
+﻿using Core.CollisionDetection.Interfaces;
 using Core.Health.Interfaces;
-using Enemies;
 using UnityEngine;
 
-namespace Core.CollisionDetection.HeroColliderDetectors
+namespace GhostBehaviours.CollisionDetection
 {
     public class MobColliderDetector : MonoBehaviour, IColliderDetector
     {
