@@ -178,7 +178,7 @@ namespace Emotions.Controllers
                 emotionToAttach.position = Vector3.Lerp(emotionToAttach.position, destTransform.position, Time.deltaTime * 1.5f);   //transform from player position to 
             }
 
-            Debug.Log("Lerp Finished");
+            Debug.Log("Attaching lerp Finished");
         }
 
         private static IEnumerator LerpTo(Transform emotionToDrop, Vector3 destPosition, Emotion emotion)
@@ -188,9 +188,9 @@ namespace Emotions.Controllers
                 yield return new WaitForEndOfFrame();
 
                 emotionToDrop.position = Vector3.Lerp(emotionToDrop.position, destPosition, Time.deltaTime * 1.5f);
-                
-                Debug.Log("Lerp Out");
             }
+            
+            Debug.Log("Detaching lerp finished");
             
             emotion.ActivateCollider(true);
         }
