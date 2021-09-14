@@ -26,7 +26,8 @@ namespace GhostBehaviours
         // sight and movement 
         private RaycastHit _hit;
         
-        private Vector3 _lookDirection;
+        [SerializeField]
+        private Vector2 _lookDirection;
         
         private Vector3 _movement;
         
