@@ -1,4 +1,5 @@
 ﻿using Emotions.Controllers;
+using MonsterLove.StateMachine;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,13 +9,23 @@ namespace GhostBehaviours
     public class GhostMovement : MonoBehaviour
     {
         # region Fields
-    
+        //enums
+        public enum States
+        {
+            Init,
+            Movement,
+            Attack
+        }
+        
+        //State Machine
+
+        private StateMachine<States> _fsm;
+        
         // controllers
         public static GhostMovement Instance { get; private set; } = null;
         
         private Animator _animator;
         
-
         // physics
         [SerializeField] private float defaultSpeed;
         
@@ -50,6 +61,10 @@ namespace GhostBehaviours
             _animator = GetComponentInChildren<Animator>();
         }
 
+        private void Init_Enter()
+        {
+            Debug.Log("Player Awake");
+        }
         private void Update()
         {
             GetMovementInput();
