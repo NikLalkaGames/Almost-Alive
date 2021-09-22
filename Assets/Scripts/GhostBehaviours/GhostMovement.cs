@@ -11,8 +11,8 @@ namespace GhostBehaviours
     public class GhostMovement : MonoBehaviour
     {
         # region Fields
-        
-        // enums
+
+        // State Machine
         public enum States
         {
             Init,
@@ -20,7 +20,6 @@ namespace GhostBehaviours
             Attack
         }
         
-        // State Machine
         private StateMachine<States, Driver> _fsm;
         
         // controllers
@@ -34,6 +33,8 @@ namespace GhostBehaviours
         [SerializeField] private float speedModifier;
         
         private Rigidbody _rigidbody;
+
+        private Transform _transform;
         
 
         // sight and movement 
@@ -68,6 +69,7 @@ namespace GhostBehaviours
         private void Awake()
         {
             if (Instance == null) Instance = this;
+            _transform = transform;
             _camera = Camera.main;
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponentInChildren<Animator>();
@@ -99,9 +101,6 @@ namespace GhostBehaviours
         
         private void Movement_Update()
         {
-            // Debug.DrawLine(transform.position, mouseTarget, Color.red);
-            Debug.DrawRay(transform.position, _lookDirection, Color.red);
-
             // animation logic
             _animator.SetFloat("MoveX", _movement.x);
             _animator.SetFloat("MoveY", _movement.y);
@@ -128,7 +127,10 @@ namespace GhostBehaviours
         {
             Debug.Log("Player Attack Enter");
             
-            // _animator.Attack();
+            _animator.SetTrigger("AttackTrigger");
+            _animator.SetFloat("AttackX", _lookDirection.x);
+            _animator.SetFloat("AttackY", _lookDirection.y);
+            
             yield return new WaitForSeconds(attackTime);
 
             _fsm.ChangeState(_movementTrigger ? States.Movement : States.Init);
@@ -157,18 +159,18 @@ namespace GhostBehaviours
         {
             var ray = _camera.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out _hit);
-            
-            // Debug.DrawRay(ray.origin, ray.direction, Color.red);
-            //Debug.DrawLine(ray.origin, _hit.point, Color.green);
 
             if (Input.GetButtonDown("Fire1"))
             {
                 _attackTrigger = true;
             }
         }
-        
-        private void SetLookDirection() =>
+
+        private void SetLookDirection()
+        {
             _lookDirection = (_hit.point - transform.position).normalized;
+            Debug.DrawRay(_transform.position, _lookDirection, Color.blue);
+        }
 
         #endregion
         
