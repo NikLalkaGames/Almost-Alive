@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GhostBehaviours;
 using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
@@ -8,14 +9,14 @@ public class ProjectileController : MonoBehaviour
     private int projectileCount;
     public int maxProjectileCount;
     private GameObject projectile;
-    private PlayerController player;
+    private GhostMovement player;
     private float angle;
     private float projectileRegen = 0f;
 
 
     void Start()
     {
-        player = GetComponent<PlayerController>();
+        player = GetComponent<GhostMovement>();
         projectileCount = maxProjectileCount;
     }
 
