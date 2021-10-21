@@ -151,6 +151,7 @@ namespace GhostBehaviours
         {
             _movement.x = Input.GetAxis("Horizontal");
             _movement.y = Input.GetAxis("Vertical");
+            _movement.Normalize();
 
             _movementTrigger = !Helpers.Reached(_movement, Vector3.zero);
         }
